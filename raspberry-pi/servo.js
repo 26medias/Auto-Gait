@@ -3,12 +3,17 @@ const { Pca9685Driver } = require("pca9685");
 
 class ServoController {
     constructor(address = 0x40, frequency = 50) {
-        this.options = {
-            i2c: i2cBus.openSync(1),
-            address: address,
-            frequency: frequency,
-            debug: false
-        };
+        try  {
+            this.options = {
+                i2c: i2cBus.openSync(1),
+                address: address,
+                frequency: frequency,
+                debug: false
+            };
+        } catch (e) {
+            
+        }
+        
         this.pwm = null;
     }
 

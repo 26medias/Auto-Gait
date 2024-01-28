@@ -1,7 +1,7 @@
 const AutoGait = require('./gait.js');
 const IK = require('./IK.js');
 const Maths = require('./maths.js');
-const ServoController = require('./servo.js');
+
 const _ = require('underscore');
 
 
@@ -20,7 +20,7 @@ const ServoData = {
 class CreepyBot {
     constructor(options) {
         this.options = _.extend({
-            fps: 60,
+            fps: 10,
             render2D: false,
             render3D: false,
             robot: {
@@ -114,8 +114,14 @@ class CreepyBot {
 
         this.reset();
 
-        this.servo = new ServoController();
-        await this.servo.init();
+        try {
+            const ServoController = require('./servo.js');
+            this.servo = new ServoController();
+            await this.servo.init();
+        } catch (e) {
+            console.log("pca9685/I2C not found")
+        }
+        
 
         // Gait
         this.gait = new AutoGait('#canvas', {
@@ -183,7 +189,7 @@ class CreepyBot {
         if (n === 2) {
             out = correctedAngle;
         }
-        return Math.round(out);
+        return Math.abs(Math.round(out));
     }
 
 
@@ -195,11 +201,14 @@ class CreepyBot {
             angles.push(this.getOriginalAngle(i, 1, this.ik.legs[i].angles.upper));
             angles.push(this.getOriginalAngle(i, 2, this.ik.legs[i].angles.tip));
         }
-        //console.log(angles);
-        //@TODO: Send
-        for (i=0;i<16;i++) {
-            this.servo.move(i, angles[i]);
+
+        if (this.servo) {
+            for (i=0;i<16;i++) {
+                this.servo.move(i, angles[i]);
+            }
         }
+        console.log(angles);
+        
     }
     
     render() {
