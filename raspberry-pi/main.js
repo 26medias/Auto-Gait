@@ -20,7 +20,7 @@ const ServoData = {
 class CreepyBot {
     constructor(options) {
         this.options = _.extend({
-            fps: 10,
+            fps: 30,
             render2D: false,
             render3D: false,
             robot: {
