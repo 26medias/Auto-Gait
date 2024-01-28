@@ -197,7 +197,7 @@ class CreepyBot {
         }
         //console.log(angles);
         //@TODO: Send
-        for (i=0;i<angles.length;i++) {
+        for (i=0;i<16;i++) {
             this.servo.move(i, angles[i]);
         }
     }
