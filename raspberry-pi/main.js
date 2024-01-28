@@ -187,7 +187,7 @@ class CreepyBot {
             out = correctedAngle;
         }
         if (n === 2) {
-            out = correctedAngle;
+            out = 180-correctedAngle;
         }
         return Math.abs(Math.round(out));
     }
