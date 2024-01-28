@@ -187,7 +187,7 @@ class CreepyBot {
             out = correctedAngle;
         }
         if (n === 2) {
-            out = -correctedAngle;
+            out = correctedAngle;
         }
         return Math.abs(Math.round(out));
     }
@@ -207,7 +207,7 @@ class CreepyBot {
                 this.servo.move(i, angles[i]);
             }
         }
-        console.log(angles);
+        console.log(JSON.stringify(angles));
         
     }
     
