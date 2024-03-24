@@ -1,45 +1,43 @@
 const i2cBus = require("i2c-bus");
-const { Pca9685Driver } = require("pca9685");
 
 class ServoController {
-    constructor(address = 0x40, frequency = 50) {
-        try  {
-            this.options = {
-                i2c: i2cBus.openSync(1),
-                address: address,
-                frequency: frequency,
-                debug: false
-            };
-        } catch (e) {
-            
-        }
+    constructor() {
         
-        this.pwm = null;
     }
 
     init() {
-        return new Promise((resolve, reject) => {
-            this.pwm = new Pca9685Driver(this.options, (err) => {
-                if (err) {
-                    console.error("Error initializing PCA9685");
-                    reject(err);
-                } else {
-                    console.log("Initialization done");
-                    resolve();
-                }
-            });
-        });
+        this.i2cBus = i2cBus.openSync(1); // Assuming I2C bus 1 for Raspberry Pi
     }
 
+    // Function to send servo angles to a single Arduino-based controller
+    moveServos(address, angles) {
+        if (angles.length !== 6) {
+            console.error("Angles array must have 6 elements.");
+            return;
+        }
+
+        const buffer = Buffer.from(angles);
+        this.i2cBus.writeI2cBlockSync(address, 0x00, buffer.length, buffer);
+    }
+
+    // Function to control any of the 18 servos across the three controllers
     move(servo, angle) {
-        if (!this.pwm) {
-            console.error("PWM driver not initialized");
+        if (angle < 0 || angle > 180) {
+            console.error("Angle must be between 0 and 180.");
             return;
         }
-        if (angle<0 || angle>180) {
-            return;
+
+        const controllerAddresses = [0x07, 0x08, 0x09]; // I2C addresses of the Arduino controllers
+        const controllerIndex = Math.floor(servo / 6);
+        const servoIndex = servo % 6;
+        const angles = new Array(6).fill(90); // Default angle is 90, can be adjusted as needed
+        angles[servoIndex] = angle;
+
+        if (controllerIndex >= 0 && controllerIndex < controllerAddresses.length) {
+            this.moveServos(controllerAddresses[controllerIndex], angles);
+        } else {
+            console.error("Invalid servo index.");
         }
-        this.pwm.setPulseLength(servo, 1500+Math.ceil((angle-90)/180*1499));
     }
 }
 

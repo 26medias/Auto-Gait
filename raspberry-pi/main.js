@@ -208,7 +208,6 @@ class CreepyBot {
             }
         }
         console.log(JSON.stringify(angles));
-        
     }
     
     render() {
