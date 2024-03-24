@@ -17,7 +17,11 @@ class ServoController {
         }
 
         const buffer = Buffer.from(angles);
-        this.i2cBus.writeI2cBlockSync(address, 0x00, buffer.length, buffer);
+        try {
+            this.i2cBus.writeI2cBlockSync(address, 0x00, buffer.length, buffer);
+        } catch (e) {
+            console.error("[I2C] ", e.message)
+        }
     }
 
     // Function to control any of the 18 servos across the three controllers
