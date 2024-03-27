@@ -46,7 +46,7 @@ class ServoController {
 }
 
 const servo = new ServoController();
-this.servo.init();
+servo.init();
 const a = 75;
 servo.moveServos(0x07, [a, a, a, a, a, a])
 
