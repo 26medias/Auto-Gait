@@ -221,7 +221,7 @@ class CreepyBot {
         this.servo = new ServoController();
         this.servo.init();
         const a = 90;
-        moveServos(0x07, [a, a, a, a, a, a])
+        this.servo.moveServos(0x07, [a, a, a, a, a, a])
     }
 }
 
