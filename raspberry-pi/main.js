@@ -115,7 +115,7 @@ class CreepyBot {
         this.reset();
 
         try {
-            const ServoController = require('./servo.js');
+            const ServoController = require('./servo_pca.js');
             this.servo = new ServoController();
             await this.servo.init();
         } catch (e) {
@@ -215,11 +215,22 @@ class CreepyBot {
         this.ik.update();
         this.writeAngles();
     }
+
+    async testServos() {
+        const ServoController = require('./servo_pca.js');
+        this.servo = new ServoController();
+        await this.servo.init();
+        const a = 90;
+        moveServos(0x07, [a, a, a, a, a, a])
+    }
 }
+
+
 
 
 setTimeout(function() {
     let bot = new CreepyBot({});
-    bot.init();
+    //bot.init();
+    bot.testServos();
 }, 500)
 
