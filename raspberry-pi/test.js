@@ -18,7 +18,7 @@ function setAngle(a) {
 
 (async () => {
     for (i=0;i<180;i++) {
-        setAngle(75);
+        setAngle(i);
         await new Promise(resolve => setTimeout(resolve, 50));
     }
 })()
