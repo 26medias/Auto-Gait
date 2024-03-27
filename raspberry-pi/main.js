@@ -101,6 +101,17 @@ class CreepyBot {
                 },
             }
         }, options);
+
+        try {
+            const ServoController = require('./servo_pca.js');
+            this.servo = new ServoController();
+            this.servo.init();
+            const ServoController2 = require('./servo.js');
+            this.servo2 = new ServoController2();
+            this.servo2.init();
+        } catch (e) {
+            console.log("pca9685/I2C not found")
+        }
     }
 
     async reset() {
@@ -113,17 +124,6 @@ class CreepyBot {
         let scope = this;
 
         this.reset();
-
-        try {
-            const ServoController = require('./servo_pca.js');
-            this.servo = new ServoController();
-            this.servo.init();
-            const ServoController2 = require('./servo.js');
-            this.servo2 = new ServoController2();
-            this.servo2.init();
-        } catch (e) {
-            console.log("pca9685/I2C not found")
-        }
         
 
         // Gait
@@ -213,6 +213,25 @@ class CreepyBot {
         }
         //console.log(JSON.stringify(angles));
     }
+
+    writeAnglesPreset(angle) {
+        let angles = [];
+        let i;
+        for (i=0;i<this.gait.body.legs.length;i++) {
+            angles.push(angle);
+            angles.push(angle);
+            angles.push(angle);
+        }
+
+        if (this.servo) {
+            for (i=0;i<15;i++) {
+                this.servo.move(i, angles[i]); // PCA
+            }
+            console.log(JSON.stringify([angles[15], angles[16], angles[17], 0, 0, 0]));
+            this.servo2.moveServos(0x07, [angles[15], angles[16], angles[17], 0, 0, 0]);
+        }
+        console.log(JSON.stringify(angles));
+    }
     
     render() {
         this.gait.tick();
@@ -234,7 +253,8 @@ class CreepyBot {
 
 setTimeout(function() {
     let bot = new CreepyBot({});
-    bot.init();
+    //bot.init();
+    bot.writeAnglesPreset(90);
     //bot.testServos();
 }, 500)
 
