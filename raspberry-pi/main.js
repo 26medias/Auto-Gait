@@ -65,7 +65,7 @@ class CreepyBot {
                     }
                 },
                 gait: {
-                    steps: 30,
+                    steps: 10,
                     maxSpeed: 1,
                     logic: function(body, legs) {
                         let minLegs = legs.length-1;
