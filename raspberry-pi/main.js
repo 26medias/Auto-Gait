@@ -207,7 +207,7 @@ class CreepyBot {
                 this.servo.move(i, angles[i]);
             }
         }
-        console.log(JSON.stringify(angles));
+        //console.log(JSON.stringify(angles));
     }
     
     render() {
