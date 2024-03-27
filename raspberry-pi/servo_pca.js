@@ -36,8 +36,11 @@ class ServoController {
             console.error("PWM driver not initialized");
             return;
         }
-        if (angle<0 || angle>180) {
-            return;
+        if (angle<0) {
+            angle = 0;
+        }
+        if (angle>180) {
+            angle = 180;
         }
         this.pwm.setPulseLength(servo, 1500+Math.ceil((angle-90)/180*1499));
     }

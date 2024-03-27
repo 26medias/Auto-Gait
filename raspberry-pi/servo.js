@@ -15,8 +15,9 @@ class ServoController {
             console.error("Angles array must have 6 elements.");
             return;
         }
+        const limitedAngles = angles.map(angle => Math.max(0, Math.min(180, angle)));
 
-        const buffer = Buffer.from(angles);
+        const buffer = Buffer.from(limitedAngles);
         try {
             this.i2cBus.writeI2cBlockSync(address, 0x00, buffer.length, buffer);
         } catch (e) {
@@ -44,10 +45,10 @@ class ServoController {
         }
     }
 }
-
+/*
 const servo = new ServoController();
 servo.init();
 const a = 75;
 servo.moveServos(0x07, [a, a, a, a, a, a])
-
+*/
 module.exports = ServoController;

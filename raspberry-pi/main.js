@@ -20,7 +20,7 @@ const ServoData = {
 class CreepyBot {
     constructor(options) {
         this.options = _.extend({
-            fps: 60,
+            fps: 30,
             render2D: false,
             render3D: false,
             robot: {
@@ -31,7 +31,7 @@ class CreepyBot {
                     height: 0.5,    // Body tickness
                     angle: 0,       // Body Y rotation
                     streamline: 0, // oval deformation in the vector direction
-                    z: 4,           // Body height from ground
+                    z: 5,           // Body height from ground
                     builder: function(body, Leg) {
                         for (let i=0;i<body.options.leg.count;i++) {
                             let legAngle = (360/body.options.leg.count)*i + body.angle;
@@ -65,7 +65,7 @@ class CreepyBot {
                     }
                 },
                 gait: {
-                    steps: 10,
+                    steps: 30,
                     maxSpeed: 1,
                     logic: function(body, legs) {
                         let minLegs = legs.length-1;
@@ -118,6 +118,9 @@ class CreepyBot {
             const ServoController = require('./servo_pca.js');
             this.servo = new ServoController();
             this.servo.init();
+            const ServoController2 = require('./servo.js');
+            this.servo2 = new ServoController2();
+            this.servo2.init();
         } catch (e) {
             console.log("pca9685/I2C not found")
         }
@@ -203,9 +206,10 @@ class CreepyBot {
         }
 
         if (this.servo) {
-            for (i=0;i<16;i++) {
-                this.servo.move(i, angles[i]);
+            for (i=0;i<15;i++) {
+                this.servo.move(i, angles[i]); // PCA
             }
+            this.servo2.moveServos(0x07, [angles[15], angles[16], angles[17], 0, 0, 0]);
         }
         //console.log(JSON.stringify(angles));
     }
