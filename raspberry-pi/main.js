@@ -117,7 +117,7 @@ class CreepyBot {
         try {
             const ServoController = require('./servo_pca.js');
             this.servo = new ServoController();
-            await this.servo.init();
+            this.servo.init();
         } catch (e) {
             console.log("pca9685/I2C not found")
         }
@@ -219,7 +219,7 @@ class CreepyBot {
     async testServos() {
         const ServoController = require('./servo.js');
         this.servo = new ServoController();
-        await this.servo.init();
+        this.servo.init();
         const a = 90;
         moveServos(0x07, [a, a, a, a, a, a])
     }
