@@ -217,7 +217,7 @@ class CreepyBot {
     }
 
     async testServos() {
-        const ServoController = require('./servo_pca.js');
+        const ServoController = require('./servo.js');
         this.servo = new ServoController();
         await this.servo.init();
         const a = 90;
