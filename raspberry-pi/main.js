@@ -254,7 +254,7 @@ setTimeout(async () => {
     let bot = new CreepyBot({});
     bot.init();
     for (i=0;i<500;i++) {
-        bot.writeAnglesPreset(90);
+        bot.writeAnglesPreset(75);
         await new Promise(resolve => setTimeout(resolve, 500));
     }
     //bot.testServos();
