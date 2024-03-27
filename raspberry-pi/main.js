@@ -102,16 +102,6 @@ class CreepyBot {
             }
         }, options);
 
-        try {
-            const ServoController = require('./servo_pca.js');
-            this.servo = new ServoController();
-            this.servo.init();
-            const ServoController2 = require('./servo.js');
-            this.servo2 = new ServoController2();
-            this.servo2.init();
-        } catch (e) {
-            console.log("pca9685/I2C not found")
-        }
     }
 
     async reset() {
@@ -125,6 +115,16 @@ class CreepyBot {
 
         this.reset();
         
+        try {
+            const ServoController = require('./servo_pca.js');
+            this.servo = new ServoController();
+            this.servo.init();
+            const ServoController2 = require('./servo.js');
+            this.servo2 = new ServoController2();
+            this.servo2.init();
+        } catch (e) {
+            console.log("pca9685/I2C not found")
+        }
 
         // Gait
         this.gait = new AutoGait('#canvas', {
@@ -145,7 +145,6 @@ class CreepyBot {
 
         this.ik = new IK(this.gait);
 
-        this.start();
     }
 
     start() {
@@ -253,8 +252,10 @@ class CreepyBot {
 
 setTimeout(function() {
     let bot = new CreepyBot({});
-    //bot.init();
+    bot.init();
     bot.writeAnglesPreset(90);
     //bot.testServos();
+
+    //bot.start();
 }, 500)
 
