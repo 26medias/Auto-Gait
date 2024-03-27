@@ -121,7 +121,7 @@ class CreepyBot {
             this.servo.init();
             const ServoController2 = require('./servo.js');
             this.servo2 = new ServoController2();
-            this.servo2.init();
+            //this.servo2.init();
         } catch (e) {
             console.log("pca9685/I2C not found")
         }
@@ -208,7 +208,7 @@ class CreepyBot {
             for (i=0;i<15;i++) {
                 this.servo.move(i, angles[i]); // PCA
             }
-            this.servo2.moveServos(0x07, [angles[15], angles[16], angles[17], 0, 0, 0]);
+            //this.servo2.moveServos(0x07, [angles[15], angles[16], angles[17], 0, 0, 0]);
         }
         //console.log(JSON.stringify(angles));
     }
