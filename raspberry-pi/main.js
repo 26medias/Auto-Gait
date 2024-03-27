@@ -230,7 +230,7 @@ class CreepyBot {
 
 setTimeout(function() {
     let bot = new CreepyBot({});
-    //bot.init();
-    bot.testServos();
+    bot.init();
+    //bot.testServos();
 }, 500)
 
