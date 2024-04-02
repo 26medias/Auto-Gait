@@ -248,17 +248,53 @@ class CreepyBot {
 }
 
 
+var processArgs = function() {
+	var i;
+	var args 	= process.argv.slice(2);
+	var output 	= {};
+	for (i=0;i<args.length;i++) {
+		var l1	= args[i].substr(0,1);
+		if (l1 == "-") {
+			if (args[i+1] == "true") {
+				args[i+1] = true;
+			}
+			if (args[i+1] == "false") {
+				args[i+1] = false;
+			}
+			if (!isNaN(args[i+1]*1)) {
+				args[i+1] = args[i+1]*1;
+			}
+			output[args[i].substr(1)] = args[i+1];
+			i++;
+		}
+	}
+	return output;
+}
+
 
 
 setTimeout(async () => {
+    var args	= processArgs();
+
+    console.log("args", args)
+
     let bot = new CreepyBot({});
     bot.init();
-    for (i=0;i<500;i++) {
-        bot.writeAnglesPreset(120);
-        await new Promise(resolve => setTimeout(resolve, 500));
+    
+    switch (args.op) {
+        case "start":
+            bot.start();
+        break;
+        case "test":
+            for (i=0;i<500;i++) {
+                bot.writeAnglesPreset(args.angle);
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+        break;
     }
+    
     //bot.testServos();
 
-    //bot.start();
+    //
 }, 500)
 
