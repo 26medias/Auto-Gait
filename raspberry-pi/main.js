@@ -121,7 +121,7 @@ class CreepyBot {
             this.servo.init();
             const ServoController2 = require('./servo.js');
             this.servo2 = new ServoController2();
-            //this.servo2.init();
+            this.servo2.init();
         } catch (e) {
             console.log("pca9685/I2C not found")
         }
