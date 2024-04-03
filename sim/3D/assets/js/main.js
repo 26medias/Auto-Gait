@@ -31,14 +31,6 @@ class CreepyBot {
                     builder: function(body, Leg) {
                         let lAngles = [60, 180, 240, 360];
                         for (let i=0;i<body.options.leg.count;i++) {
-                            let legAngle = lAngles[i];//(360/body.options.leg.count)*i + body.angle;
-                            /*let legAnchor = Maths.pointCoord(0, 0, body.options.body.legRadius, legAngle);
-                            let legPosition = Maths.pointCoord(0, 0, body.options.leg.distance, legAngle);
-                            let leg = new Leg(body, legAnchor, legPosition, body.options.leg, body.canvas);
-                            leg.legAngle = legAngle;
-                            leg.lift.lifted = i % 2 == 0;
-                            body.legs.push(leg);*/
-
                             let legAnchor = Maths.pointCoord(0, 0, body.options.body.legRadius, legAngle);
                             let legPosition = Maths.pointCoord(0, 0, body.options.leg.distance, legAngle);
                             let leg = new Leg(body, legAnchor, legPosition, body.options.leg, body.canvas);
@@ -52,19 +44,19 @@ class CreepyBot {
                 leg: {
                     count: 4,       // Number of legs
                     decayRate: 1,   // Smoothing decay rate [0;1]
-                    distance: 17.5,   // Distance of the movement center
+                    distance: 15,   // Distance of the movement center
                     radius: 5,      // Movement area radius
                     maxRadius: 5,   // Max Movement area radius to be able to reach coordinates
-                    maxZ: 3,        // Max Y distance (Z in 2D coords, but Y in 3D)
+                    maxZ: 5,        // Max Y distance (Z in 2D coords, but Y in 3D)
                     upper: {
                         offset: [-ServoData.servo.w/2, ServoData.servo.ch+ServoData.servo.w/2, 0],
-                        length: 9,
+                        length: 8,
                         width: 0.5,
                         height: 0.5
                     },
                     tip: {
                         offset: [ServoData.servo.l/2 - ServoData.servo.w/2, 0, 0],
-                        length: 8,
+                        length: 9,
                         width: 0.5,
                         height: 0.5
                     }

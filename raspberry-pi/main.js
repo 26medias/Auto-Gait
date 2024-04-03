@@ -52,7 +52,7 @@ class CreepyBot {
                     distance: 15,   // Distance of the movement center
                     radius: 5,      // Movement area radius
                     maxRadius: 5,   // Max Movement area radius to be able to reach coordinates
-                    maxZ: 3,        // Max Y distance (Z in 2D coords, but Y in 3D)
+                    maxZ: 5,        // Max Y distance (Z in 2D coords, but Y in 3D)
                     upper: {
                         offset: [-ServoData.servo.w/2, ServoData.servo.ch+ServoData.servo.w/2, 0],
                         length: 8,
