@@ -47,7 +47,7 @@ class CreepyBot {
                 leg: {
                     count: 6,       // Number of legs
                     decayRate: 1,   // Smoothing decay rate [0;1]
-                    distance: 17.5,   // Distance of the movement center
+                    distance: 15,   // Distance of the movement center
                     radius: 5,      // Movement area radius
                     maxRadius: 5,   // Max Movement area radius to be able to reach coordinates
                     maxZ: 3,        // Max Y distance (Z in 2D coords, but Y in 3D)
