@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Auto-Gait</title>
+        <link rel="stylesheet" href="gait.css" />
+        
+        <script type="application/javascript" src="easing.js"></script>
+        <script type="application/javascript" src="maths.js"></script>
+        <script type="application/javascript" src="render.js"></script>
+        <script type="application/javascript" src="gait.js"></script>
+        <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.6/underscore-min.js"></script>
+        <script type="application/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    </head> 
+    <body>
+        <canvas id="canvas" width="800" height="600"></canvas>
+        <script>
+            var gait = new AutoGait('#canvas', {}, function(scope) {
+                console.log(scope.body.legs)
+                gait.body.move({
+                    angle: scope.control.vector.angle,
+                    distance: scope.control.vector.percent,
+                });
+            });
+
+            /*function move() {
+                gait.body.move({
+                    angle: 45,
+                    distance: 5
+                });
+                gait.render();
+                setTimeout(function() {
+                    move();
+                }, 100);
+            }
+            move();*/
+
+            //console.log(Maths.generateIncreasingSpacing(10, 1.5))
+        </script>
+    </body>
+</html>

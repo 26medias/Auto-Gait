@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>3D Auto Gait</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<!--<link type="text/css" rel="stylesheet" href="./assets/css/main.css">-->
+
+		<link rel="stylesheet/less" type="text/css" href="./assets/css/main.less" />
+
+        <!--<script type="application/javascript" src="https://github.com/schteppe/cannon.js/releases/download/v0.6.2/cannon.min.js"></script>-->
+        <script type="application/javascript" src="../ws.js"></script>
+        <script type="application/javascript" src="../easing.js"></script>
+        <script type="application/javascript" src="../maths.js"></script>
+        <script type="application/javascript" src="../render.js"></script>
+        <script type="application/javascript" src="../gait.js"></script>
+        <script type="application/javascript" src="../IK.js"></script>
+        <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.6/underscore-min.js"></script>
+        <script type="application/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+		<script src="https://cdn.jsdelivr.net/npm/less" ></script>
+	</head>
+
+	<body>
+		<canvas id="c" class="canvas"></canvas>
+		<canvas id="canvas" width="400" height="300" style="display:none;position: absolute;bottom:0;right:0;border:1px solid #000000;"></canvas>
+		
+		<script type="module" src="./assets/js/main.js"></script>
+
+		<pre style="display:none;position:absolute;bottom:0;left:0;width: 400px;height:300px;border:1px solid #000000;" id="debug"></pre>
+
+		<div id="control"></div>
+
+		<pre id="debug-0" class="floating-debug"></pre>
+		<pre id="debug-1" class="floating-debug"></pre>
+		<pre id="debug-2" class="floating-debug"></pre>
+		<pre id="debug-3" class="floating-debug"></pre>
+		<pre id="debug-4" class="floating-debug"></pre>
+		<pre id="debug-5" class="floating-debug"></pre>
+	</body>
+</html>
