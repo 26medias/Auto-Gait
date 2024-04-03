@@ -21,7 +21,7 @@ class ServoController {
         try {
             //this.i2cBus.writeI2cBlockSync(address, 0x00, buffer.length, buffer);
             this.i2cBus.i2cWrite(address, buffer.length, buffer, function(error, bytesReadOrWritten, buffer) {
-                console.log({error, bytesReadOrWritten, buffer})
+                //console.log({error, bytesReadOrWritten, buffer})
             });
         } catch (e) {
             console.error("[I2C] ", e.message)

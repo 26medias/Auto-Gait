@@ -26,12 +26,12 @@ class CreepyBot {
             robot: {
                 body: {
                     type: 'radial',
-                    radius: 10,     // Body Radius
-                    legRadius: 9,   // Location of the leg anchors
+                    radius: 8.5,     // Body Radius
+                    legRadius: 8,   // Location of the leg anchors
                     height: 0.5,    // Body tickness
                     angle: 0,       // Body Y rotation
                     streamline: 0, // oval deformation in the vector direction
-                    z: 5,           // Body height from ground
+                    z: 4,           // Body height from ground
                     builder: function(body, Leg) {
                         for (let i=0;i<body.options.leg.count;i++) {
                             let legAngle = (360/body.options.leg.count)*i + body.angle;
@@ -53,13 +53,13 @@ class CreepyBot {
                     maxZ: 3,        // Max Y distance (Z in 2D coords, but Y in 3D)
                     upper: {
                         offset: [-ServoData.servo.w/2, ServoData.servo.ch+ServoData.servo.w/2, 0],
-                        length: 9,
+                        length: 8,
                         width: 0.5,
                         height: 0.5
                     },
                     tip: {
                         offset: [ServoData.servo.l/2 - ServoData.servo.w/2, 0, 0],
-                        length: 8,
+                        length: 9,
                         width: 0.5,
                         height: 0.5
                     }
