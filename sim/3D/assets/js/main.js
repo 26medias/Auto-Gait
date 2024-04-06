@@ -16,21 +16,22 @@ import ControlUI from './control.js'
 class CreepyBot {
     constructor(options) {
         this.options = _.extend({
-            fps: 5,
+            fps: 30,
             render2D: true,
             render3D: true,
             robot: {
                 body: {
                     type: 'custom',
-                    radius: 10,     // Body Radius
-                    legRadius: 9,   // Location of the leg anchors
+                    radius: 7,     // Body Radius
+                    legRadius: 7,   // Location of the leg anchors
                     height: 0.5,    // Body tickness
                     angle: 0,       // Body Y rotation
-                    streamline: 0, // oval deformation in the vector direction
+                    streamline: 32, // oval deformation in the vector direction
                     z: 4,           // Body height from ground
                     builder: function(body, Leg) {
                         let lAngles = [60, 180, 240, 360];
                         for (let i=0;i<body.options.leg.count;i++) {
+                            let legAngle = lAngles[i]-30;
                             let legAnchor = Maths.pointCoord(0, 0, body.options.body.legRadius, legAngle);
                             let legPosition = Maths.pointCoord(0, 0, body.options.leg.distance, legAngle);
                             let leg = new Leg(body, legAnchor, legPosition, body.options.leg, body.canvas);
@@ -44,25 +45,25 @@ class CreepyBot {
                 leg: {
                     count: 4,       // Number of legs
                     decayRate: 1,   // Smoothing decay rate [0;1]
-                    distance: 15,   // Distance of the movement center
-                    radius: 5,      // Movement area radius
-                    maxRadius: 5,   // Max Movement area radius to be able to reach coordinates
-                    maxZ: 5,        // Max Y distance (Z in 2D coords, but Y in 3D)
+                    distance: 11,   // Distance of the movement center
+                    radius: 3,      // Movement area radius
+                    maxRadius: 3,   // Max Movement area radius to be able to reach coordinates
+                    maxZ: 3,        // Max Y distance (Z in 2D coords, but Y in 3D)
                     upper: {
                         offset: [-ServoData.servo.w/2, ServoData.servo.ch+ServoData.servo.w/2, 0],
-                        length: 8,
+                        length: 5.5,
                         width: 0.5,
                         height: 0.5
                     },
                     tip: {
                         offset: [ServoData.servo.l/2 - ServoData.servo.w/2, 0, 0],
-                        length: 9,
+                        length: 7,
                         width: 0.5,
                         height: 0.5
                     }
                 },
                 gait: {
-                    steps: 10,
+                    steps: 7,
                     maxSpeed: 1,
                     logic: function(body, legs) {
                         let minLegs = legs.length-1;
@@ -72,9 +73,9 @@ class CreepyBot {
                         let liftAllowedCount = Math.max(0, legs.length - minLegs - liftedCount);
 
                         if (liftAllowedCount > 0) {
-                            let allowedToLift = function(i) {
+                            /*let allowedToLift = function(i) {
                                 return !legs[body.cycle(i-1, 0, legs.length)].lift.lifted && !legs[body.cycle(i+1, 0, legs.length)].lift.lifted;
-                            }
+                            }*/
                             let priorities = legs.map(function(l, n) {
                                 return [n, l.priority]
                             }).filter(function(l) {
@@ -85,7 +86,8 @@ class CreepyBot {
                             
                             if (priorities.length > 0) {
                                 for (let i=0;i<=priorities.length;i++) {
-                                    console.log("Lift:", priorities[i][0], JSON.stringify(priorities))
+                                    //console.log("Lift:", priorities[i][0], JSON.stringify(priorities))
+                                    //console.log("distanceFromCenter", legs[priorities[i][0]].foot.distanceFromCenter)
                                     legs[priorities[i][0]].liftLeg();
                                     liftAllowedCount -= 1;
                                     if (liftAllowedCount <=0) {
@@ -182,6 +184,7 @@ class CreepyBot {
         this.scene.add(this.robot.floor);
 
         console.log(this.robot)
+        console.log(this.ik)
 
         this.start();
     }
@@ -275,6 +278,8 @@ class CreepyBot {
                     //angle: this.robot.robot.legs[i].angle,
                 };
 
+                //console.log(i, this.ik.gait.body.legs[i].foot.distanceFromCenter)
+
                 $(`#debug-${i}`).show().css({left: pos.x, top: pos.y}).text(JSON.stringify(_debug, null, 4));
                 
                 /*if (this.gait.body.legs[i].priority || this.gait.body.legs[i].priority==0) {
@@ -283,7 +288,7 @@ class CreepyBot {
                     $(`#debug-${i}`).hide();
                 }*/
             }
-            console.log(">>", JSON.stringify(angles))
+            //console.log(">>", JSON.stringify(angles))
             //this.ws.send(angles);
         }
     }

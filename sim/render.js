@@ -83,7 +83,7 @@ class Control {
         this.radius = 50;
 
         this.vector = {
-            angle: 206,
+            angle: 0,
             distance: 0,
             rotationAngle: 0,
             percent: 25,

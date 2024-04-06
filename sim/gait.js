@@ -583,15 +583,15 @@ class Leg {
             this.foot.x -= this.vectors.translation.x;
             this.foot.y -= this.vectors.translation.y;
 
-            let nextCoords = {
+            /*let nextCoords = {
                 x: this.foot.x - this.vectors.translation.x,
                 y: this.foot.y - this.vectors.translation.y,
-            }
+            }*/
 
             // Tip getting out of the circle
-            if (!Maths.isWithinCircle(this.foot.x, this.foot.y, currentCenter.x, currentCenter.y, this.options.radius)) {
+            /*if (!Maths.isWithinCircle(this.foot.x, this.foot.y, currentCenter.x, currentCenter.y, this.options.radius)) {
                 //this.liftLeg();
-            }
+            }*/
 
         }
         let center = this.getCenter();
