@@ -120,12 +120,17 @@ class Body {
         this.y = 200;
         this.z = options.body.z;
 
+        this.turnTowardVector = true;
+
         this.offset = {
             x: 0,
             y: 0
         }
         this.angle = 0;
         this.streamline = options.body.streamline;
+
+        // overwrite
+        this.options.gait.maxSpeed = this.options.leg.radius / ((this.options.gait.steps * (this.options.leg.count-1)) / 2)
 
         // Initial vectors
         this.resetVectors();
@@ -136,7 +141,7 @@ class Body {
         switch (this.options.body.type) {
             case 'radial':
                 for (i=0;i<this.options.leg.count;i++) {
-                    let legAngle = (360/this.options.leg.count)*i + this.angle;
+                    let legAngle = (360/this.options.leg.count)*i;// + this.angle;
                     let legAnchor = Maths.pointCoord(0, 0, this.options.body.legRadius, legAngle);
                     let legPosition = Maths.pointCoord(0, 0, this.options.leg.distance, legAngle);
                     let leg = new Leg(this, legAnchor, legPosition, this.options.leg, this.canvas);
@@ -212,10 +217,6 @@ class Body {
         this.vectors.rotation.angle = vector.angle;
         //------------------------------
         this.angle += vector.angle;
-        let i;
-        for (i=0;i<this.legs.length;i++) {
-            this.legs[i].applyBodyRotationVector(vector.angle);
-        }
     }
 
 
@@ -227,6 +228,28 @@ class Body {
         if (this.vectors.translation.radius>0) {
             this.unrest();
         }
+        console.log(this.vectors.translation.radius)
+
+        /*console.log({
+            angle: this.angle,
+            tangle: this.vectors.translation.angle,
+            diff: 
+        })*/
+
+        let angularStepChange = 0;
+
+        if (this.turnTowardVector) {
+            const angularTargetDiff = this.vectors.translation.angle - this.angle;
+            angularStepChange = Math.max(Math.min(angularTargetDiff/10, this.options.gait.maxTurnAngle), -this.options.gait.maxTurnAngle);
+            this.angle += angularStepChange;
+        }
+        
+
+        for (i=0;i<this.legs.length;i++) {
+            this.legs[i].applyBodyRotationVector(this.vectors.rotation.angle + angularStepChange);
+        }
+
+        //console.log(this.vectors.translation.angle, this.angle, angularTargetDiff, angularStepChange)
 
         // Update the body position
         this.x += this.vectors.translation.x;
@@ -436,6 +459,11 @@ class Leg {
         this.body = body;
         this.options = options;
         this.anchor = legAnchor;
+        this.mirrored = {
+            shoulder: false,
+            upper: false,
+            tip: false
+        }
 
         // force vectors applied
         this.resetVectors();
@@ -532,6 +560,7 @@ class Leg {
     // Rotate the movement area around the body center by an angle
     applyBodyRotationVector(angle) {
         this.vectors.rotation.angle = angle;
+        //this.vectors.translation.angle += angle;
     }
 
     // Change the center of the motion circle
@@ -584,15 +613,15 @@ class Leg {
             this.foot.x -= this.vectors.translation.x;
             this.foot.y -= this.vectors.translation.y;
 
-            let nextCoords = {
+            /*let nextCoords = {
                 x: this.foot.x - this.vectors.translation.x,
                 y: this.foot.y - this.vectors.translation.y,
-            }
+            }*/
 
             // Tip getting out of the circle
-            if (!Maths.isWithinCircle(this.foot.x, this.foot.y, currentCenter.x, currentCenter.y, this.options.radius)) {
+            /*if (!Maths.isWithinCircle(this.foot.x, this.foot.y, currentCenter.x, currentCenter.y, this.options.radius)) {
                 //this.liftLeg();
-            }
+            }*/
 
         }
         let center = this.getCenter();

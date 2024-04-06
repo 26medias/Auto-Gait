@@ -7,6 +7,7 @@ if (typeof process !== 'undefined' && process.versions != null && process.versio
 
 if (isNode) {
     var _ = require('underscore');
+    //var Maths = require('./maths.js');
 } 
 
 class AutoGait {

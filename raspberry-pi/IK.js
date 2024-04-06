@@ -3,7 +3,6 @@ var isNode = false;
 if (typeof process !== 'undefined' && process.versions != null && process.versions.node != null) {
     // Node.js environment detected
     isNode = true;
-    var Maths = require('./maths.js');
 }
 
 class IK {
@@ -34,7 +33,7 @@ class IK {
 
 
     debug(data) {
-        //$('#debug').text(JSON.stringify(data, null, 4));
+        $('#debug').text(JSON.stringify(data, null, 4));
     }
 
     updateLeg(n) {
@@ -75,7 +74,7 @@ class IK {
             z: anchor3D.z
         }
         
-        // Adjust for gound height
+        // Adjust for ground height
         let triangleAngles3D = this.triangleAngles3D(anchor3D, tip3D, groundAnchor);
 
         // Distance from anchor to tip
@@ -87,6 +86,16 @@ class IK {
         // Upper Angle
         this.legs[n].angles.upper = -triangleAngles[0]+90 + (90-triangleAngles3D[1]);
         this.legs[n].angles.tip = -triangleAngles[2]+180;
+
+        if (this.gait.body.legs[n].mirrored.shoulder) {
+            this.legs[n].angles.shoulder = 180 - this.legs[n].angles.shoulder;
+        }
+        if (this.gait.body.legs[n].mirrored.upper) {
+            this.legs[n].angles.upper = 180 - this.legs[n].angles.upper;
+        }
+        if (this.gait.body.legs[n].mirrored.tip) {
+            this.legs[n].angles.tip = 180 - this.legs[n].angles.tip;
+        }
     }
 
     getThirdPoint(pointA, pointC, ab, ac) {
