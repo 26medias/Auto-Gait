@@ -165,7 +165,7 @@ export default class ControlUI {
                 id: 'translationAngle',
                 label: 'Angle',
                 type:  'slider',
-                range: [0,360, root.gait.control.vector.angle],
+                range: [-180,180, root.gait.control.vector.angle],
                 liveChange: true,
                 onChange: function(value) {
                     root.gait.control.vector.angle = value;
@@ -190,10 +190,27 @@ export default class ControlUI {
                 id: 'rotationAngle',
                 label: 'Angle',
                 type:  'slider',
-                range: [-5,5, root.gait.control.vector.rotationAngle, 0.01],
+                range: [-0.1,0.1, root.gait.control.vector.rotationAngle, 0.01],
                 liveChange: true,
                 onChange: function(value) {
                     root.gait.control.vector.rotationAngle = value;
+                    root.gait.control.updateDisplay();
+                }
+            }]
+        },
+        {
+            name: 'Turn',
+            content: [{
+                id: 'turn',
+                label: 'Angle',
+                type:  'slider',
+                range: [-90,90, root.gait.control.vector.turnVector, 1],
+                liveChange: true,
+                onChange: function(value) {
+                    root.gait.control.vector.turnVector = value;
+                    //root.gait.control.vector.rotationAngle = value;
+                    root.gait.control.vector.angle = value;
+                    root.gait.body.angle = value;
                     root.gait.control.updateDisplay();
                 }
             }]

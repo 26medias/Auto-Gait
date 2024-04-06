@@ -126,6 +126,9 @@ class Body {
         this.angle = 0;
         this.streamline = options.body.streamline;
 
+        // overwrite
+        this.options.gait.maxSpeed = this.options.leg.radius / ((this.options.gait.steps * (this.options.leg.count-1)) / 2)
+
         // Initial vectors
         this.resetVectors();
 
@@ -135,7 +138,7 @@ class Body {
         switch (this.options.body.type) {
             case 'radial':
                 for (i=0;i<this.options.leg.count;i++) {
-                    let legAngle = (360/this.options.leg.count)*i + this.angle;
+                    let legAngle = (360/this.options.leg.count)*i;// + this.angle;
                     let legAnchor = Maths.pointCoord(0, 0, this.options.body.legRadius, legAngle);
                     let legPosition = Maths.pointCoord(0, 0, this.options.leg.distance, legAngle);
                     let leg = new Leg(this, legAnchor, legPosition, this.options.leg, this.canvas);
@@ -211,10 +214,6 @@ class Body {
         this.vectors.rotation.angle = vector.angle;
         //------------------------------
         this.angle += vector.angle;
-        let i;
-        for (i=0;i<this.legs.length;i++) {
-            this.legs[i].applyBodyRotationVector(vector.angle);
-        }
     }
 
 
@@ -226,6 +225,24 @@ class Body {
         if (this.vectors.translation.radius>0) {
             this.unrest();
         }
+        console.log(this.vectors.translation.radius)
+
+        /*console.log({
+            angle: this.angle,
+            tangle: this.vectors.translation.angle,
+            diff: 
+        })*/
+
+        const angularTargetDiff = this.vectors.translation.angle - this.angle;
+        const angularStepChange = Math.min(angularTargetDiff/20, 0.2);
+
+        this.angle += angularStepChange;
+
+        for (i=0;i<this.legs.length;i++) {
+            this.legs[i].applyBodyRotationVector(this.vectors.rotation.angle + angularStepChange);
+        }
+
+        //console.log(this.vectors.translation.angle, this.angle, angularTargetDiff, angularStepChange)
 
         // Update the body position
         this.x += this.vectors.translation.x;
@@ -531,6 +548,7 @@ class Leg {
     // Rotate the movement area around the body center by an angle
     applyBodyRotationVector(angle) {
         this.vectors.rotation.angle = angle;
+        //this.vectors.translation.angle += angle;
     }
 
     // Change the center of the motion circle

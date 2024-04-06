@@ -26,7 +26,7 @@ class CreepyBot {
                     legRadius: 7,   // Location of the leg anchors
                     height: 0.5,    // Body tickness
                     angle: 0,       // Body Y rotation
-                    streamline: 32, // oval deformation in the vector direction
+                    streamline: 0, // oval deformation in the vector direction
                     z: 4,           // Body height from ground
                     builder: function(body, Leg) {
                         let lAngles = [60, 180, 240, 360];
@@ -45,7 +45,7 @@ class CreepyBot {
                 leg: {
                     count: 4,       // Number of legs
                     decayRate: 1,   // Smoothing decay rate [0;1]
-                    distance: 11,   // Distance of the movement center
+                    distance: 15,   // Distance of the movement center
                     radius: 3,      // Movement area radius
                     maxRadius: 3,   // Max Movement area radius to be able to reach coordinates
                     maxZ: 3,        // Max Y distance (Z in 2D coords, but Y in 3D)
@@ -64,7 +64,7 @@ class CreepyBot {
                 },
                 gait: {
                     steps: 7,
-                    maxSpeed: 1,
+                    maxSpeed: 1, 
                     logic: function(body, legs) {
                         let minLegs = legs.length-1;
                         let liftedCount = _.filter(legs, function(item) {
