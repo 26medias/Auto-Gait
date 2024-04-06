@@ -119,6 +119,8 @@ class Body {
         this.y = 200;
         this.z = options.body.z;
 
+        this.turnTowardVector = true;
+
         this.offset = {
             x: 0,
             y: 0
@@ -233,10 +235,14 @@ class Body {
             diff: 
         })*/
 
-        const angularTargetDiff = this.vectors.translation.angle - this.angle;
-        const angularStepChange = Math.min(angularTargetDiff/20, 0.2);
+        let angularStepChange = 0;
 
-        this.angle += angularStepChange;
+        if (this.turnTowardVector) {
+            const angularTargetDiff = this.vectors.translation.angle - this.angle;
+            angularStepChange = Math.max(Math.min(angularTargetDiff/10, this.options.gait.maxTurnAngle), -this.options.gait.maxTurnAngle);
+            this.angle += angularStepChange;
+        }
+        
 
         for (i=0;i<this.legs.length;i++) {
             this.legs[i].applyBodyRotationVector(this.vectors.rotation.angle + angularStepChange);
