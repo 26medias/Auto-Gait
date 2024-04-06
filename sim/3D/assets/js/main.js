@@ -29,13 +29,31 @@ class CreepyBot {
                     streamline: 0, // oval deformation in the vector direction
                     z: 4,           // Body height from ground
                     builder: function(body, Leg) {
-                        let lAngles = [60, 180, 240, 360];
+                        let legConfigs = [{
+                            anchorAngle: 60-30,
+                            mirrored: true
+                        },{
+                            anchorAngle: 180-30,
+                            mirrored: false
+                        },{
+                            anchorAngle: 240-30,
+                            mirrored: true
+                        },{
+                            anchorAngle: 360-30,
+                            mirrored: false
+                        }]
                         for (let i=0;i<body.options.leg.count;i++) {
-                            let legAngle = lAngles[i]-30;
+                            let legConfig = legConfigs[i];
+                            let legAngle = legConfig.anchorAngle;
                             let legAnchor = Maths.pointCoord(0, 0, body.options.body.legRadius, legAngle);
                             let legPosition = Maths.pointCoord(0, 0, body.options.leg.distance, legAngle);
                             let leg = new Leg(body, legAnchor, legPosition, body.options.leg, body.canvas);
                             leg.n = i;
+                            leg.mirrored = {
+                                shoulder: legConfig.mirrored,
+                                upper: true,
+                                tip: true
+                            }
                             leg.legAngle = legAngle;
                             leg.lift.lifted = i % 2 == 0; // Default initial state for the legs
                             body.legs.push(leg);

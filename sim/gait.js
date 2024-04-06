@@ -458,6 +458,11 @@ class Leg {
         this.body = body;
         this.options = options;
         this.anchor = legAnchor;
+        this.mirrored = {
+            shoulder: false,
+            upper: false,
+            tip: false
+        }
 
         // force vectors applied
         this.resetVectors();
