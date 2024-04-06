@@ -158,7 +158,7 @@ class CreepyBot {
         }, function(gait) {
             // on tick
             scope.gait.body.applyTranslationVector({
-                angle: 10,
+                angle: 0,
                 distance: 50,
             });
             scope.gait.body.applyRotationVector({

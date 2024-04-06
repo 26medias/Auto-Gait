@@ -3,6 +3,7 @@ var isNode = false;
 if (typeof process !== 'undefined' && process.versions != null && process.versions.node != null) {
     // Node.js environment detected
     isNode = true;
+    var Maths = require('./maths.js');
 }
 
 class IK {
