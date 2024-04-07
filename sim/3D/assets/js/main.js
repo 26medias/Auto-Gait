@@ -30,16 +30,16 @@ class CreepyBot {
                     z: 5,           // Body height from ground
                     builder: function(body, Leg) {
                         let legConfigs = [{
-                            anchorAngle: 60-30,
+                            anchorAngle: 330,
                             mirrored: true
                         },{
-                            anchorAngle: 180-30,
+                            anchorAngle: 30,
                             mirrored: false
                         },{
-                            anchorAngle: 240-30,
+                            anchorAngle: 150,
                             mirrored: true
                         },{
-                            anchorAngle: 360-30,
+                            anchorAngle: 210,
                             mirrored: false
                         }]
                         for (let i=0;i<body.options.leg.count;i++) {
