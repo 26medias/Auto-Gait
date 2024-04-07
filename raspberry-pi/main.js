@@ -38,13 +38,13 @@ class CreepyBot {
                             mirrored: true
                         },{
                             anchorAngle: 180-30,
-                            mirrored: false
+                            mirrored: true
                         },{
                             anchorAngle: 240-30,
                             mirrored: true
                         },{
                             anchorAngle: 360-30,
-                            mirrored: false
+                            mirrored: true
                         }]
                         for (let i=0;i<body.options.leg.count;i++) {
                             let legConfig = legConfigs[i];
