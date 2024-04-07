@@ -224,6 +224,7 @@ class CreepyBot {
 
     updateBotGeometryAngles(n, angle) {
         angle = Math.min(180, Math.max(0, angle));
+        return angle;
         if (n==0) {
             if (this.gait.body.legs[n].mirrored.shoulder) {
                 angle = 180 - angle;
