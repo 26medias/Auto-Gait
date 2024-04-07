@@ -226,33 +226,46 @@ class CreepyBot {
     // Real world angle to Sim Angle
     convertAngle(l, n, angle) {
         if (n==0) {
-            return -this.gait.body.legs[l].legAngle - 90 + angle;
+            angle = -this.gait.body.legs[l].legAngle - 90 + angle;
+            angle = Math.min(180, Math.max(angle, 0));
+            if (this.gait.body.legs[l].mirrored.shoulder) {
+                angle = 180 - angle;
+            }
         }
         if (n==1) {
-            return angle;
+            angle = angle;
+            angle = Math.min(180, Math.max(angle, 0));
+            if (this.gait.body.legs[l].mirrored.upper) {
+                angle = 180 - angle;
+            }
         }
         if (n==2) {
-            return -angle;
+            angle = -angle;
+            angle = Math.min(180, Math.max(angle, 0));
+            if (this.gait.body.legs[l].mirrored.tip) {
+                angle = 180 - angle;
+            }
         }
         return Math.round(angle);
     }
 
     // Sim angle to Real world angle
     getOriginalAngle(l, n, correctedAngle) {
+        let out;
         if (n === 0) {
-            let x = Math.round(correctedAngle + this.gait.body.legs[l].legAngle);
+            let x = correctedAngle + this.gait.body.legs[l].legAngle;
             if (x > 180) {
                 x = x - 360;
             }
-            return x + 90;
+            out = x + 90;
         }
         if (n === 1) {
-            return Math.round(correctedAngle);
+            out = correctedAngle;
         }
         if (n === 2) {
-            return Math.round(correctedAngle);
+            out = 180-correctedAngle;
         }
-        return Math.max(correctedAngle, 0);
+        return Math.abs(Math.round(out));
     }
 
 
