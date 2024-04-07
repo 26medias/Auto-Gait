@@ -38,7 +38,7 @@ class CreepyBot {
                             mirrored: true
                         },{
                             anchorAngle: 180-30,
-                            mirrored: false
+                            mirrored: true
                         },{
                             anchorAngle: 240-30,
                             mirrored: true
