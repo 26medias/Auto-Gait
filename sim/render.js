@@ -80,14 +80,14 @@ class Control {
         this.active = true;
         this.onToggle = onToggle;
         this.onRotate = onRotate;
-        this.radius = 50;
+        this.radius = 0;
 
         this.vector = {
             angle: 0,
             distance: 0,
             rotationAngle: 0,
             turnVector: 0,
-            percent: 25,
+            percent: 0,
             x: this.radius,
             y: this.radius,
         }

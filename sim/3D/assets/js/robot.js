@@ -372,35 +372,6 @@ class Render3D {
         };
     }
 
-    // Limb Creator
-    createLimb(w, h, l, offset) {
-        const group = new THREE.Group();
-        let limb = {
-            size:               [w, h, l],
-            pos:                [0,0,0],
-            rot:                [0, 0, 0],
-            density:            1,
-            restitution:        0.1,
-            move:               false,
-            texture:            textures.limb,
-        }
-        group.add(this.newObject(limb));
-        group.name = 'limb';
-        return {
-            mesh: group,
-            anchors: {
-                start: [0, -h/2, l/2 - w],
-                end:   [0, -h/2, -l/2],
-            },
-            rotate: function(v) {
-                group.rotation.y = this.deg(v);
-            },
-            rotation: function() {
-                return this.rad(group.rotation.y);
-            },
-        };
-    }
-
     // Create the robot Body
     createBody(options) {
         let bodyData = {
@@ -452,6 +423,35 @@ class Render3D {
         }
     }
 
+    // Limb Creator
+    createLimb(w, h, l, offset) {
+        const group = new THREE.Group();
+        let limb = {
+            size:               [w, h, l],
+            pos:                [0,0,0],
+            rot:                [0, 0, 0],
+            density:            1,
+            restitution:        0.1,
+            move:               false,
+            texture:            textures.limb,
+        }
+        group.add(this.newObject(limb));
+        group.name = 'limb';
+        return {
+            mesh: group,
+            anchors: {
+                start: [0, -h/2, l/2 - w],
+                end:   [0, -h/2, -l/2],
+            },
+            rotate: function(v) {
+                group.rotation.y = this.deg(v);
+            },
+            rotation: function() {
+                return this.rad(group.rotation.y);
+            },
+        };
+    }
+
     // Create the tip
     createTip(options) {
         let scope = this;
@@ -494,8 +494,9 @@ class Render3D {
         // Attach the upper limb to the tip assembly
         let upperGroup = this.attach('UpperGroup', tip, limb)
         let size = this.getGroupSize(upperGroup.mesh);
-        //upperGroup = this.moveMeshRotCenter(upperGroup, 0, 0, size.z/2 - ServoData.servo.ch)
+        // Set the rotation center to the upper servo pin
         upperGroup = this.moveMeshRotCenter(upperGroup, 0, 0, this.gait.options.leg.upper.length - ServoData.servo.ch)
+        //upperGroup.mesh.rotation.y += scope.deg(180);
 
         // Create the UP/DOWN shoulder joint
         let servoA = this.reverseAnchors(this.createServo());
@@ -522,11 +523,16 @@ class Render3D {
             return scope.rad(shoulder.mesh.rotation.z);
         }
         shoulder = this.moveMeshRotCenter(shoulder, ServoData.servo.w, -1.3, 1.4); // servo constant, need to adjust
+        
+        /*if (this.gait.options.leg.shoulder.mirror) {
+            shoulder.mesh.rotation.x += scope.deg(180);
+        }*/
+        //
+        //upperGroup.mesh.rotation.y = scope.deg(90);
 
         parts.tip = tip;
         parts.upper = upperGroup;
         parts.shoulder = shoulder;
-        shoulder.mesh.rotation.y = scope.deg(180);
 
         return {
             mesh: shoulder.mesh,
