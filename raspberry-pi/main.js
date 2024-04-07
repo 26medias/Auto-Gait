@@ -54,12 +54,12 @@ class CreepyBot {
                             let leg = new Leg(body, legAnchor, legPosition, body.options.leg, body.canvas);
                             leg.n = i;
                             leg.mirrored = {
-                                shoulder: true, //legConfig.mirrored,
+                                shoulder: false, //legConfig.mirrored,
                                 upper: legConfig.mirrored,
                                 tip: legConfig.mirrored
                             }
                             leg.legAngle = legAngle;
-                            leg.lift.lifted = i % 2 == 0; // Default initial state for the legs
+                            leg.lift.lifted = i == 0; // Default initial state for the legs
                             body.legs.push(leg);
                         }
                     }
@@ -270,13 +270,13 @@ class CreepyBot {
             angles.push(this.updateBotGeometryAngles(2, angle));
         }
 
-        if (this.servo) {
+        /*if (this.servo) {
             for (i=0;i<15;i++) {
                 this.servo.move(i, angles[i]); // PCA
             }
             console.log(JSON.stringify([angles[15], angles[16], angles[17], 0, 0, 0]));
             this.servo2.moveServos(0x07, [angles[15], angles[16], angles[17], 0, 0, 0]);
-        }
+        }*/
         console.log(JSON.stringify(angles));
     }
     
