@@ -55,8 +55,8 @@ class CreepyBot {
                             leg.n = i;
                             leg.mirrored = {
                                 shoulder: true, //legConfig.mirrored,
-                                upper: true,
-                                tip: true
+                                upper: legConfig.mirrored,
+                                tip: legConfig.mirrored
                             }
                             leg.legAngle = legAngle;
                             leg.lift.lifted = i % 2 == 0; // Default initial state for the legs
@@ -222,20 +222,20 @@ class CreepyBot {
         return Math.abs(Math.round(out));
     }
 
-    updateBotGeometryAngles(l, n, angle) {
+    updateBotGeometryAngles(n, angle) {
         angle = Math.min(180, Math.max(0, angle));
         if (n==0) {
-            if (this.gait.body.legs[i].mirrored.shoulder) {
+            if (this.gait.body.legs[n].mirrored.shoulder) {
                 angle = 180 - angle;
             }
         }
         if (n==1) {
-            if (this.gait.body.legs[i].mirrored.upper) {
+            if (this.gait.body.legs[n].mirrored.upper) {
                 angle = 180 - angle;
             }
         }
         if (n==2) {
-            if (this.gait.body.legs[i].mirrored.tip) {
+            if (this.gait.body.legs[n].mirrored.tip) {
                 angle = 180 - angle;
             }
         }
@@ -265,9 +265,9 @@ class CreepyBot {
         let angles = [];
         let i;
         for (i=0;i<this.gait.body.legs.length;i++) {
-            angles.push(this.updateBotGeometryAngles(angle));
-            angles.push(this.updateBotGeometryAngles(angle));
-            angles.push(this.updateBotGeometryAngles(angle));
+            angles.push(this.updateBotGeometryAngles(0, angle));
+            angles.push(this.updateBotGeometryAngles(1, angle));
+            angles.push(this.updateBotGeometryAngles(2, angle));
         }
 
         if (this.servo) {
