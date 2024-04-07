@@ -55,8 +55,8 @@ class CreepyBot {
                             leg.n = i;
                             leg.mirrored = {
                                 shoulder: false, //legConfig.mirrored,
-                                upper: true,
-                                tip: false
+                                upper: legConfig.mirrored,
+                                tip: legConfig.mirrored
                             }
                             leg.legAngle = legAngle;
                             leg.lift.lifted = i % 2 == 0; // Default initial state for the legs
