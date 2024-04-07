@@ -27,7 +27,7 @@ class CreepyBot {
                     height: 0.5,    // Body tickness
                     angle: 0,       // Body Y rotation
                     streamline: 0, // oval deformation in the vector direction
-                    z: 4,           // Body height from ground
+                    z: -4,           // Body height from ground
                     builder: function(body, Leg) {
                         let legConfigs = [{
                             anchorAngle: 60-30,
@@ -50,9 +50,9 @@ class CreepyBot {
                             let leg = new Leg(body, legAnchor, legPosition, body.options.leg, body.canvas);
                             leg.n = i;
                             leg.mirrored = {
-                                shoulder: true, //legConfig.mirrored,
+                                shoulder: false, //legConfig.mirrored,
                                 upper: true,
-                                tip: true
+                                tip: false
                             }
                             leg.legAngle = legAngle;
                             leg.lift.lifted = i % 2 == 0; // Default initial state for the legs
