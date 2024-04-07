@@ -1,7 +1,7 @@
 # Auto-Gait
  Bio-inspired gait + IK for many-legged robots
 
-~/code/Auto-Gait/raspberry-pi
+cd ~/code/Auto-Gait/raspberry-pi
 
 
 ## 3D sim
