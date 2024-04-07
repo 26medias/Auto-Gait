@@ -54,7 +54,7 @@ class CreepyBot {
                             let leg = new Leg(body, legAnchor, legPosition, body.options.leg, body.canvas);
                             leg.n = i;
                             leg.mirrored = {
-                                shoulder: legConfig.mirrored,
+                                shoulder: true, //legConfig.mirrored,
                                 upper: true,
                                 tip: true
                             }
@@ -71,17 +71,22 @@ class CreepyBot {
                     radius: 3,      // Movement area radius
                     maxRadius: 3,   // Max Movement area radius to be able to reach coordinates
                     maxZ: 3,        // Max Y distance (Z in 2D coords, but Y in 3D)
+                    shoulder: {
+                        mirrored: [true, false, true, false]
+                    },
                     upper: {
                         offset: [-ServoData.servo.w/2, ServoData.servo.ch+ServoData.servo.w/2, 0],
                         length: 5.5,
                         width: 0.5,
-                        height: 0.5
+                        height: 0.5,
+                        mirrored: true
                     },
                     tip: {
                         offset: [ServoData.servo.l/2 - ServoData.servo.w/2, 0, 0],
                         length: 7,
                         width: 0.5,
-                        height: 0.5
+                        height: 0.5,
+                        mirrored: true
                     }
                 },
                 gait: {

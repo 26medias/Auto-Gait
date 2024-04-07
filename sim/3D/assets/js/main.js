@@ -50,7 +50,7 @@ class CreepyBot {
                             let leg = new Leg(body, legAnchor, legPosition, body.options.leg, body.canvas);
                             leg.n = i;
                             leg.mirrored = {
-                                shoulder: legConfig.mirrored,
+                                shoulder: true, //legConfig.mirrored,
                                 upper: true,
                                 tip: true
                             }
