@@ -72,21 +72,21 @@ class CreepyBot {
                     maxRadius: 3,   // Max Movement area radius to be able to reach coordinates
                     maxZ: 3,        // Max Y distance (Z in 2D coords, but Y in 3D)
                     shoulder: {
-                        mirrored: [true, false, true, false]
+                        //mirrored: [true, false, true, false]
                     },
                     upper: {
                         offset: [-ServoData.servo.w/2, ServoData.servo.ch+ServoData.servo.w/2, 0],
                         length: 5.5,
                         width: 0.5,
                         height: 0.5,
-                        mirrored: true
+                        //mirrored: true
                     },
                     tip: {
                         offset: [ServoData.servo.l/2 - ServoData.servo.w/2, 0, 0],
                         length: 7,
                         width: 0.5,
                         height: 0.5,
-                        mirrored: true
+                        //mirrored: true
                     }
                 },
                 gait: {
@@ -277,7 +277,7 @@ class CreepyBot {
             //console.log(JSON.stringify([angles[15], angles[16], angles[17], 0, 0, 0]));
             //this.servo2.moveServos(0x07, [angles[15], angles[16], angles[17], 0, 0, 0]);
         }
-        console.log(JSON.stringify(angles));
+        console.log(">", JSON.stringify(angles));
     }
     
     render() {
