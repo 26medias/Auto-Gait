@@ -222,6 +222,27 @@ class CreepyBot {
         return Math.abs(Math.round(out));
     }
 
+    updateBotGeometryAngles(l, n, angle) {
+        let out;
+        angle = Math.min(180, Math.max(0, angle));
+        if (n==0) {
+            if (this.gait.body.legs[i].mirrored.shoulder) {
+                angle = 180 - angle;
+            }
+        }
+        if (n==1) {
+            if (this.gait.body.legs[i].mirrored.upper) {
+                angle = 180 - angle;
+            }
+        }
+        if (n==2) {
+            if (this.gait.body.legs[i].mirrored.tip) {
+                angle = 180 - angle;
+            }
+        }
+        return Math.round(out);
+    }
+
 
     writeAngles() {
         let angles = [];
@@ -245,9 +266,9 @@ class CreepyBot {
         let angles = [];
         let i;
         for (i=0;i<this.gait.body.legs.length;i++) {
-            angles.push(angle);
-            angles.push(angle);
-            angles.push(angle);
+            angles.push(this.updateBotGeometryAngles(angle));
+            angles.push(this.updateBotGeometryAngles(angle));
+            angles.push(this.updateBotGeometryAngles(angle));
         }
 
         if (this.servo) {
