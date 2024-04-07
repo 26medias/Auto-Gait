@@ -87,7 +87,7 @@ class IK {
         this.legs[n].angles.upper = -triangleAngles[0]+90 + (90-triangleAngles3D[1]);
         this.legs[n].angles.tip = -triangleAngles[2]+180;
 
-        if (this.gait.body.legs[n].mirrored.shoulder) {
+        /*if (this.gait.body.legs[n].mirrored.shoulder) {
             this.legs[n].angles.shoulder = 180 - this.legs[n].angles.shoulder;
         }
         if (this.gait.body.legs[n].mirrored.upper) {
@@ -95,7 +95,7 @@ class IK {
         }
         if (this.gait.body.legs[n].mirrored.tip) {
             this.legs[n].angles.tip = 180 - this.legs[n].angles.tip;
-        }
+        }*/
     }
 
     getThirdPoint(pointA, pointC, ab, ac) {
