@@ -526,6 +526,7 @@ class Render3D {
         parts.tip = tip;
         parts.upper = upperGroup;
         parts.shoulder = shoulder;
+        shoulder.mesh.rotation.y = scope.deg(180);
 
         return {
             mesh: shoulder.mesh,

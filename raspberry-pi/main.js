@@ -54,9 +54,9 @@ class CreepyBot {
                             let leg = new Leg(body, legAnchor, legPosition, body.options.leg, body.canvas);
                             leg.n = i;
                             leg.mirrored = {
-                                shoulder: false, //legConfig.mirrored,
-                                upper: legConfig.mirrored,
-                                tip: legConfig.mirrored
+                                shoulder: true, //legConfig.mirrored,
+                                upper: true,
+                                tip: true
                             }
                             leg.legAngle = legAngle;
                             leg.lift.lifted = i % 2 == 0; // Default initial state for the legs
