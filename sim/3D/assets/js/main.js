@@ -30,16 +30,16 @@ class CreepyBot {
                     z: 5,           // Body height from ground
                     builder: function(body, Leg) {
                         let legConfigs = [{
-                            anchorAngle: 60-30,
+                            anchorAngle: 330,
                             mirrored: true
                         },{
-                            anchorAngle: 180-30,
+                            anchorAngle: 30,
                             mirrored: false
                         },{
-                            anchorAngle: 240-30,
+                            anchorAngle: 150,
                             mirrored: true
                         },{
-                            anchorAngle: 360-30,
+                            anchorAngle: 210,
                             mirrored: false
                         }]
                         for (let i=0;i<body.options.leg.count;i++) {
@@ -49,11 +49,11 @@ class CreepyBot {
                             let legPosition = Maths.pointCoord(0, 0, body.options.leg.distance, legAngle);
                             let leg = new Leg(body, legAnchor, legPosition, body.options.leg, body.canvas);
                             leg.n = i;
-                            leg.mirrored = {
+                            /*leg.mirrored = {
                                 shoulder: true, //legConfig.mirrored,
                                 upper: true,
                                 tip: true
-                            }
+                            }*/
                             leg.legAngle = legAngle;
                             leg.lift.lifted = i % 2 == 0; // Default initial state for the legs
                             body.legs.push(leg);
@@ -67,8 +67,9 @@ class CreepyBot {
                     radius: 3,      // Movement area radius
                     maxRadius: 3,   // Max Movement area radius to be able to reach coordinates
                     maxZ: 3,        // Max Y distance (Z in 2D coords, but Y in 3D)
+                    mirror: [true, false, true, false],
                     shoulder: {
-                        mirror: true
+                        
                     },
                     upper: {
                         offset: [-ServoData.servo.w/2, ServoData.servo.ch+ServoData.servo.w/2, 0],
@@ -283,17 +284,10 @@ class CreepyBot {
                 this.robot.robot.legs[i].parts.upper.rotate(this.ik.legs[i].angles.upper);
                 this.robot.robot.legs[i].parts.tip.rotate(this.ik.legs[i].angles.tip);
 
-                if (true || i==0 || i == 2 || i == 4) {
-                    angles.push(this.getOriginalAngle(i, 0, this.ik.legs[i].angles.shoulder));
-                    angles.push(this.getOriginalAngle(i, 1, this.ik.legs[i].angles.upper));
-                    angles.push(this.getOriginalAngle(i, 2, this.ik.legs[i].angles.tip));
-                } else {
-                    angles.push(90);
-                    angles.push(90);
-                    angles.push(90);
-                }
+                angles.push(this.getOriginalAngle(i, 0, this.ik.legs[i].angles.shoulder));
+                angles.push(this.getOriginalAngle(i, 1, this.ik.legs[i].angles.upper));
+                angles.push(this.getOriginalAngle(i, 2, this.ik.legs[i].angles.tip));
                 
-
                 let pos = this.toScreenPosition(this.robot.robot.legs[i].parts.tip.mesh, this.camera, this.renderer);
                 let _debug = {
                     render: Math.round(this.ik.legs[i].angles.tip),
@@ -346,8 +340,8 @@ class CreepyBot {
     render(time) {
         this.gait.tick();
         this.ik.update();
-        this.testBot(90, 90, 90);
-        //this.updateBotRender();
+        //this.testBot(90, 90, 90);
+        this.updateBotRender();
 
         let l = 0
 
