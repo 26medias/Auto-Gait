@@ -285,7 +285,7 @@ class CreepyBot {
                 out = correctedAngle;
             }
         }
-        return Math.round(out);
+        return Math.abs(Math.round(out));
     }
 
 
