@@ -208,7 +208,7 @@ class CreepyBot {
             if (x > 180) {
                 x = x - 360;
             }
-            out = x * (this.gait.options.leg.mirror[l] ? -1 : 1) - 30;// - (60 * this.gait.options.leg.mirror[l] ? 1 : -1)
+            out = x * (this.gait.options.leg.mirror[l] ? 1 : -1) - 30;// - (60 * this.gait.options.leg.mirror[l] ? 1 : -1)
             if (this.gait.options.leg.mirror[l]) {
                 out = 180 - out;
             }
