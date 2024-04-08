@@ -245,7 +245,7 @@ class CreepyBot {
         let angles = [];
         let i;
         for (i=0;i<this.gait.body.legs.length;i++) {
-            angles.push(this.getOriginalAngle(i, 0, angle-120));
+            angles.push(angle);
             angles.push(this.getOriginalAngle(i, 1, angle));
             angles.push(this.getOriginalAngle(i, 2, angle));
         }
