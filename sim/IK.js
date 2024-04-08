@@ -91,9 +91,6 @@ class IK {
         //console.log(this.legs[n].angles)
         if (this.gait.options.leg.mirror[n]) {
             this.legs[n].angles.upper = 180 + this.legs[n].angles.upper;
-            //this.legs[n].angles.shoulder = 180 - this.legs[n].angles.shoulder;
-            //this.legs[n].angles.upper = 180 - this.legs[n].angles.upper;
-            //this.legs[n].angles.tip = 180 - this.legs[n].angles.tip;
         } else {
             this.legs[n].angles.upper = 180 - this.legs[n].angles.upper;
             this.legs[n].angles.tip = 180 - this.legs[n].angles.tip + 180;

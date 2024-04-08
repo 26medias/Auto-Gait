@@ -30,17 +30,13 @@ class CreepyBot {
                     z: 5,           // Body height from ground
                     builder: function(body, Leg) {
                         let legConfigs = [{
-                            anchorAngle: 330,
-                            mirrored: true
+                            anchorAngle: 330
                         },{
-                            anchorAngle: 30,
-                            mirrored: false
+                            anchorAngle: 30
                         },{
-                            anchorAngle: 150,
-                            mirrored: true
+                            anchorAngle: 150
                         },{
-                            anchorAngle: 210,
-                            mirrored: false
+                            anchorAngle: 210
                         }]
                         for (let i=0;i<body.options.leg.count;i++) {
                             let legConfig = legConfigs[i];
@@ -49,11 +45,6 @@ class CreepyBot {
                             let legPosition = Maths.pointCoord(0, 0, body.options.leg.distance, legAngle);
                             let leg = new Leg(body, legAnchor, legPosition, body.options.leg, body.canvas);
                             leg.n = i;
-                            /*leg.mirrored = {
-                                shoulder: true, //legConfig.mirrored,
-                                upper: true,
-                                tip: true
-                            }*/
                             leg.legAngle = legAngle;
                             leg.lift.lifted = i % 2 == 0; // Default initial state for the legs
                             body.legs.push(leg);
