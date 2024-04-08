@@ -27,7 +27,7 @@ class CreepyBot {
                     height: 0.5,    // Body tickness
                     angle: 0,       // Body Y rotation
                     streamline: 0, // oval deformation in the vector direction
-                    z: 5,           // Body height from ground
+                    z: 2,           // Body height from ground
                     builder: function(body, Leg) {
                         let legConfigs = [{
                             anchorAngle: 330
@@ -54,10 +54,10 @@ class CreepyBot {
                 leg: {
                     count: 4,       // Number of legs
                     decayRate: 1,   // Smoothing decay rate [0;1]
-                    distance: 15,   // Distance of the movement center
+                    distance: 12,   // Distance of the movement center
                     radius: 3,      // Movement area radius
                     maxRadius: 3,   // Max Movement area radius to be able to reach coordinates
-                    maxZ: 3,        // Max Y distance (Z in 2D coords, but Y in 3D)
+                    maxZ: 4,        // Max Y distance (Z in 2D coords, but Y in 3D)
                     mirror: [false, true, false, true],
                     upper: {
                         offset: [-ServoData.servo.w/2, ServoData.servo.ch+ServoData.servo.w/2, 0],
