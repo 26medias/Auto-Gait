@@ -31,7 +31,7 @@ class CreepyBot {
                     height: 0.5,    // Body tickness
                     angle: 0,       // Body Y rotation
                     streamline: 0, // oval deformation in the vector direction
-                    z: 6,           // Body height from ground
+                    z: 3,           // Body height from ground
                     builder: function(body, Leg) {
                         let legConfigs = [{
                             anchorAngle: 330
@@ -209,7 +209,7 @@ class CreepyBot {
                 x = x - 360;
             }
             out = x * (this.gait.options.leg.mirror[l] ? -1 : 1) - 30;// - (60 * this.gait.options.leg.mirror[l] ? 1 : -1)
-            if (!this.gait.options.leg.mirror[l]) {
+            if (this.gait.options.leg.mirror[l]) {
                 out = 180 - out;
             }
         }
