@@ -216,14 +216,16 @@ class CreepyBot {
         if (n === 1) {
             out = correctedAngle;
             if (this.gait.options.leg.mirror[l]) {
-                out = 180 - out + 30;
+                out = 180 - out;
             }
+            out += 30;
         }
         if (n === 2) {
             out = 180-correctedAngle;
             if (this.gait.options.leg.mirror[l]) {
                 out = correctedAngle;
             }
+            out += 30;
         }
         return Math.abs(Math.round(out));
     }
