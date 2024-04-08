@@ -269,7 +269,7 @@ class CreepyBot {
     render() {
         this.gait.tick();
         this.ik.update();
-        this.writeAngles();
+        //this.writeAngles();
     }
 
     async testServos() {
