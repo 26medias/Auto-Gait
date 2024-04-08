@@ -225,7 +225,7 @@ class CreepyBot {
             if (this.gait.options.leg.mirror[l]) {
                 out = correctedAngle;
             }
-            out += 30;
+            out -= 30;
         }
         return Math.abs(Math.round(out));
     }
