@@ -208,7 +208,7 @@ class CreepyBot {
             if (x > 180) {
                 x = x - 360;
             }
-            out = x + 90;
+            out = 180 - x + 90;
         }
         if (n === 1) {
             out = correctedAngle;
