@@ -319,7 +319,8 @@ class Render3D {
 
     // Servo Creator
     createServo(mirrored) {
-        let cylinderZ = ServoData.servo.h+ServoData.servo.ch/2;
+        let cylinderZ = mirrored ? -ServoData.servo.ch/2 : ServoData.servo.h+ServoData.servo.ch/2;
+        let pinZ = mirrored ? cylinderZ-ServoData.servo.ph : cylinderZ+ServoData.servo.ph;
         let servo = {
             body: {
                 type:           'box',
@@ -330,14 +331,14 @@ class Render3D {
             cylinder: {
                 type:           'cylinder',
                 size:           [ServoData.servo.w/2, ServoData.servo.w/2, ServoData.servo.ch], 
-                pos:            [0, cylinderZ, ServoData.servo.w/2],
+                pos:            [0, cylinderZ, ServoData.servo.w/2], //mirrored ? ServoData.servo.w - ServoData.servo.w : ServoData.servo.w/2
                 texture:        textures.servo,
             },
             pin: {
                 type:           'cylinder',
                 //size:           [ServoData.servo.pd/2, ServoData.servo.ph, ServoData.servo.pd/2], 
                 size:           [ServoData.servo.pd/2, ServoData.servo.pd/2, ServoData.servo.ph], 
-                pos:            [0, cylinderZ+ServoData.servo.ph, ServoData.servo.w/2],
+                pos:            [0, pinZ, ServoData.servo.w/2],
                 texture:        textures.metal,
             }
         }
@@ -430,7 +431,7 @@ class Render3D {
     }
 
     // Limb Creator
-    createLimb(w, h, l, offset) {
+    createLimb(n, w, h, l, offset) {
         const group = new THREE.Group();
         let limb = {
             size:               [w, h, l],
@@ -446,8 +447,8 @@ class Render3D {
         return {
             mesh: group,
             anchors: {
-                start: [0, -h/2, l/2 - w],
-                end:   [0, -h/2, -l/2],
+                start: [0, -h/2*(this.gait.options.leg.upsidedown[n]? -1 : 1), l/2 - w],
+                end:   [0, -h/2*(this.gait.options.leg.upsidedown[n]? -1 : 1), -l/2],
             },
             rotate: function(v) {
                 group.rotation.y = this.deg(v);
@@ -459,11 +460,11 @@ class Render3D {
     }
 
     // Create the tip
-    createTip(mirrored) {
+    createTip(n, mirrored) {
         let scope = this;
         //console.log(this)
-        let limb = this.createLimb(this.gait.options.leg.tip.width, this.gait.options.leg.tip.height, this.gait.options.leg.tip.length, this.gait.options.leg.tip.offset);
-        let servo = this.createServo(true);
+        let limb = this.createLimb(n, this.gait.options.leg.tip.width, this.gait.options.leg.tip.height, this.gait.options.leg.tip.length, this.gait.options.leg.tip.offset);
+        let servo = this.createServo(this.gait.options.leg.upsidedown[n]);
 
         let group = this.attach('LegTip', limb, servo);
         limb.mesh.position.y += 1.3; // servo constant, need to adjust
@@ -471,11 +472,11 @@ class Render3D {
         let size = this.getGroupSize(group.mesh);
 
         group = this.moveMeshRotCenter(group, 0, 0, size.z/2)
-        if (mirrored) {
+        /*if (mirrored) {
             group.mesh.rotateZ(this.deg(180));
             group.mesh.position.y += ServoData.servo.l + ServoData.servo.ph;
             group.anchors.end[1] -= ServoData.servo.l + ServoData.servo.ph
-        }
+        }*/
 
         return {
             ...group,
@@ -498,10 +499,10 @@ class Render3D {
         let parts = {};
 
         // Create the tip (tip + servo)
-        let tip = this.createTip();
+        let tip = this.createTip(n);
 
         // Create the upper limb
-        let limb = this.createLimb(this.gait.options.leg.upper.width, this.gait.options.leg.upper.height, this.gait.options.leg.upper.length, this.gait.options.leg.upper.offset);
+        let limb = this.createLimb(n, this.gait.options.leg.upper.width, this.gait.options.leg.upper.height, this.gait.options.leg.upper.length, this.gait.options.leg.upper.offset);
 
         // Attach the upper limb to the tip assembly
         let upperGroup = this.attach('UpperGroup', tip, limb)
@@ -511,26 +512,24 @@ class Render3D {
         //upperGroup.mesh.rotation.y += scope.deg(180);
 
         // Create the UP/DOWN shoulder joint
-        let servoA = this.reverseAnchors(this.createServo());
+        let servoA = this.reverseAnchors(this.createServo(this.gait.options.leg.upsidedown[n]));
         
         // Group the leg & shoulderA
         let shoulderLeg = this.attach('LegBlock', upperGroup, servoA)
         
         if (options.leg.mirror[n]) {
             shoulderLeg.mesh.rotation.x += scope.deg(180);
-            shoulderLeg.mesh.position.y += 1.7; // disconnected from variables, oopsie
-            shoulderLeg.mesh.position.z += 0.9; // disconnected from variables, oopsie
-            //shoulderLeg.mesh.position.y += ServoData.servo.w + ServoData.servo.pd;
-            //shoulderLeg.mesh.position.z += ServoData.servo.pd + ServoData.servo.ph;
+            shoulderLeg.mesh.position.y += 1.7; // disconnected from variables, can't find the relationship
+            shoulderLeg.mesh.position.z += 0.9; // disconnected from variables, can't find the relationship
         }
 
-        /*if (true) {
-            shoulderLeg.mesh.rotateZ(this.deg(180));
+        /*if (options.leg.upsidedown) {
+            //shoulderLeg.mesh.rotateZ(this.deg(180));
             //shoulderLeg.mesh.position.y += ServoData.servo.l;
         }*/
 
         // Create the LEFT/RIGHT shoulder joint
-        let servoB = this.createServo();
+        let servoB = this.createServo(options.leg.upsidedown[n]);
         servoB.mesh.rotateX(this.deg(90))
         servoB.mesh.rotateZ(this.deg(180))
         servoB.mesh.position.x -= ServoData.servo.w;
@@ -549,15 +548,10 @@ class Render3D {
         }
         shoulder = this.moveMeshRotCenter(shoulder, ServoData.servo.w, -1.3, 1.4); // servo constant, need to adjust
         
-        /*if (this.gait.options.leg.shoulder.mirror) {
+
+        /*if (options.leg.upsidedown) {
             shoulder.mesh.rotation.x += scope.deg(180);
         }*/
-        //
-        //upperGroup.mesh.rotation.y = scope.deg(90);
-
-        if (options.leg.upsidedown) {
-            shoulder.mesh.rotation.x += scope.deg(180);
-        }
 
         parts.tip = tip;
         parts.upper = upperGroup;

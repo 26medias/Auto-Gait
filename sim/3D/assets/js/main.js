@@ -67,16 +67,15 @@ class CreepyBot {
                     radius: 3,      // Movement area radius
                     maxRadius: 3,   // Max Movement area radius to be able to reach coordinates
                     maxZ: 3,        // Max Y distance (Z in 2D coords, but Y in 3D)
-                    mirror: [true, false, true, false],
-                    shoulder: {
-                        
-                    },
+                    upsidedown: [false, false, true, true], // True -> pin on top, false -> pin at the bottom
+                    mirror: [true, false, true, false], // Horizontal mirroring
+                    shoulder: {},
                     upper: {
                         offset: [-ServoData.servo.w/2, ServoData.servo.ch+ServoData.servo.w/2, 0],
                         length: 5.5,
                         width: 0.5,
                         height: 0.5,
-                        mirror: true
+                        mirror: [false, true, false, true]
                     },
                     tip: {
                         offset: [ServoData.servo.l/2 - ServoData.servo.w/2, 0, 0],
