@@ -31,7 +31,7 @@ class CreepyBot {
                     height: 0.5,    // Body tickness
                     angle: 0,       // Body Y rotation
                     streamline: 0, // oval deformation in the vector direction
-                    z: 3,           // Body height from ground
+                    z: 6,           // Body height from ground
                     builder: function(body, Leg) {
                         let legConfigs = [{
                             anchorAngle: 330
