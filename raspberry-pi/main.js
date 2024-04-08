@@ -231,11 +231,16 @@ class CreepyBot {
 
     writeAngles() {
         let angles = [];
+        let angles2 = [];
         let i;
         for (i=0;i<this.gait.body.legs.length;i++) {
             angles.push(this.getOriginalAngle(i, 0, this.ik.legs[i].angles.shoulder));
             angles.push(this.getOriginalAngle(i, 1, this.ik.legs[i].angles.upper));
             angles.push(this.getOriginalAngle(i, 2, this.ik.legs[i].angles.tip));
+
+            angles2.push((i, 0, this.ik.legs[i].angles.shoulder));
+            angles2.push((i, 1, this.ik.legs[i].angles.upper));
+            .push((i, 2, this.ik.legs[i].angles.tip));
         }
 
         if (this.servo) {
@@ -244,7 +249,7 @@ class CreepyBot {
             }
             //this.servo2.moveServos(0x07, [angles[15], angles[16], angles[17], 0, 0, 0]);
         }
-        console.log(JSON.stringify(angles));
+        console.log(JSON.stringify(angles2));
     }
 
     writeAnglesPreset(angle) {
@@ -269,7 +274,7 @@ class CreepyBot {
     render() {
         this.gait.tick();
         this.ik.update();
-        //this.writeAngles();
+        this.writeAngles();
     }
 
     async testServos() {
