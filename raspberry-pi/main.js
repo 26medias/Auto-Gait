@@ -186,16 +186,16 @@ class CreepyBot {
         if (n==1) {
             angle = angle;
             angle = Math.min(180, Math.max(angle, 0));
-            if (this.gait.options.leg.mirror[l]) {
+            /*if (this.gait.options.leg.mirror[l]) {
                 angle = 180 - angle;
-            }
+            }*/
         }
         if (n==2) {
             angle = -angle;
             angle = Math.min(180, Math.max(angle, 0));
-            if (this.gait.options.leg.mirror[l]) {
+            /*if (this.gait.options.leg.mirror[l]) {
                 angle = 180 - angle;
-            }
+            }*/
         }
         return Math.round(angle);
     }
@@ -211,10 +211,18 @@ class CreepyBot {
             out = x + 90;
         }
         if (n === 1) {
-            out = correctedAngle;
+            if (this.gait.options.leg.mirror[l]) {
+                out = 180 - out;
+            } else {
+                out = correctedAngle;
+            }
         }
         if (n === 2) {
-            out = 180-correctedAngle;
+            if (this.gait.options.leg.mirror[l]) {
+                out = correctedAngle;
+            } else {
+                out = 180-correctedAngle;
+            }
         }
         return Math.abs(Math.round(out));
     }
