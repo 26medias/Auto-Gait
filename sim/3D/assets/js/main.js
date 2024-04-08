@@ -242,7 +242,7 @@ class CreepyBot {
     }
 
     // Sim angle to Real world angle
-    getOriginalAngle(l, n, correctedAngle) {
+    getOriginalAngle_old(l, n, correctedAngle) {
         let out;
         if (n === 0) {
             let x = correctedAngle + this.gait.body.legs[l].legAngle;
@@ -258,6 +258,28 @@ class CreepyBot {
             out = 180-correctedAngle;
         }
         return Math.abs(Math.round(out));
+    }
+
+    // Sim angle to Real world angle
+    getOriginalAngle(l, n, correctedAngle) {
+        let out;
+        if (n === 0) {
+            let x = correctedAngle + this.gait.body.legs[l].legAngle;
+            if (x > 180) {
+                x = x - 360;
+            }
+            out = x * (this.gait.options.leg.mirror[l] ? -1 : 1) - 30;// - (60 * this.gait.options.leg.mirror[l] ? 1 : -1)
+            if (this.gait.options.leg.mirror[l]) {
+                out = 180 - out;
+            }
+        }
+        if (n === 1) {
+            out = correctedAngle;
+        }
+        if (n === 2) {
+            out = 180-correctedAngle;
+        }
+        return Math.round(out);
     }
 
 
@@ -294,10 +316,11 @@ class CreepyBot {
                 }
                 
 
-                let pos = this.toScreenPosition(this.robot.robot.legs[i].parts.tip.mesh, this.camera, this.renderer);
+                let pos = this.toScreenPosition(this.robot.robot.legs[i].parts.shoulder.mesh, this.camera, this.renderer);
                 let _debug = {
-                    render: Math.round(this.ik.legs[i].angles.tip),
-                    real: this.getOriginalAngle(i, 2, this.ik.legs[i].angles.tip),
+                    angle: this.gait.body.legs[i].legAngle,
+                    render: Math.round(this.ik.legs[i].angles.shoulder),
+                    real: this.getOriginalAngle(i, 0, this.ik.legs[i].angles.shoulder),
                     //angle: this.robot.robot.legs[i].angle,
                 };
 
@@ -330,10 +353,10 @@ class CreepyBot {
                 angles.push(Math.abs(Math.round(angle1)));
                 angles.push(Math.abs(Math.round(angle2)));
 
-                let pos = this.toScreenPosition(this.robot.robot.legs[i].parts.tip.mesh, this.camera, this.renderer);
+                let pos = this.toScreenPosition(this.robot.robot.legs[i].parts.shoulder.mesh, this.camera, this.renderer);
                 let _debug = {
-                    render: angle2,
-                    real: this.getOriginalAngle(i, 2, angle2)
+                    render: angle0,
+                    real0: this.getOriginalAngle(i, 2, angle0)
                 };
 
                 $(`#debug-${i}`).show().css({left: pos.x, top: pos.y}).text(JSON.stringify(_debug, null, 4));

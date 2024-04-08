@@ -204,25 +204,22 @@ class CreepyBot {
     getOriginalAngle(l, n, correctedAngle) {
         let out;
         if (n === 0) {
-            let x = correctedAngle + (this.gait.body.legs[l].legAngle * (this.gait.options.leg.mirror[l] ? -1 : 1));
+            let x = correctedAngle + this.gait.body.legs[l].legAngle;
             if (x > 180) {
                 x = x - 360;
             }
-            out = x// + 90;
-        }
-        if (n === 1) {
-            out = correctedAngle;
+            out = x * (this.gait.options.leg.mirror[l] ? -1 : 1) - 30;// - (60 * this.gait.options.leg.mirror[l] ? 1 : -1)
             if (this.gait.options.leg.mirror[l]) {
                 out = 180 - out;
             }
         }
+        if (n === 1) {
+            out = correctedAngle;
+        }
         if (n === 2) {
             out = 180-correctedAngle;
-            if (this.gait.options.leg.mirror[l]) {
-                out = correctedAngle;
-            }
         }
-        return Math.abs(Math.round(out));
+        return Math.round(out);
     }
 
 
