@@ -238,9 +238,9 @@ class CreepyBot {
             angles.push(this.getOriginalAngle(i, 1, this.ik.legs[i].angles.upper));
             angles.push(this.getOriginalAngle(i, 2, this.ik.legs[i].angles.tip));
 
-            angles2.push((i, 0, this.ik.legs[i].angles.shoulder));
-            angles2.push((i, 1, this.ik.legs[i].angles.upper));
-            angles2.push((i, 2, this.ik.legs[i].angles.tip));
+            angles2.push(Math.round(i, 0, this.ik.legs[i].angles.shoulder));
+            angles2.push(Math.round(i, 1, this.ik.legs[i].angles.upper));
+            angles2.push(Math.round(i, 2, this.ik.legs[i].angles.tip));
         }
 
         if (this.servo) {
