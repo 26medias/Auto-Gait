@@ -16,7 +16,7 @@ import ControlUI from './control.js'
 class CreepyBot {
     constructor(options) {
         this.options = _.extend({
-            fps: 30,
+            fps: 10,
             render2D: true,
             render3D: true,
             robot: {
@@ -73,7 +73,7 @@ class CreepyBot {
                     }
                 },
                 gait: {
-                    steps: 7,
+                    steps: 3,
                     maxTurnAngle: 0.2,
                     maxSpeed: 1, 
                     logic: function(body, legs) {
@@ -269,7 +269,7 @@ class CreepyBot {
                 x = x - 360;
             }
             out = x * (this.gait.options.leg.mirror[l] ? -1 : 1) - 30;// - (60 * this.gait.options.leg.mirror[l] ? 1 : -1)
-            if (this.gait.options.leg.mirror[l]) {
+            if (!this.gait.options.leg.mirror[l]) {
                 out = 180 - out;
             }
         }
@@ -278,12 +278,14 @@ class CreepyBot {
             if (this.gait.options.leg.mirror[l]) {
                 out = 180 - out;
             }
+            //out += 30;
         }
         if (n === 2) {
             out = 180-correctedAngle;
             if (this.gait.options.leg.mirror[l]) {
                 out = correctedAngle;
             }
+            out -= 90;
         }
         return Math.abs(Math.round(out));
     }
