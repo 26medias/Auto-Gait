@@ -211,18 +211,13 @@ class CreepyBot {
             out = x + 90;
         }
         if (n === 1) {
-            if (!this.gait.options.leg.mirror[l]) {
+            out = correctedAngle;
+            /*if (this.gait.options.leg.mirror[l]) {
                 out = 180 - out;
-            } else {
-                out = correctedAngle;
-            }
+            }*/
         }
         if (n === 2) {
-            if (!this.gait.options.leg.mirror[l]) {
-                out = correctedAngle;
-            } else {
-                out = 180-correctedAngle;
-            }
+            out = 180-correctedAngle;
         }
         return Math.abs(Math.round(out));
     }
@@ -250,9 +245,9 @@ class CreepyBot {
         let angles = [];
         let i;
         for (i=0;i<this.gait.body.legs.length;i++) {
-            angles.push(angle);
-            angles.push(angle);
-            angles.push(angle);
+            angles.push(this.getOriginalAngle(i, 0, angle));
+            angles.push(this.getOriginalAngle(i, 1, angle));
+            angles.push(this.getOriginalAngle(i, 2, angle));
         }
 
         if (this.servo) {
