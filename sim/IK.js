@@ -33,7 +33,7 @@ class IK {
 
 
     debug(data) {
-        $('#debug').text(JSON.stringify(data, null, 4));
+        //$('#debug').text(JSON.stringify(data, null, 4));
     }
 
     updateLeg(n) {
