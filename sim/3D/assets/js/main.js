@@ -121,7 +121,7 @@ class CreepyBot {
         if (this.robot && this.scene) {
             this.scene.remove(this.robot.robot.body.mesh);
             this.scene.remove(this.robot.info.mesh);
-            this.scene.remove(this.robot.floor);
+            //this.scene.remove(this.robot.floor);
         }
         this.stop();
         delete this.gait;
@@ -191,7 +191,7 @@ class CreepyBot {
 
         this.scene.add(this.robot.robot.body.mesh);
         this.scene.add(this.robot.info.mesh);
-        this.scene.add(this.robot.floor);
+        //this.scene.add(this.robot.floor);
 
         console.log(this.robot)
         console.log(this.ik)
@@ -217,9 +217,10 @@ class CreepyBot {
 
     // Real world angle to Sim Angle
     convertAngle(l, n, angle) {
+        return angle;
         if (n==0) {
-            angle = -this.gait.body.legs[l].legAngle - 90 + angle;
-            angle = Math.min(180, Math.max(angle, 0));
+            //angle = -this.gait.body.legs[l].legAngle - 90 + angle;
+            //angle = Math.min(180, Math.max(angle, 0));
             /*if (this.gait.body.legs[l].mirrored.shoulder) {
                 angle = 180 - angle;
             }*/
@@ -264,14 +265,15 @@ class CreepyBot {
     getOriginalAngle(l, n, correctedAngle) {
         let out;
         if (n === 0) {
-            let x = correctedAngle + this.gait.body.legs[l].legAngle;
+            /*let x = correctedAngle + this.gait.body.legs[l].legAngle;
             if (x > 180) {
                 x = x - 360;
             }
             out = x * (this.gait.options.leg.mirror[l] ? -1 : 1) - 30;// - (60 * this.gait.options.leg.mirror[l] ? 1 : -1)
             if (!this.gait.options.leg.mirror[l]) {
                 out = 180 - out;
-            }
+            }*/
+            return correctedAngle;
         }
         if (n === 1) {
             out = correctedAngle;
@@ -327,8 +329,8 @@ class CreepyBot {
                 let pos = this.toScreenPosition(this.robot.robot.legs[i].parts.shoulder.mesh, this.camera, this.renderer);
                 let _debug = {
                     angle: this.gait.body.legs[i].legAngle,
-                    render: Math.round(this.ik.legs[i].angles.shoulder),
-                    real: this.getOriginalAngle(i, 0, this.ik.legs[i].angles.shoulder),
+                    IK: Math.round(this.ik.legs[i].angles.shoulder),
+                    //real: this.getOriginalAngle(i, 0, this.ik.legs[i].angles.shoulder),
                     //angle: this.robot.robot.legs[i].angle,
                 };
 
@@ -364,7 +366,7 @@ class CreepyBot {
                 let pos = this.toScreenPosition(this.robot.robot.legs[i].parts.shoulder.mesh, this.camera, this.renderer);
                 let _debug = {
                     render: angle0,
-                    real0: this.getOriginalAngle(i, 2, angle0)
+                    IK0: this.getOriginalAngle(i, 0, angle0)
                 };
 
                 $(`#debug-${i}`).show().css({left: pos.x, top: pos.y}).text(JSON.stringify(_debug, null, 4));
@@ -377,7 +379,7 @@ class CreepyBot {
     render(time) {
         this.gait.tick();
         this.ik.update();
-        //this.testBot(180, 180, 0);
+        //this.testBot(90, 90, 90);
         this.updateBotRender();
 
         let l = 0

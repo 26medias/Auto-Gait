@@ -14,3 +14,11 @@ go to http://127.0.0.1:8080/3D/
 
     node main -op start
     node main -op test -angle 90
+
+
+## How it works
+
+- Main setups the robot config and gait rules
+- Gait defines the location of the leg tips
+- IK converts those coordinates into servo angles
+- Robot creates a 3D sim of the robot and applies the IK angles

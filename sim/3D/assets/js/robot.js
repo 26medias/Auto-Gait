@@ -528,7 +528,11 @@ class Render3D {
 
         shoulder.mesh.rotation.x = this.deg(-90);
         shoulder.rotate = function(v) {
-            shoulder.mesh.rotation.z = scope.deg(v);
+            let degAngle = v + scope.gait.body.legs[n].legAngle + 90;
+            if (scope.gait.options.leg.mirror[n]) {
+                degAngle = 180 + degAngle;
+            }
+            shoulder.mesh.rotation.z = scope.deg(degAngle);
         }
         shoulder.rotation = function() {
             return scope.rad(shoulder.mesh.rotation.z);
@@ -620,11 +624,11 @@ class Render3D {
         for (let i=0;i<gait.body.legs.length;i++) {
             // Create the leg
             let leg = this.createLeg(i, gait.options);
-            let angle = (360/gait.options.leg.count)*i + gait.body.angle;
+            let angle = scope.gait.body.legs[i].legAngle; //(360/gait.options.leg.count)*i + gait.body.angle;
             leg.angle = angle;
             leg.mesh.position.x = gait.body.legs[i].anchor.x;
             leg.mesh.position.z = gait.body.legs[i].anchor.y;
-            leg.mesh.rotation.z = -this.deg(angle);
+            //leg.mesh.rotation.z = -this.deg(angle);
             output.robot.legs.push(leg);  // Add to the output
             robotBody.add(leg.mesh);    // Attach to the body
 

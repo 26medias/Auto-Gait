@@ -50,7 +50,7 @@ class IK {
         tip = Maths.rotate(tip.x, tip.y, 0, 0, -this.gait.body.angle);
 
         // Shoulder Angle
-        this.legs[n].angles.shoulder = -this.angle2D(anchor, tip);
+        this.legs[n].angles.shoulder = Maths.cycle(this.angle2D(anchor, tip) - this.gait.body.legs[n].legAngle + 90, 0, 360);
         
         let fixed = this.pointBetween({
             x: leg.anchor.x,
@@ -87,14 +87,15 @@ class IK {
         this.legs[n].angles.upper = -triangleAngles[0]+90 + (90-triangleAngles3D[1]);
         this.legs[n].angles.tip = -triangleAngles[2]+180;
 
-        this.legs[n].angles.shoulder = 180 - this.legs[n].angles.shoulder;
+        // 
+        /*this.legs[n].angles.shoulder = 180 - this.legs[n].angles.shoulder;
         //console.log(this.legs[n].angles)
         if (this.gait.options.leg.mirror[n]) {
             this.legs[n].angles.upper = 180 + this.legs[n].angles.upper;
         } else {
             this.legs[n].angles.upper = 180 - this.legs[n].angles.upper;
             this.legs[n].angles.tip = 180 - this.legs[n].angles.tip + 180;
-        }
+        }*/
     }
 
     getThirdPoint(pointA, pointC, ab, ac) {
