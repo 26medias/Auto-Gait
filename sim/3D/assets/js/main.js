@@ -379,7 +379,8 @@ class CreepyBot {
     render(time) {
         this.gait.tick();
         this.ik.update();
-        //this.testBot(90, 180, 0);
+        let a = 125;
+        //this.testBot(a, a, a);
         this.updateBotRender();
 
         let l = 0

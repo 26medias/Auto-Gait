@@ -228,7 +228,7 @@ class Body {
         if (this.vectors.translation.radius>0) {
             this.unrest();
         }
-        console.log(this.vectors.translation.radius)
+        //console.log(this.vectors.translation.radius)
 
         /*console.log({
             angle: this.angle,

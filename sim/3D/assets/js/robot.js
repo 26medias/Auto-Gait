@@ -453,7 +453,7 @@ class Render3D {
     }
 
     // Create the tip
-    createTip(options) {
+    createTip(n, options) {
         let scope = this;
         //console.log(this)
         let limb = this.createLimb(this.gait.options.leg.tip.width, this.gait.options.leg.tip.height, this.gait.options.leg.tip.length, this.gait.options.leg.tip.offset);
@@ -468,7 +468,12 @@ class Render3D {
         return {
             ...group,
             rotate: function(v) {
-                group.mesh.rotation.y = scope.deg(v);
+                if (!scope.gait.options.leg.mirror[n]) {
+                    v -= 180;
+                } else {
+
+                }
+                group.mesh.rotation.y = scope.deg(180-v);
             },
             rotation: function() {
                 return scope.rad(group.mesh.rotation.y);
@@ -490,13 +495,20 @@ class Render3D {
         let flipAngle = mirror ? 180 : 0;
 
         // Create the tip (tip + servo)
-        let tip = this.createTip();
+        let tip = this.createTip(n);
 
         // Create the upper limb
         let limb = this.createLimb(this.gait.options.leg.upper.width, this.gait.options.leg.upper.height, this.gait.options.leg.upper.length, this.gait.options.leg.upper.offset);
 
         // Attach the upper limb to the tip assembly
         let upperGroup = this.attach('UpperGroup', tip, limb)
+        upperGroup.rotate = function(v) {
+            if (scope.gait.options.leg.mirror[n]) {
+                v += 180;
+            }
+            upperGroup.mesh.rotation.y = scope.deg(v);
+        }
+
         let size = this.getGroupSize(upperGroup.mesh);
         //upperGroup = this.moveMeshRotCenter(upperGroup, 0, 0, size.z/2 - ServoData.servo.ch)
         upperGroup = this.moveMeshRotCenter(upperGroup, 0, 0, this.gait.options.leg.upper.length - ServoData.servo.ch)
@@ -530,7 +542,7 @@ class Render3D {
         shoulder.rotate = function(v) {
             let degAngle = v + scope.gait.body.legs[n].legAngle + 90;
             if (scope.gait.options.leg.mirror[n]) {
-                degAngle = 180 + degAngle;
+                //degAngle = 180 + degAngle;
             }
             shoulder.mesh.rotation.z = scope.deg(degAngle);
         }
