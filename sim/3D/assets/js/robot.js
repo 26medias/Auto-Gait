@@ -692,7 +692,7 @@ class Render3D {
             });
         }
 
-        robotBody.position.y = gait.options.body.z;// - ServoData.servo.h;
+        robotBody.position.y = gait.options.body.z + ServoData.servo.h + ServoData.servo.ch + ServoData.servo.ph;
 
         output.robot.body = {
             mesh: robotBody,
