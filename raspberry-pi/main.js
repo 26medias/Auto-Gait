@@ -77,7 +77,7 @@ class CreepyBot {
                     }
                 },
                 gait: {
-                    steps: 7,
+                    steps: 3,
                     maxTurnAngle: 0.2,
                     maxSpeed: 1, 
                     logic: function(body, legs) {
@@ -175,67 +175,39 @@ class CreepyBot {
 
 
     // Real world angle to Sim Angle
-    convertAngle(l, n, angle) {
-        if (n==0) {
-            angle = -this.gait.body.legs[l].legAngle - 90 + angle;
-            angle = Math.min(180, Math.max(angle, 0));
-            /*if (this.gait.body.legs[l].mirrored.shoulder) {
-                angle = 180 - angle;
-            }*/
+    convertAngle(l, n, angle, fixed) {
+        if (!fixed) {
+            return angle;
         }
         if (n==1) {
-            angle = angle;
-            angle = Math.min(180, Math.max(angle, 0));
-            /*if (this.gait.options.leg.mirror[l]) {
+            if (!this.gait.options.leg.mirror[l]) {
                 angle = 180 - angle;
-            }*/
+            }
         }
         if (n==2) {
-            angle = -angle;
-            angle = Math.min(180, Math.max(angle, 0));
-            /*if (this.gait.options.leg.mirror[l]) {
+            if (this.gait.options.leg.mirror[l]) {
                 angle = 180 - angle;
-            }*/
+            }
         }
-        return Math.round(angle);
+        angle = Math.round(angle);
+        angle = Math.min(180, Math.max(angle, 0));
+        return angle;
     }
-
-    // Sim angle to Real world angle
-    getOriginalAngle(l, n, correctedAngle) {
-        let out;
-        if (n === 0) {
-            let x = correctedAngle + this.gait.body.legs[l].legAngle;
-            if (x > 180) {
-                x = x - 360;
-            }
-            out = x * (this.gait.options.leg.mirror[l] ? -1 : 1) - 30;// - (60 * this.gait.options.leg.mirror[l] ? 1 : -1)
-            if (!this.gait.options.leg.mirror[l]) {
-                out = 180 - out;
-            }
-        }
-        if (n === 1) {
-            out = correctedAngle;
-            if (this.gait.options.leg.mirror[l]) {
-                out = 180 - out;
-            }
-            //out += 30;
-        }
-        if (n === 2) {
-            out = 180-correctedAngle;
-            if (this.gait.options.leg.mirror[l]) {
-                out = correctedAngle;
-            }
-            out -= 90;
-        }
-        return Math.abs(Math.round(out));
-    }
-
 
     writeAngles() {
         let angles = [];
         let angles2 = [];
         let i;
         for (i=0;i<this.gait.body.legs.length;i++) {
+            
+            let a0 = this.convertAngle(i, 0, Math.round(this.ik.legs[i].angles.shoulder), true);
+            let a1 = this.convertAngle(i, 1, Math.round(this.ik.legs[i].angles.upper), true);
+            let a2 = this.convertAngle(i, 2, Math.round(this.ik.legs[i].angles.tip), true);
+
+            angles.push(a0);
+            angles.push(a1);
+            angles.push(a2);
+            
             angles.push(this.getOriginalAngle(i, 0, this.ik.legs[i].angles.shoulder));
             angles.push(this.getOriginalAngle(i, 1, this.ik.legs[i].angles.upper));
             angles.push(this.getOriginalAngle(i, 2, this.ik.legs[i].angles.tip));
@@ -256,13 +228,17 @@ class CreepyBot {
         console.log('')
     }
 
-    writeAnglesPreset(angle) {
+    writeAnglesPreset(angle, fixed) {
         let angles = [];
         let i;
         for (i=0;i<this.gait.body.legs.length;i++) {
-            angles.push(angle);
-            angles.push(angle);
-            angles.push(angle);
+            let a0 = this.convertAngle(i, 0, angle, fixed);
+            let a1 = this.convertAngle(i, 1, angle, fixed);
+            let a2 = this.convertAngle(i, 2, angle, fixed);
+            
+            angles.push(a0);
+            angles.push(a1);
+            angles.push(a2);
         }
 
         if (this.servo) {
