@@ -363,10 +363,10 @@ class CreepyBot {
                 angles.push(Math.abs(Math.round(angle1)));
                 angles.push(Math.abs(Math.round(angle2)));
 
-                let pos = this.toScreenPosition(this.robot.robot.legs[i].parts.shoulder.mesh, this.camera, this.renderer);
+                let pos = this.toScreenPosition(this.robot.robot.legs[i].parts.upper.mesh, this.camera, this.renderer);
                 let _debug = {
-                    render: angle0,
-                    IK0: this.getOriginalAngle(i, 0, angle0)
+                    render: angle1,
+                    IK0: this.getOriginalAngle(i, 0, angle1)
                 };
 
                 $(`#debug-${i}`).show().css({left: pos.x, top: pos.y}).text(JSON.stringify(_debug, null, 4));
@@ -379,7 +379,7 @@ class CreepyBot {
     render(time) {
         this.gait.tick();
         this.ik.update();
-        //this.testBot(90, 90, 90);
+        //this.testBot(90, 180, 0);
         this.updateBotRender();
 
         let l = 0
