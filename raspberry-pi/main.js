@@ -20,7 +20,7 @@ const ServoData = {
 class CreepyBot {
     constructor(options) {
         this.options = _.extend({
-            fps: 10,
+            fps: 30,
             render2D: true,
             render3D: true,
             robot: {
@@ -219,9 +219,9 @@ class CreepyBot {
             }
             //this.servo2.moveServos(0x07, [angles[15], angles[16], angles[17], 0, 0, 0]);
         }
-        console.log(JSON.stringify(angles2));
-        console.log(JSON.stringify(angles));
-        console.log('')
+        //console.log(JSON.stringify(angles2));
+        //console.log(JSON.stringify(angles));
+        //console.log('')
     }
 
     writeAnglesPreset(angle, fixed) {
