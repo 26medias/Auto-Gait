@@ -41,34 +41,61 @@ class IK {
         let anchor = {
             x: leg.anchor.x,
             y: leg.anchor.y,
+            z: this.gait.body.z + this.gait.options.leg.upper.offset[1]
         }
+        //let anchorPitchRoll = Maths.rotate3DPoint([anchor.x, anchor.y, anchor.z], [0, 0, 0], [this.gait.body.roll, 0, this.gait.body.pitch]);
+        //console.log(anchorPitchRoll, [anchor.x, anchor.y, anchor.z])
+        //anchor.x = anchorPitchRoll[0];
+        //anchor.y = anchorPitchRoll[1];
+        //anchor.z = anchorPitchRoll[2];
+
         let tip = {
             x: leg.foot.ax,
             y: leg.foot.ay,
+            z: 0 // Floor is at 0
         }
         // Correct for body angle
         tip = Maths.rotate(tip.x, tip.y, 0, 0, -this.gait.body.angle);
-
-        // Shoulder Angle
-        this.legs[n].angles.shoulder = Maths.cycle(this.angle2D(anchor, tip) - this.gait.body.legs[n].legAngle + 90, 0, 360);
+        tip.z = 0; // default floor podition (+ lift from gait)
         
         let fixed = this.pointBetween({
             x: leg.anchor.x,
-            y: this.gait.body.z + this.gait.options.leg.upper.offset[1],
+            y: anchor.z,
             z: leg.anchor.y,
         },{
             x: tip.x,
-            y: this.gait.body.z + this.gait.options.leg.upper.offset[1],
+            y: anchor.z,
             z: tip.y,
         }, -this.gait.options.leg.upper.offset[0]);
 
         let anchor3D = fixed;
         let tip3D = {
             x: tip.x,
-            y: leg.lift.z,
+            y: tip.z + leg.lift.z,
             z: tip.y,
         }
-        let groundAnchor = { // todo: Adapt this to body rotation
+
+        // Project the point to the angled floor (robot as frame of reference)
+        const projectedTip = Maths.projectOnSurface([tip3D.x, tip3D.y, tip3D.z], this.gait.body.pitch, this.gait.body.roll, this.gait.body.z);
+        //console.log({projectedTip, tip3D, params: [[tip3D.x, tip3D.z, tip3D.y], this.gait.body.pitch, this.gait.body.roll, this.gait.body.z]})
+        
+        // Project the point on the floor back into a floor reference frame
+        let tipPitchRoll = Maths.rotate3DPoint([tip3D.x, tip3D.y, tip3D.z], [0, 0, 0], [-this.gait.body.roll, 0, -this.gait.body.pitch]);
+
+        tip3D = {
+            x: tipPitchRoll[0],
+            y: tipPitchRoll[1],
+            z: tipPitchRoll[2]
+        }
+
+        this.gait.body.legs[n].tip3D = tip3D;
+
+        // Shoulder Angle
+        this.legs[n].angles.shoulder = Maths.cycle(this.angle2D(anchor, tip) - this.gait.body.legs[n].legAngle + 90, 0, 360);
+
+        
+
+        let groundAnchor = {
             x: anchor3D.x,
             y: leg.lift.z,
             z: anchor3D.z

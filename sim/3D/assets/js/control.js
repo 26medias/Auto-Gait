@@ -99,52 +99,6 @@ export default class ControlUI {
             }]
         },
         {
-            name: 'Position',
-            content: [/*{
-                id: 'bodyRotation',
-                label: 'Body Rotation',
-                type:  'slider',
-                range: [-90,90, root.gait.body.angle, 0.1],
-                liveChange: true,
-                onChange: function(value) {
-                    root.options.robot.body.angle = value;
-                    //root.gait.body.applyRotationVector(value-root.gait.body.angle);
-                    // @todo: BROKEN
-                }
-            },*/
-            {
-                id: 'bodyHeight',
-                label: 'Ground Distance',
-                type:  'slider',
-                range: [1,60, root.gait.body.z, 0.1],
-                liveChange: true,
-                onChange: function(value) {
-                    root.options.robot.body.z = value;
-                    root.gait.body.z = value;
-                }
-            },
-            {
-                id: 'bodyX',
-                label: 'X Offset',
-                type:  'slider',
-                range: [1,3, root.gait.body.offset.x, 0.1],
-                liveChange: true,
-                onChange: function(value) {
-                    root.gait.body.offset.x = value;
-                }
-            },
-            {
-                id: 'bodyY',
-                label: 'Y Offset',
-                type:  'slider',
-                range: [1,3, root.gait.body.offset.y, 0.1],
-                liveChange: true,
-                onChange: function(value) {
-                    root.gait.body.offset.y = value;
-                }
-            }]
-        },
-        {
             name: 'Speed',
             content: [{
                 id: 'maxSpeed',
@@ -199,12 +153,12 @@ export default class ControlUI {
             }]
         },
         {
-            name: 'Turn',
+            name: 'Body Angles',
             content: [{
                 id: 'turn',
-                label: 'Angle',
+                label: 'Yaw',
                 type:  'slider',
-                range: [-90,90, root.gait.control.vector.turnVector, 1],
+                range: [-35,35, root.gait.control.vector.turnVector, 1],
                 liveChange: true,
                 onChange: function(value) {
                     root.gait.control.vector.turnVector = value;
@@ -212,6 +166,36 @@ export default class ControlUI {
                     root.gait.control.vector.angle = value;
                     root.gait.body.angle = value;
                     root.gait.control.updateDisplay();
+                }
+            }, {
+                id: 'pitch',
+                label: 'Pitch',
+                type:  'slider',
+                range: [-45,45, root.gait.body.pitch, 1],
+                liveChange: true,
+                onChange: function(value) {
+                    root.gait.body.pitch = value;
+                    //root.gait.control.updateDisplay();
+                }
+            }, {
+                id: 'roll',
+                label: 'Roll',
+                type:  'slider',
+                range: [-45,45, root.gait.body.roll, 1],
+                liveChange: true,
+                onChange: function(value) {
+                    root.gait.body.roll = value;
+                    //root.gait.control.updateDisplay();
+                }
+            }, {
+                id: 'bodyHeight',
+                label: 'Ground Distance',
+                type:  'slider',
+                range: [1,60, root.gait.body.z, 0.1],
+                liveChange: true,
+                onChange: function(value) {
+                    root.options.robot.body.z = value;
+                    root.gait.body.z = value;
                 }
             }]
         }]

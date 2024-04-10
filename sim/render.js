@@ -87,7 +87,7 @@ class Control {
             distance: 0,
             rotationAngle: 0,
             turnVector: 0,
-            percent: 25,
+            percent: 0,
             x: this.radius,
             y: this.radius,
         }

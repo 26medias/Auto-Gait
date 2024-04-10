@@ -16,7 +16,7 @@ import ControlUI from './control.js'
 class CreepyBot {
     constructor(options) {
         this.options = _.extend({
-            fps: 10,
+            fps: 30,
             render2D: true,
             render3D: true,
             robot: {
@@ -26,7 +26,7 @@ class CreepyBot {
                     legRadius: 7,   // Location of the leg anchors
                     height: 0.5,    // Body tickness
                     angle: 0,       // Body Y rotation
-                    streamline: 0, // oval deformation in the vector direction
+                    streamline: 28, // oval deformation in the vector direction
                     z: 2,           // Body height from ground
                     builder: function(body, Leg) {
                         let legConfigs = [{
@@ -121,7 +121,7 @@ class CreepyBot {
         if (this.robot && this.scene) {
             this.scene.remove(this.robot.robot.body.mesh);
             this.scene.remove(this.robot.info.mesh);
-            //this.scene.remove(this.robot.floor);
+            this.scene.remove(this.robot.floor);
         }
         this.stop();
         delete this.gait;
@@ -191,7 +191,7 @@ class CreepyBot {
 
         this.scene.add(this.robot.robot.body.mesh);
         this.scene.add(this.robot.info.mesh);
-        //this.scene.add(this.robot.floor);
+        this.scene.add(this.robot.floor);
 
         console.log(this.robot)
         console.log(this.ik)
@@ -246,20 +246,13 @@ class CreepyBot {
             this.robot.robot.body.body.info.center.position.z = this.gait.body.centers.center.y;
             this.robot.robot.body.body.info.downCenter.position.x = this.gait.body.centers.down.x;
             this.robot.robot.body.body.info.downCenter.position.z = this.gait.body.centers.down.y;
-
-            // Render the body
-            //this.robot.robot.body.mesh.position.x = this.gait.body.offset.x;
-            //this.robot.robot.body.mesh.position.z = this.gait.body.offset.y;
     
             let angles = [];
 
             for (let i=0;i<this.robot.robot.legs.length;i++) {
-
-
                 let a0 = this.convertAngle(i, 0, Math.round(this.ik.legs[i].angles.shoulder), true);
                 let a1 = this.convertAngle(i, 1, Math.round(this.ik.legs[i].angles.upper), true);
                 let a2 = this.convertAngle(i, 2, Math.round(this.ik.legs[i].angles.tip), true);
-
 
                 this.robot.robot.legs[i].parts.shoulder.rotate(a0);
                 this.robot.robot.legs[i].parts.upper.rotate(a1);
@@ -272,22 +265,12 @@ class CreepyBot {
                 let pos = this.toScreenPosition(this.robot.robot.legs[i].parts.upper.mesh, this.camera, this.renderer);
                 let _debug = {
                     angle: this.gait.body.legs[i].legAngle,
-                    Real: this.ik.legs[i].angles.upper,
+                    Real: Math.round(this.ik.legs[i].angles.upper),
                     fixed: a1
                 };
 
-                //console.log(i, this.ik.gait.body.legs[i].foot.distanceFromCenter)
-
                 $(`#debug-${i}`).show().css({left: pos.x, top: pos.y}).text(JSON.stringify(_debug, null, 4));
-                
-                /*if (this.gait.body.legs[i].priority || this.gait.body.legs[i].priority==0) {
-                    $(`#debug-${i}`).show().css({left: pos.x, top: pos.y}).text(JSON.stringify(this.gait.body.legs[i].priority, null, 4));
-                } else {
-                    $(`#debug-${i}`).hide();
-                }*/
             }
-            //console.log(">>", JSON.stringify(angles))
-            //this.ws.send(angles);
         }
     }
 

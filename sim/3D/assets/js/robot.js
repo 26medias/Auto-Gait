@@ -65,6 +65,17 @@ const textures = {
         depthWrite: false,
         blending: THREE.AdditiveBlending
     }),
+    hudGreen: new THREE.MeshStandardMaterial({
+        color: 0x0000FF,
+        emissive: 0x00FF00,
+        emissiveIntensity: 8,
+        metalness: 0.0,
+        roughness: 0.0,
+        transparent: true,
+        opacity: 0.7,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending
+    }),
     floor: (function(sx=200, sz=200) {
         const textureLoader = new THREE.TextureLoader();
     
@@ -96,6 +107,7 @@ const textures = {
             //aoMap: aoTexture,
             //roughnessMap: roughnessTexture,
             //displacementMap: heightTexture,
+            opacity: 0.3,
             metalness: 0.1,
             roughness: 0.8,
             displacementScale: 2, // Adjust this value for visible displacement
@@ -592,6 +604,10 @@ class Render3D {
             robot.info.parts[i].footPosition.position.x = gait.body.legs[i].foot.ax;
             robot.info.parts[i].footPosition.position.z = gait.body.legs[i].foot.ay;
             robot.info.parts[i].footPosition.position.y = gait.body.legs[i].lift.z;
+
+            robot.info.parts[i].footPosition3D.position.x = gait.body.legs[i].tip3D.x;
+            robot.info.parts[i].footPosition3D.position.y = gait.body.legs[i].tip3D.y;
+            robot.info.parts[i].footPosition3D.position.z = gait.body.legs[i].tip3D.z;
             
             let legCenter = gait.body.legs[i].getCenter();
             robot.info.parts[i].area.position.x = legCenter.x;
@@ -672,6 +688,9 @@ class Render3D {
                 z: gait.body.legs[i].foot.ay
             }, 0.5, 0.2, textures.hudRed)
 
+            // 3D Desired Foot Position
+            let footPosition3D = this.create3DCircle(gait.body.legs[i].tip3D, 0.5, 0.2, textures.hudGreen)
+
             let label = this.createText({
                 x: legAreaCenter.x,
                 y: 0,
@@ -682,17 +701,17 @@ class Render3D {
             robotInfo.add(areaCenter);
             robotInfo.add(areaVector);
             robotInfo.add(footPosition);
+            robotInfo.add(footPosition3D);
             robotInfo.add(label);
 
             output.info.parts.push({
                 area,
                 areaCenter,
                 areaVector,
-                footPosition
+                footPosition,
+                footPosition3D
             });
         }
-
-        robotBody.position.y = gait.options.body.z + ServoData.servo.h + ServoData.servo.ch + ServoData.servo.ph;
 
         output.robot.body = {
             mesh: robotBody,
@@ -701,7 +720,10 @@ class Render3D {
         output.robot.body.update = function() {
             robotBody.position.y = gait.body.z + ServoData.servo.h + ServoData.servo.ch + ServoData.servo.ph;
             robotBody.rotation.y = -scope.deg(gait.body.angle);
+            robotBody.rotation.x = scope.deg(gait.body.roll);
+            robotBody.rotation.z = scope.deg(gait.body.pitch);
         }
+        output.robot.body.update();
 
         output.info.mesh = robotInfo;
 
