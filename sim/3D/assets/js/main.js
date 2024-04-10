@@ -57,7 +57,7 @@ class CreepyBot {
                     distance: 12,   // Distance of the movement center
                     radius: 4.2,      // Movement area radius
                     maxRadius: 3,   // Max Movement area radius to be able to reach coordinates
-                    maxZ: 4,        // Max Y distance (Z in 2D coords, but Y in 3D)
+                    maxZ: 5,        // Max Y distance (Z in 2D coords, but Y in 3D)
                     mirror: [false, true, false, true],
                     upper: {
                         offset: [-ServoData.servo.w/2, ServoData.servo.ch+ServoData.servo.w/2, 0],
@@ -73,7 +73,7 @@ class CreepyBot {
                     }
                 },
                 gait: {
-                    steps: 3,
+                    steps: 5,
                     maxTurnAngle: 0.2,
                     maxSpeed: 1, 
                     logic: function(body, legs) {
