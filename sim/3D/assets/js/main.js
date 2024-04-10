@@ -16,7 +16,7 @@ import ControlUI from './control.js'
 class CreepyBot {
     constructor(options) {
         this.options = _.extend({
-            fps: 30,
+            fps: 10,
             render2D: true,
             render3D: true,
             robot: {
@@ -55,7 +55,7 @@ class CreepyBot {
                     count: 4,       // Number of legs
                     decayRate: 1,   // Smoothing decay rate [0;1]
                     distance: 12,   // Distance of the movement center
-                    radius: 3,      // Movement area radius
+                    radius: 4.2,      // Movement area radius
                     maxRadius: 3,   // Max Movement area radius to be able to reach coordinates
                     maxZ: 4,        // Max Y distance (Z in 2D coords, but Y in 3D)
                     mirror: [false, true, false, true],

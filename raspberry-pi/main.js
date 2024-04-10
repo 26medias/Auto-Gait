@@ -30,7 +30,7 @@ class CreepyBot {
                     legRadius: 7,   // Location of the leg anchors
                     height: 0.5,    // Body tickness
                     angle: 0,       // Body Y rotation
-                    streamline: 0, // oval deformation in the vector direction
+                    streamline: 28, // oval deformation in the vector direction
                     z: 2,           // Body height from ground
                     builder: function(body, Leg) {
                         let legConfigs = [{
@@ -59,7 +59,7 @@ class CreepyBot {
                     count: 4,       // Number of legs
                     decayRate: 1,   // Smoothing decay rate [0;1]
                     distance: 12,   // Distance of the movement center
-                    radius: 3,      // Movement area radius
+                    radius: 4.2,      // Movement area radius
                     maxRadius: 3,   // Max Movement area radius to be able to reach coordinates
                     maxZ: 4,        // Max Y distance (Z in 2D coords, but Y in 3D)
                     mirror: [false, true, false, true],
@@ -150,7 +150,7 @@ class CreepyBot {
             // on tick
             scope.gait.body.applyTranslationVector({
                 angle: 0,
-                distance: 50,
+                distance: 100,
             });
             scope.gait.body.applyRotationVector({
                 angle: 0,

@@ -76,6 +76,33 @@ const textures = {
         depthWrite: false,
         blending: THREE.AdditiveBlending
     }),
+    gridShaderMaterial: (function(sx=200, sz=200) {
+        return new THREE.ShaderMaterial({
+            transparent: true,
+            side: THREE.DoubleSide, // Render both sides of the material
+            uniforms: {
+                gridColor: { value: new THREE.Color(0x00ff00) }, // Green color
+                alpha: { value: 0.5 } // Semi-transparent
+            },
+            vertexShader: `
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                varying vec2 vUv;
+                uniform vec3 gridColor;
+                uniform float alpha;
+                void main() {
+                    vec2 grid = abs(fract(vUv - 0.5) - 0.5);
+                    float line = step(0.99, grid.x) * step(0.99, grid.y);
+                    gl_FragColor = mix(vec4(gridColor, alpha), vec4(0.0, 0.0, 0.0, 0.0), line);
+                }
+            `
+        });
+    })(5,5),
     floor: (function(sx=200, sz=200) {
         const textureLoader = new THREE.TextureLoader();
     
@@ -591,7 +618,7 @@ class Render3D {
             type:           'box',
             size:           [200, 0.1, 200], 
             pos:            [0, 0, 0],
-            texture:        textures.basicFloor,
+            texture:        textures.gridShaderMaterial,
         });
         floor.position.y = 0;
         return floor;

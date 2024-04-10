@@ -80,7 +80,7 @@ class IK {
         //console.log({projectedTip, tip3D, params: [[tip3D.x, tip3D.z, tip3D.y], this.gait.body.pitch, this.gait.body.roll, this.gait.body.z]})
         
         // Project the point on the floor back into a floor reference frame
-        let tipPitchRoll = Maths.rotate3DPoint([tip3D.x, tip3D.y, tip3D.z], [0, 0, 0], [-this.gait.body.roll, 0, -this.gait.body.pitch]);
+        let tipPitchRoll = Maths.rotate3DPoint([tip3D.x, tip3D.y, tip3D.z], [0, this.gait.body.z, 0], [-this.gait.body.roll, 0, -this.gait.body.pitch]);
 
         tip3D = {
             x: tipPitchRoll[0],
