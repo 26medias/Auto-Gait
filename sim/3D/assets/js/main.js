@@ -16,7 +16,7 @@ import ControlUI from './control.js'
 class CreepyBot {
     constructor(options) {
         this.options = _.extend({
-            fps: 10,
+            fps: 30,
             render2D: true,
             render3D: true,
             robot: {
