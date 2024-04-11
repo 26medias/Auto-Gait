@@ -116,6 +116,7 @@ class CreepyBot {
                 },
             }
         }, options);
+        console.log(options);
 
     }
 
