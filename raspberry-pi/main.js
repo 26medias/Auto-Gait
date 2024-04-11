@@ -20,7 +20,7 @@ const ServoData = {
 class CreepyBot {
     constructor(options) {
         this.options = _.extend({
-            fps: 30,
+            fps: 10,
             render2D: true,
             render3D: true,
             robot: {
@@ -31,7 +31,7 @@ class CreepyBot {
                     height: 0.5,    // Body tickness
                     angle: 0,       // Body Y rotation
                     streamline: 28, // oval deformation in the vector direction
-                    z: 2,           // Body height from ground
+                    z: 4,           // Body height from ground
                     builder: function(body, Leg) {
                         let legConfigs = [{
                             anchorAngle: 330
@@ -77,7 +77,7 @@ class CreepyBot {
                     }
                 },
                 gait: {
-                    steps: 5,
+                    steps: 7,
                     maxTurnAngle: 0.2,
                     maxSpeed: 1, 
                     logic: function(body, legs) {
