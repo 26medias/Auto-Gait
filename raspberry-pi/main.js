@@ -18,7 +18,8 @@ const ServoData = {
 
 
 class CreepyBot {
-    constructor(options) {
+    constructor(options, params) {
+        params = _.extend({}, params);
         this.options = _.extend({
             fps: 30,
             render2D: true,
@@ -30,7 +31,7 @@ class CreepyBot {
                     legRadius: 7,   // Location of the leg anchors
                     height: 0.5,    // Body tickness
                     angle: 0,       // Body Y rotation
-                    streamline: 18, // oval deformation in the vector direction
+                    streamline: params.streamline || 18, // oval deformation in the vector direction
                     z: 4,           // Body height from ground
                     builder: function(body, Leg) {
                         let legConfigs = [{
@@ -58,10 +59,10 @@ class CreepyBot {
                 leg: {
                     count: 4,       // Number of legs
                     decayRate: 1,   // Smoothing decay rate [0;1]
-                    distance: 12,   // Distance of the movement center
-                    radius: 4.2,      // Movement area radius
-                    maxRadius: 3,   // Max Movement area radius to be able to reach coordinates
-                    maxZ: 5,        // Max Y distance (Z in 2D coords, but Y in 3D)
+                    distance: params.distance || 12,   // Distance of the movement center
+                    radius: params.radius || 4.2,      // Movement area radius
+                    maxRadius: params.radius || 4.2,   // Max Movement area radius to be able to reach coordinates
+                    maxZ: params.maxZ || 5,        // Max Y distance (Z in 2D coords, but Y in 3D)
                     mirror: [false, true, false, true],
                     upper: {
                         offset: [-ServoData.servo.w/2, ServoData.servo.ch+ServoData.servo.w/2, 0],
@@ -77,7 +78,7 @@ class CreepyBot {
                     }
                 },
                 gait: {
-                    steps: 7,
+                    steps: params.steps || 10,
                     maxTurnAngle: 0.2,
                     maxSpeed: 1, 
                     logic: function(body, legs) {
@@ -293,7 +294,14 @@ setTimeout(async () => {
 
     console.log("args", args)
 
-    let bot = new CreepyBot(args);
+    let bot = new CreepyBot({}, args);
+    /*
+        streamline
+        distance
+        radius
+        maxZ
+        steps
+    */
     bot.init();
     
     switch (args.op) {

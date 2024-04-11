@@ -73,7 +73,7 @@ class CreepyBot {
                     }
                 },
                 gait: {
-                    steps: 7,
+                    steps: 10,
                     maxTurnAngle: 0.2,
                     maxSpeed: 1, 
                     logic: function(body, legs) {
