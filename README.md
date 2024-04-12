@@ -14,6 +14,7 @@ go to http://127.0.0.1:8080/3D/
 
     node main -op start
     node main -op test -angle 90
+    node main -op start -fps 20 -streamline 10 -distance 10 -radius 3.8
 
 
 ## How it works
