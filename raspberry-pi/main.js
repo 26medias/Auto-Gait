@@ -190,16 +190,16 @@ class CreepyBot {
         this.setupWebServer();
         
         if (!this.params.disabled) {
-            try {
+            //try {
                 const ServoController = require('./servo_pca.js');
                 this.servo = new ServoController();
                 this.servo.init();
-                const ServoController2 = require('./servo.js');
+                /*const ServoController2 = require('./servo.js');
                 this.servo2 = new ServoController2();
-                this.servo2.init();
-            } catch (e) {
+                this.servo2.init();*/
+            /*} catch (e) {
                 console.log("pca9685/I2C not found")
-            }
+            }*/
         }
         
 
