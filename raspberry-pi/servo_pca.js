@@ -68,3 +68,5 @@ class ServoController {
         this.pwm.setPulseLength(servo, pulseLength);
     }
 }
+
+module.exports = ServoController;
