@@ -231,6 +231,7 @@ class CreepyBot {
     }
 
     setFPS(value) {
+        let scope = this;
         clearInterval(this.itv);
         this.itv = setInterval(function() {
             scope.render();
