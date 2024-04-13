@@ -361,7 +361,7 @@ var processArgs = function() {
 setTimeout(async () => {
     var args	= processArgs();
     args = _.extend({
-        disabled: true,
+        disabled: false,
         fps: 30,
         areaDistance: 12,
         areaRadius: 4.2,
