@@ -9,6 +9,15 @@ class ControlUI {
         this.container.empty();
         this.loadConfig(function(options) {
             scope.data = [{
+                name: 'FPS',
+                content: [{
+                    id: 'fps',
+                    label: 'FPS',
+                    type:  'slider',
+                    range: [0,60, options.fps, 1]
+                }]
+            },
+            {
                 name: 'Gait',
                 content: [{
                     id: 'areaDistance',

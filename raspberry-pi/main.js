@@ -23,7 +23,7 @@ class CreepyBot {
         params = _.extend({}, params);
         this.params = params;
         this.options = _.extend({
-            fps: 30,
+            fps: params.fps || 10,
             render2D: true,
             render3D: true,
             robot: {
@@ -139,6 +139,9 @@ class CreepyBot {
                 let i;
 
                 switch (data.name) {
+                    case "fps":
+                        scope.setFPS(data.value);
+                    break;
                     case "z":
                         scope.gait.body.z = data.value;
                     break;
@@ -224,10 +227,16 @@ class CreepyBot {
     start() {
         let scope = this;
         this.started = true;
+        this.setFPS(this.options.fps);
+    }
+
+    setFPS(value) {
+        clearInterval(this.itv);
         this.itv = setInterval(function() {
             scope.render();
-        }, 1000/this.options.fps)
+        }, 1000/value)
     }
+
     stop() {
         this.started = false;
         clearInterval(this.itv);
@@ -267,16 +276,19 @@ class CreepyBot {
             angles.push(a1);
             angles.push(a2);
 
-            angles2.push(Math.round(this.ik.legs[i].angles.shoulder));
-            angles2.push(Math.round(this.ik.legs[i].angles.upper));
-            angles2.push(Math.round(this.ik.legs[i].angles.tip));
+            //angles2.push(Math.round(this.ik.legs[i].angles.shoulder));
+            //angles2.push(Math.round(this.ik.legs[i].angles.upper));
+            //angles2.push(Math.round(this.ik.legs[i].angles.tip));
         }
 
-        if (this.servo && !this.params.disabled) {
+        /*if (this.servo && !this.params.disabled) {
             for (i=0;i<15;i++) {
                 this.servo.move(i, angles[i]); // PCA
             }
             //this.servo2.moveServos(0x07, [angles[15], angles[16], angles[17], 0, 0, 0]);
+        }*/
+        if (!this.params.disabled) {
+            this.servo.setAllAngles(angles);
         }
         //console.log(JSON.stringify(angles2));
         //console.log(JSON.stringify(angles));
@@ -349,6 +361,7 @@ setTimeout(async () => {
     var args	= processArgs();
     args = _.extend({
         disabled: true,
+        fps: 30,
         areaDistance: 12,
         areaRadius: 4.2,
         streamline: 18,
