@@ -114,14 +114,17 @@ class Maths {
     }
     
     static angle2D(pointA, pointB) {
-        // Calculate the angle in radians
+        // Calculate the angle in radians using Math.atan2
         const angleRadians = Math.atan2(pointB.y - pointA.y, pointB.x - pointA.x);
     
         // Convert radians to degrees
         const angleDeg = angleRadians * (180 / Math.PI);
     
+        // Adjust angle to be within the range 0 to 360 degrees
+        const angle360 = (angleDeg + 360) % 360;
+    
         // Return the angle in degrees
-        return angleDeg;
+        return angle360;
     }
 
     static rotate3DPoint(point, center, angle) {

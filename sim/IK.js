@@ -82,7 +82,8 @@ class IK {
             x: tip3D.x,
             y: tip3D.z
         }
-        this.legs[n].angles.shoulder = Maths.cycle(this.angle2D(anchor, _tip) - this.gait.body.legs[n].legAngle + 90, 0, 360); //@todo: remove the cycle, fix raw angles
+        //this.legs[n].angles.shoulder = Maths.cycle(this.angle2D(anchor, _tip) - this.gait.body.legs[n].legAngle + 90, 0, 360); //@todo: remove the cycle, fix raw angles
+        this.legs[n].angles.shoulder = Maths.angle2D(anchor, _tip) - this.gait.body.legs[n].legAngle + 90// - this.gait.body.legs[n].legAngle + 90; //@todo: remove the cycle, fix raw angles
         
         let fixed = this.pointBetween({
             x: leg.anchor.x,

@@ -271,7 +271,7 @@ class CreepyBot {
                     fixed: a0
                 }, null, 4));
 
-                let upperPos = this.toScreenPosition(this.robot.robot.legs[i].parts.upper.mesh, this.camera, this.renderer);
+                /*let upperPos = this.toScreenPosition(this.robot.robot.legs[i].parts.upper.mesh, this.camera, this.renderer);
                 $(`#debug-upper-${i}`).show().css({left: upperPos.x, top: upperPos.y}).text(JSON.stringify({
                     Real: Math.round(this.ik.legs[i].angles.upper),
                     fixed: a1
@@ -281,7 +281,7 @@ class CreepyBot {
                 $(`#debug-tip-${i}`).show().css({left: tipPos.x, top: tipPos.y}).text(JSON.stringify({
                     Real: Math.round(this.ik.legs[i].angles.tip),
                     fixed: a2
-                }, null, 4));
+                }, null, 4));*/
             }
         }
     }
