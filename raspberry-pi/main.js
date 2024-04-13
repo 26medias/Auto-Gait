@@ -23,7 +23,7 @@ class CreepyBot {
         params = _.extend({}, params);
         this.params = params;
         this.options = _.extend({
-            fps: 30,
+            fps: params.fps || 10,
             render2D: true,
             render3D: true,
             robot: {
@@ -139,6 +139,9 @@ class CreepyBot {
                 let i;
 
                 switch (data.name) {
+                    case "fps":
+                        scope.setFPS(data.value);
+                    break;
                     case "z":
                         scope.gait.body.z = data.value;
                     break;
@@ -224,13 +227,23 @@ class CreepyBot {
     start() {
         let scope = this;
         this.started = true;
-        this.itv = setInterval(function() {
+        /*this.itv = setInterval(function() {
             scope.render();
-        }, 1000/this.options.fps)
+        }, 1000/this.options.fps)*/
+        this.setFPS(this.params.fps);
     }
+
     stop() {
         this.started = false;
         clearInterval(this.itv);
+    }
+
+    setFPS(value) {
+        const scope = this;
+        clearInterval(this.itv);
+        this.itv = setInterval(function() {
+            scope.render();
+        }, 1000/value)
     }
 
     // Real world angle to Sim Angle
