@@ -1,6 +1,7 @@
 const AutoGait = require('./gait.js');
 const IK = require('./IK.js');
 const Maths = require('./maths.js');
+const RobotControl = require('./webcontrol.js');
 
 const _ = require('underscore');
 
@@ -20,6 +21,7 @@ const ServoData = {
 class CreepyBot {
     constructor(options, params) {
         params = _.extend({}, params);
+        this.params = params;
         this.options = _.extend({
             fps: 30,
             render2D: true,
@@ -126,21 +128,72 @@ class CreepyBot {
         delete this.ik;
     }
 
+    setupWebServer() {
+        const scope = this;
+        this.controls = new RobotControl({
+            port: 8082,
+            content: './webui',
+            onData: function(data) {
+                console.log(data);
+
+                let i;
+
+                switch (data.name) {
+                    case "z":
+                        scope.gait.body.z = data.value;
+                    break;
+                    case "roll":
+                        scope.gait.body.roll = data.value;
+                    break;
+                    case "pitch":
+                        scope.gait.body.pitch = data.value;
+                    break;
+                    case "yaw":
+                        scope.gait.body.yaw = data.value;
+                    break;
+                    /*case "areaDistance":
+                        for (i=0;i<scope.gait.body.legs.length;i++) {
+                            scope.gait.body.legs[i].offset.radius = data.value;
+                        }
+                    break;
+                    case "translationAngle":
+                        for (i=0;i<scope.gait.body.legs.length;i++) {
+                            scope.gait.body.legs[i].offset.angle = data.value;
+                        }
+                    break;*/
+                    case "steps":
+                        scope.options.gait.steps = data.value;
+                    break;
+                    case "streamline":
+                        scope.gait.body.streamline = data.value;
+                    break;
+                }
+
+                return {received: data}
+            }
+        })
+        this.controls.start();
+    }
+
     async init() {
         let scope = this;
 
         this.reset();
+        this.setupWebServer();
         
-        try {
-            const ServoController = require('./servo_pca.js');
-            this.servo = new ServoController();
-            this.servo.init();
-            const ServoController2 = require('./servo.js');
-            this.servo2 = new ServoController2();
-            this.servo2.init();
-        } catch (e) {
-            console.log("pca9685/I2C not found")
+        if (!this.params.disabled) {
+            try {
+                const ServoController = require('./servo_pca.js');
+                this.servo = new ServoController();
+                this.servo.init();
+                const ServoController2 = require('./servo.js');
+                this.servo2 = new ServoController2();
+                this.servo2.init();
+            } catch (e) {
+                console.log("pca9685/I2C not found")
+            }
         }
+        
 
         // Gait
         this.gait = new AutoGait('#canvas', {
@@ -174,7 +227,6 @@ class CreepyBot {
         this.started = false;
         clearInterval(this.itv);
     }
-
 
     // Real world angle to Sim Angle
     convertAngle(l, n, angle, fixed) {
@@ -215,7 +267,7 @@ class CreepyBot {
             angles2.push(Math.round(this.ik.legs[i].angles.tip));
         }
 
-        if (this.servo) {
+        if (this.servo && !this.params.disabled) {
             for (i=0;i<15;i++) {
                 this.servo.move(i, angles[i]); // PCA
             }
@@ -292,6 +344,9 @@ var processArgs = function() {
 
 setTimeout(async () => {
     var args	= processArgs();
+    args = _.extend({
+        disabled: true
+    }, args);
 
     console.log("args", args)
 

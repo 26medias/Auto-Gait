@@ -92,6 +92,129 @@ class Maths {
         return { x: finalX, y: finalY };
     }
 
+    static triangleAngles3D(sideA, sideB, sideC) {
+        // Calculate the angles using the Law of Cosines
+        const angleA = Math.acos((Math.pow(sideB, 2) + Math.pow(sideC, 2) - Math.pow(sideA, 2)) / (2 * sideB * sideC));
+        const angleB = Math.acos((Math.pow(sideA, 2) + Math.pow(sideC, 2) - Math.pow(sideB, 2)) / (2 * sideA * sideC));
+        const angleC = Math.acos((Math.pow(sideA, 2) + Math.pow(sideB, 2) - Math.pow(sideC, 2)) / (2 * sideA * sideB));
+
+        // Convert radians to degrees
+        return [
+            angleA * (180 / Math.PI),
+            angleB * (180 / Math.PI),
+            angleC * (180 / Math.PI)
+        ];
+    }
+
+    static distance3D(pointA, pointB) {
+        const dx = pointA.x - pointB.x;
+        const dy = pointA.y - pointB.y;
+        const dz = pointA.z - pointB.z;
+        return Math.sqrt(dx * dx + dy * dy + dz * dz);
+    }
+    
+    static angle2D(pointA, pointB) {
+        // Calculate the angle in radians using Math.atan2
+        const angleRadians = Math.atan2(pointB.y - pointA.y, pointB.x - pointA.x);
+    
+        // Convert radians to degrees
+        const angleDeg = angleRadians * (180 / Math.PI);
+    
+        // Adjust angle to be within the range 0 to 360 degrees
+        const angle360 = (angleDeg + 360) % 360;
+    
+        // Return the angle in degrees
+        return angle360;
+    }
+
+    static rotate3DPoint(point, center, angle) {
+        // Convert angles from degrees to radians
+        const angleYRad = angle[1] * Math.PI / 180;
+        const angleXRad = angle[0] * Math.PI / 180;
+        const angleZRad = angle[2] * Math.PI / 180;
+    
+        // Translate point to origin (subtract center)
+        let x = point[0] - center[0];
+        let y = point[1] - center[1];
+        let z = point[2] - center[2];
+    
+        // Rotate around Y-axis
+        let cosY = Math.cos(angleYRad);
+        let sinY = Math.sin(angleYRad);
+        let xNew = x * cosY + z * sinY;
+        let zNew = z * cosY - x * sinY;
+        x = xNew;
+        z = zNew;
+    
+        // Rotate around X-axis
+        let cosX = Math.cos(angleXRad);
+        let sinX = Math.sin(angleXRad);
+        let yNew = y * cosX - z * sinX;
+        zNew = y * sinX + z * cosX;
+        y = yNew;
+        z = zNew;
+    
+        // Rotate around Z-axis
+        let cosZ = Math.cos(angleZRad);
+        let sinZ = Math.sin(angleZRad);
+        xNew = x * cosZ - y * sinZ;
+        yNew = x * sinZ + y * cosZ;
+    
+        // Translate point back
+        x = xNew + center[0];
+        y = yNew + center[1];
+        z = zNew + center[2];
+    
+        return [x, y, z];
+    }
+
+    
+    
+    static projectOnSurface(point, surfacePitch, surfaceRoll, surfaceDistance) {
+        // Convert degrees to radians
+        const roll = surfaceRoll * Math.PI / 180;
+        const pitch = surfacePitch * Math.PI / 180;
+    
+        // Compute the normal vector components based on the roll and pitch angles
+        const nx = -Math.sin(roll);
+        const ny = Math.cos(roll) * Math.cos(pitch);
+        const nz = Math.cos(roll) * Math.sin(pitch);
+    
+        // Plane equation: nx * x + ny * y + nz * z + d = 0
+        // Calculate 'd' based on assuming the plane passes through (0, -surfaceDistance, 0)
+        // Here, we consider the surface S2 is 'surfaceDistance' below S1 at the origin
+        const d = -ny * (-surfaceDistance);
+    
+        // Coordinates from point
+        const [x, , z] = point;
+    
+        // Solve for y using the plane equation: ny * y = - (nx * x + nz * z + d)
+        const y = -(nx * x + nz * z + d) / ny;
+    
+        // Return the new point with the calculated y value
+        const projectedPoint = [x, y, z];
+        return projectedPoint;
+    }
+    
+    static matrixMultiply(A, B) {
+        const Arows = A.length;
+        const Acols = A[0].length;
+        const Bcols = B[0] ? B[0].length : 1;  // Handle vector as special case
+        let result = Array(Arows).fill().map(() => Array(Bcols).fill(0));
+    
+        for (let r = 0; r < Arows; r++) {
+            for (let c = 0; c < Bcols; c++) {
+                let sum = 0;
+                for (let i = 0; i < Acols; i++) {
+                    sum += A[r][i] * (B[i][c] || B[i]);  // B[i][c] or B[i] handles if B is a vector
+                }
+                result[r][c] = sum;
+            }
+        }
+    
+        return result;
+    }
+
     static distance(x0, y0, x1, y1) {
         let dx = x1 - x0;
         let dy = y1 - y0;

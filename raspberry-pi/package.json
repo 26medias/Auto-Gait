@@ -9,6 +9,8 @@
   "author": "Julien L",
   "license": "MIT",
   "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
     "underscore": "^1.13.6"
   }
 }

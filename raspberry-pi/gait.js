@@ -122,6 +122,10 @@ class Body {
 
         this.turnTowardVector = true;
 
+        // Roll/Pitch
+        this.roll = 0;
+        this.pitch = 0;
+
         this.offset = {
             x: 0,
             y: 0
@@ -464,6 +468,8 @@ class Leg {
             upper: false,
             tip: false
         }
+
+        this.tip3D = {x: 0, y: 0, z: 0}
 
         // force vectors applied
         this.resetVectors();

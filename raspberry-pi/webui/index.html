@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>3D Auto Gait</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<!--<link type="text/css" rel="stylesheet" href="./assets/css/main.css">-->
+
+        <script type="application/javascript" src="control.js"></script>
+		<link rel="stylesheet/less" type="text/css" href="index.less" />
+        <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.6/underscore-min.js"></script>
+        <script type="application/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/less" ></script>
+	</head>
+
+	<body>
+
+		<pre style="display:none;position:absolute;bottom:0;left:0;width: 400px;height:300px;border:1px solid #000000;" id="debug"></pre>
+
+		<div id="control"></div>
+
+		<script>
+			var control = new ControlUI({});
+			control.init();
+		</script>
+	</body>
+</html>
