@@ -282,15 +282,15 @@ class CreepyBot {
             //angles2.push(Math.round(this.ik.legs[i].angles.tip));
         }
 
-        /*if (this.servo && !this.params.disabled) {
-            for (i=0;i<15;i++) {
+        if (this.servo && !this.params.disabled) {
+            for (i=0;i<12;i++) {
                 this.servo.move(i, angles[i]); // PCA
             }
             //this.servo2.moveServos(0x07, [angles[15], angles[16], angles[17], 0, 0, 0]);
-        }*/
-        if (!this.params.disabled) {
-            this.servo.setAllAngles(angles);
         }
+        /*if (!this.params.disabled) {
+            this.servo.setAllAngles(angles);
+        }*/
         //console.log(JSON.stringify(angles2));
         //console.log(JSON.stringify(angles));
         //console.log('')
