@@ -5,6 +5,7 @@ const path = require('path'); // Import the path module
 
 class RobotControl {
     constructor(options) {
+        this.options = options;
         this.port = options.port || 8080;
         this.content = options.content || './webui';
         this.onData = options.onData || ((data) => console.log(data));
@@ -25,15 +26,20 @@ class RobotControl {
     }
 
     setupRoutes() {
+        const scope = this;
         // Setup the `/update` endpoint for both GET and POST
         this.app.get('/update', (req, res) => {
-            const result = this.onData(req.query);
+            const result = scope.onData(req.query);
             res.json(result);
         });
 
         this.app.post('/update', (req, res) => {
-            const result = this.onData(req.body);
+            const result = scope.onData(req.body);
             res.json(result);
+        });
+
+        this.app.get('/config', (req, res) => {
+            res.json(scope.options.config);
         });
     }
 

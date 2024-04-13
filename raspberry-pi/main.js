@@ -170,7 +170,8 @@ class CreepyBot {
                 }
 
                 return {received: data}
-            }
+            },
+            config: scope.params
         })
         this.controls.start();
     }
@@ -340,12 +341,20 @@ var processArgs = function() {
 	return output;
 }
 
-
-
 setTimeout(async () => {
     var args	= processArgs();
     args = _.extend({
-        disabled: true
+        disabled: true,
+        areaDistance: 12,
+        areaRadius: 4.2,
+        streamline: 18,
+        steps: 10,
+        translationAngle: 0,
+        translationRadius: 0,
+        yaw: 0,
+        pitch: 0,
+        roll: 0,
+        z: 4
     }, args);
 
     console.log("args", args)

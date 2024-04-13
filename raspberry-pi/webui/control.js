@@ -1,75 +1,79 @@
 
 class ControlUI {
     constructor(options) {
-        this.data = [{
-            name: 'Gait',
-            content: [{
-                id: 'areaDistance',
-                label: 'Area Distance',
-                type:  'slider',
-                range: [0,30, options.areaDistance, 0.1]
-            },{
-                id: 'areaRadius',
-                label: 'Area Radius',
-                type:  'slider',
-                range: [0,30, options.areaRadius, 0.1]
-            },{
-                id: 'streamline',
-                label: 'Streamline',
-                type:  'slider',
-                range: [0,100, options.streamline]
-            },{
-                id: 'steps',
-                label: 'Steps',
-                type:  'slider',
-                range: [0,30, options.steps]
-            }]
-        },
-        {
-            name: 'Translation Vector',
-            content: [{
-                id: 'translationAngle',
-                label: 'Angle',
-                type:  'slider',
-                range: [-180,180, options.translationAngle]
-            },
-            {
-                id: 'translationRadius',
-                label: 'Radius',
-                type:  'slider',
-                range: [0,99, options.translationRadius]
-            }]
-        },
-        {
-            name: 'Body Angles',
-            content: [{
-                id: 'yaw',
-                label: 'Yaw',
-                type:  'slider',
-                range: [-35,35, options.yaw, 1]
-            }, {
-                id: 'pitch',
-                label: 'Pitch',
-                type:  'slider',
-                range: [-45,45, options.pitch, 1]
-            }, {
-                id: 'roll',
-                label: 'Roll',
-                type:  'slider',
-                range: [-45,45, options.roll, 1]
-            }, {
-                id: 'z',
-                label: 'Ground Distance',
-                type:  'slider',
-                range: [1,60, options.z, 0.1]
-            }]
-        }]
         this.container = $("#control")
     }
 
     init() {
+        const scope = this;
         this.container.empty();
-        this.build(this.data, this.container);
+        this.loadConfig(function(options) {
+            scope.data = [{
+                name: 'Gait',
+                content: [{
+                    id: 'areaDistance',
+                    label: 'Area Distance',
+                    type:  'slider',
+                    range: [0,30, options.areaDistance, 0.1]
+                },{
+                    id: 'areaRadius',
+                    label: 'Area Radius',
+                    type:  'slider',
+                    range: [0,30, options.areaRadius, 0.1]
+                },{
+                    id: 'streamline',
+                    label: 'Streamline',
+                    type:  'slider',
+                    range: [0,100, options.streamline]
+                },{
+                    id: 'steps',
+                    label: 'Steps',
+                    type:  'slider',
+                    range: [0,30, options.steps]
+                }]
+            },
+            {
+                name: 'Translation Vector',
+                content: [{
+                    id: 'translationAngle',
+                    label: 'Angle',
+                    type:  'slider',
+                    range: [-180,180, options.translationAngle]
+                },
+                {
+                    id: 'translationRadius',
+                    label: 'Radius',
+                    type:  'slider',
+                    range: [0,99, options.translationRadius]
+                }]
+            },
+            {
+                name: 'Body Angles',
+                content: [{
+                    id: 'yaw',
+                    label: 'Yaw',
+                    type:  'slider',
+                    range: [-35,35, options.yaw, 1]
+                }, {
+                    id: 'pitch',
+                    label: 'Pitch',
+                    type:  'slider',
+                    range: [-45,45, options.pitch, 1]
+                }, {
+                    id: 'roll',
+                    label: 'Roll',
+                    type:  'slider',
+                    range: [-45,45, options.roll, 1]
+                }, {
+                    id: 'z',
+                    label: 'Ground Distance',
+                    type:  'slider',
+                    range: [1,60, options.z, 0.1]
+                }]
+            }]
+            scope.build(scope.data, scope.container);
+        });
+        
     }
 
     build(data, container) {
@@ -221,5 +225,26 @@ class ControlUI {
                 console.error('Error:', error);
             });
         }
+    }
+
+    loadConfig(callback) {
+        const scope = this;
+        const url = '/config';  // Replace `10.0.0.x` with your actual server IP address
+    
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Configuration:', data);
+                scope.config = data;
+                callback(data);
+            })
+            .catch(error => {
+                console.error('Failed to fetch configuration:', error);
+            });
     }
 }
