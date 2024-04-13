@@ -151,21 +151,25 @@ class CreepyBot {
                     case "yaw":
                         scope.gait.body.yaw = data.value;
                     break;
-                    /*case "areaDistance":
+                    case "areaRadius":
                         for (i=0;i<scope.gait.body.legs.length;i++) {
-                            scope.gait.body.legs[i].offset.radius = data.value;
+                            scope.gait.body.legs[i].center = Maths.pointCoord(0, 0, data.value, scope.gait.body.legs[i].legAngle);
                         }
                     break;
-                    case "translationAngle":
-                        for (i=0;i<scope.gait.body.legs.length;i++) {
-                            scope.gait.body.legs[i].offset.angle = data.value;
-                        }
-                    break;*/
+                    case "areaDistance":
+                        scope.gait.body.updateLegRadius(data.value);
+                    break;
                     case "steps":
                         scope.options.gait.steps = data.value;
                     break;
                     case "streamline":
                         scope.gait.body.streamline = data.value;
+                    break;
+                    case "translationAngle":
+                        scope.params.translationAngle = data.value;
+                    break;
+                    case "translationRadius":
+                        scope.params.translationRadius = data.value;
                     break;
                 }
 
@@ -205,8 +209,8 @@ class CreepyBot {
         }, function(gait) {
             // on tick
             scope.gait.body.applyTranslationVector({
-                angle: 0,
-                distance: 100,
+                angle: scope.params.translationAngle || 0,
+                distance: scope.params.translationRadius || 0,
             });
             scope.gait.body.applyRotationVector({
                 angle: 0,
