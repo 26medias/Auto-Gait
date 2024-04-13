@@ -747,8 +747,8 @@ class Render3D {
         output.robot.body.update = function() {
             robotBody.position.y = gait.body.z + ServoData.servo.h + ServoData.servo.ch + ServoData.servo.ph;
             robotBody.rotation.y = -scope.deg(gait.body.angle);
-            robotBody.rotation.x = scope.deg(gait.body.roll);
-            robotBody.rotation.z = scope.deg(gait.body.pitch);
+            robotBody.rotation.x = scope.deg(-gait.body.roll);
+            robotBody.rotation.z = scope.deg(-gait.body.pitch);
         }
         output.robot.body.update();
 

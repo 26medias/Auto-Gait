@@ -139,20 +139,6 @@ export default class ControlUI {
             }]
         },
         {
-            name: 'Rotation Vector',
-            content: [{
-                id: 'rotationAngle',
-                label: 'Angle',
-                type:  'slider',
-                range: [-0.1,0.1, root.gait.control.vector.rotationAngle, 0.01],
-                liveChange: true,
-                onChange: function(value) {
-                    root.gait.control.vector.rotationAngle = value;
-                    root.gait.control.updateDisplay();
-                }
-            }]
-        },
-        {
             name: 'Body Angles',
             content: [{
                 id: 'turn',

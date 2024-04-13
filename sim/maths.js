@@ -92,6 +92,38 @@ class Maths {
         return { x: finalX, y: finalY };
     }
 
+    static triangleAngles3D(sideA, sideB, sideC) {
+        // Calculate the angles using the Law of Cosines
+        const angleA = Math.acos((Math.pow(sideB, 2) + Math.pow(sideC, 2) - Math.pow(sideA, 2)) / (2 * sideB * sideC));
+        const angleB = Math.acos((Math.pow(sideA, 2) + Math.pow(sideC, 2) - Math.pow(sideB, 2)) / (2 * sideA * sideC));
+        const angleC = Math.acos((Math.pow(sideA, 2) + Math.pow(sideB, 2) - Math.pow(sideC, 2)) / (2 * sideA * sideB));
+
+        // Convert radians to degrees
+        return [
+            angleA * (180 / Math.PI),
+            angleB * (180 / Math.PI),
+            angleC * (180 / Math.PI)
+        ];
+    }
+
+    static distance3D(pointA, pointB) {
+        const dx = pointA.x - pointB.x;
+        const dy = pointA.y - pointB.y;
+        const dz = pointA.z - pointB.z;
+        return Math.sqrt(dx * dx + dy * dy + dz * dz);
+    }
+    
+    static angle2D(pointA, pointB) {
+        // Calculate the angle in radians
+        const angleRadians = Math.atan2(pointB.y - pointA.y, pointB.x - pointA.x);
+    
+        // Convert radians to degrees
+        const angleDeg = angleRadians * (180 / Math.PI);
+    
+        // Return the angle in degrees
+        return angleDeg;
+    }
+
     static rotate3DPoint(point, center, angle) {
         // Convert angles from degrees to radians
         const angleYRad = angle[1] * Math.PI / 180;
@@ -132,6 +164,8 @@ class Maths {
     
         return [x, y, z];
     }
+
+    
     
     static projectOnSurface(point, surfacePitch, surfaceRoll, surfaceDistance) {
         // Convert degrees to radians
