@@ -389,8 +389,8 @@ setTimeout(async () => {
         { name: 'roll', valueMin: -10, valueMax: 10, durationMin: 30, durationMax: 120, probability: 30 },
         { name: 'yaw', valueMin: -25, valueMax: 25, durationMin: 10, durationMax: 60, probability: 10 },
         { name: 'pitch', valueMin: -15, valueMax: 15, durationMin: 10, durationMax: 60, probability: 10 },
-        { name: 'translationAngle', valueMin: -45, valueMax: 45, durationMin: 30, durationMax: 60, probability: 1 },
-        { name: 'translationRadius', valueMin: 0, valueMax: 100, durationMin: 30, durationMax: 60, probability: 10 },
+        //{ name: 'translationAngle', valueMin: -45, valueMax: 45, durationMin: 30, durationMax: 60, probability: 1 },
+        //{ name: 'translationRadius', valueMin: 0, valueMax: 100, durationMin: 30, durationMax: 60, probability: 10 },
     ];
     
     const robot = new RobotVariables(variablesConfig);
