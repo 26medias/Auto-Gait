@@ -248,6 +248,7 @@ class CreepyBot {
         clearInterval(this.itv);
         this.itv = setInterval(function() {
             scope.render();
+            scope.onTick && scope.onTick();
         }, 1000/value)
     }
 
@@ -403,19 +404,20 @@ setTimeout(async () => {
         maxZ
         steps
     */
+    bot.onTick = function() {
+        const newVars = robot.tick();
+        for (let k in newVars) {
+            bot.setVar({
+                name: k,
+                value: newVars[k]
+            })
+        }
+    };
     bot.init();
     
     switch (args.op) {
         case "start":
-            bot.start(function() {
-                const newVars = robot.tick();
-                for (let k in newVars) {
-                    bot.setVar({
-                        name: k,
-                        value: newVars[k]
-                    })
-                }
-            });
+            bot.start();
         break;
         case "test":
             for (i=0;i<500;i++) {
