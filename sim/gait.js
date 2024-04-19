@@ -112,6 +112,7 @@ class AutoGait {
 
 class Body {
     constructor(options, canvas) {
+        const scope = this;
         this.canvas = canvas;
         this.options = options;
 
@@ -134,7 +135,11 @@ class Body {
         this.streamline = options.body.streamline;
 
         // overwrite
-        this.options.gait.maxSpeed = this.options.leg.radius / ((this.options.gait.steps * (this.options.leg.count-1)) / 2)
+        
+        this.updateLegRadius = function(value) {
+            scope.options.gait.maxSpeed = value / ((scope.options.gait.steps * (scope.options.leg.count-1)) / 2)
+        }
+        this.updateLegRadius(this.options.leg.radius);
 
         // Initial vectors
         this.resetVectors();

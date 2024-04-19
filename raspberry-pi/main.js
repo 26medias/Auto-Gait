@@ -2,6 +2,7 @@ const AutoGait = require('./gait.js');
 const IK = require('./IK.js');
 const Maths = require('./maths.js');
 const RobotControl = require('./webcontrol.js');
+const RobotVariables = require('./randomer.js');
 
 const _ = require('underscore');
 
@@ -128,55 +129,59 @@ class CreepyBot {
         delete this.ik;
     }
 
+    setVar(data) {
+        let scope = this;
+
+        let i;
+
+        switch (data.name) {
+            case "fps":
+                scope.setFPS(data.value);
+            break;
+            case "z":
+                scope.gait.body.z = data.value;
+            break;
+            case "roll":
+                scope.gait.body.roll = data.value;
+            break;
+            case "pitch":
+                scope.gait.body.pitch = data.value;
+            break;
+            case "yaw":
+                scope.gait.body.yaw = data.value;
+            break;
+            case "areaRadius":
+                for (i=0;i<scope.gait.body.legs.length;i++) {
+                    scope.gait.body.legs[i].center = Maths.pointCoord(0, 0, data.value, scope.gait.body.legs[i].legAngle);
+                }
+            break;
+            case "areaDistance":
+                scope.gait.body.updateLegRadius(data.value);
+            break;
+            case "steps":
+                scope.options.gait.steps = data.value;
+            break;
+            case "streamline":
+                scope.gait.body.streamline = data.value;
+            break;
+            case "translationAngle":
+                scope.params.translationAngle = data.value;
+            break;
+            case "translationRadius":
+                scope.params.translationRadius = data.value;
+            break;
+        }
+
+        return {received: data}
+    }
+
     setupWebServer() {
         const scope = this;
         this.controls = new RobotControl({
             port: 8082,
             content: './webui',
             onData: function(data) {
-                console.log(data);
-
-                let i;
-
-                switch (data.name) {
-                    case "fps":
-                        scope.setFPS(data.value);
-                    break;
-                    case "z":
-                        scope.gait.body.z = data.value;
-                    break;
-                    case "roll":
-                        scope.gait.body.roll = data.value;
-                    break;
-                    case "pitch":
-                        scope.gait.body.pitch = data.value;
-                    break;
-                    case "yaw":
-                        scope.gait.body.yaw = data.value;
-                    break;
-                    case "areaRadius":
-                        for (i=0;i<scope.gait.body.legs.length;i++) {
-                            scope.gait.body.legs[i].center = Maths.pointCoord(0, 0, data.value, scope.gait.body.legs[i].legAngle);
-                        }
-                    break;
-                    case "areaDistance":
-                        scope.gait.body.updateLegRadius(data.value);
-                    break;
-                    case "steps":
-                        scope.options.gait.steps = data.value;
-                    break;
-                    case "streamline":
-                        scope.gait.body.streamline = data.value;
-                    break;
-                    case "translationAngle":
-                        scope.params.translationAngle = data.value;
-                    break;
-                    case "translationRadius":
-                        scope.params.translationRadius = data.value;
-                    break;
-                }
-
-                return {received: data}
+                return scope.setVar(data);
             },
             config: scope.params
         })
@@ -376,6 +381,20 @@ setTimeout(async () => {
 
     console.log("args", args)
 
+
+    // Random behavior
+    const variablesConfig = [
+        { name: 'z', valueMin: 1, valueMax: 5, durationMin: 30, durationMax: 60, probability: 30 },
+        { name: 'roll', valueMin: -5, valueMax: 5, durationMin: 30, durationMax: 60, probability: 30 },
+        { name: 'yaw', valueMin: -5, valueMax: 5, durationMin: 30, durationMax: 60, probability: 30 },
+        { name: 'pitch', valueMin: -5, valueMax: 5, durationMin: 30, durationMax: 60, probability: 30 },
+        { name: 'translationAngle', valueMin: -45, valueMax: 45, durationMin: 30, durationMax: 60, probability: 30 },
+        { name: 'translationRadius', valueMin: 0, valueMax: 100, durationMin: 30, durationMax: 60, probability: 30 },
+    ];
+    
+    const robot = new RobotVariables(variablesConfig);
+
+
     let bot = new CreepyBot({}, args);
     /*
         streamline
@@ -388,7 +407,15 @@ setTimeout(async () => {
     
     switch (args.op) {
         case "start":
-            bot.start();
+            bot.start(function() {
+                const newVars = robot.tick();
+                for (let k in newVars) {
+                    bot.setVar({
+                        name: k,
+                        value: newVars[k]
+                    })
+                }
+            });
         break;
         case "test":
             for (i=0;i<500;i++) {

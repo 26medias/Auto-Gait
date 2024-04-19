@@ -14,9 +14,11 @@ import ControlUI from './control.js'
 */
 
 class CreepyBot {
-    constructor(options) {
+    constructor(options, params) {
+        params = _.extend({}, params);
+        this.params = params;
         this.options = _.extend({
-            fps: 30,
+            fps: params.fps || 10,
             render2D: true,
             render3D: true,
             robot: {
@@ -26,7 +28,7 @@ class CreepyBot {
                     legRadius: 7,   // Location of the leg anchors
                     height: 0.5,    // Body tickness
                     angle: 0,       // Body Y rotation
-                    streamline: 0, // oval deformation in the vector direction
+                    streamline: params.streamline || 18, // oval deformation in the vector direction
                     z: 4,           // Body height from ground
                     builder: function(body, Leg) {
                         let legConfigs = [{
@@ -54,10 +56,10 @@ class CreepyBot {
                 leg: {
                     count: 4,       // Number of legs
                     decayRate: 1,   // Smoothing decay rate [0;1]
-                    distance: 12,   // Distance of the movement center
-                    radius: 4.2,      // Movement area radius
-                    maxRadius: 3,   // Max Movement area radius to be able to reach coordinates
-                    maxZ: 5,        // Max Y distance (Z in 2D coords, but Y in 3D)
+                    distance: params.distance || 12,   // Distance of the movement center
+                    radius: params.radius || 4.2,      // Movement area radius
+                    maxRadius: params.radius || 4.2,   // Max Movement area radius to be able to reach coordinates
+                    maxZ: params.maxZ || 5,        // Max Y distance (Z in 2D coords, but Y in 3D)
                     mirror: [false, true, false, true],
                     upper: {
                         offset: [-ServoData.servo.w/2, ServoData.servo.ch+ServoData.servo.w/2, 0],
@@ -73,7 +75,7 @@ class CreepyBot {
                     }
                 },
                 gait: {
-                    steps: 10,
+                    steps: params.steps || 10,
                     maxTurnAngle: 0.2,
                     maxSpeed: 1, 
                     logic: function(body, legs) {
@@ -94,8 +96,6 @@ class CreepyBot {
                             }).sort(function(a, b) {
                                 return a[1] - b[1];
                             })
-
-                            //console.log(priorities)
                             
                             if (priorities.length > 0) {
                                 for (let i=0;i<=priorities.length;i++) {
@@ -132,6 +132,52 @@ class CreepyBot {
         delete this.robot;
     }
 
+    setVar(data) {
+        let scope = this;
+
+        let i;
+
+        switch (data.name) {
+            case "fps":
+                scope.setFPS(data.value);
+            break;
+            case "z":
+                scope.gait.body.z = data.value;
+            break;
+            case "roll":
+                scope.gait.body.roll = data.value;
+            break;
+            case "pitch":
+                scope.gait.body.pitch = data.value;
+            break;
+            case "yaw":
+                scope.gait.body.yaw = data.value;
+            break;
+            case "areaRadius":
+                for (i=0;i<scope.gait.body.legs.length;i++) {
+                    scope.gait.body.legs[i].center = Maths.pointCoord(0, 0, data.value, scope.gait.body.legs[i].legAngle);
+                }
+            break;
+            case "areaDistance":
+                scope.gait.body.updateLegRadius(data.value);
+            break;
+            case "steps":
+                scope.options.gait.steps = data.value;
+            break;
+            case "streamline":
+                scope.gait.body.streamline = data.value;
+            break;
+            case "translationAngle":
+                scope.params.translationAngle = data.value;
+            break;
+            case "translationRadius":
+                scope.params.translationRadius = data.value;
+            break;
+        }
+
+        return {received: data}
+    }
+
     setupKeyboard() {
         let scope = this;
 
@@ -157,7 +203,7 @@ class CreepyBot {
         });
     }
 
-    async init() {
+    async init(onTick) {
         let scope = this;
 
         this.reset();
@@ -198,14 +244,15 @@ class CreepyBot {
         console.log(this.robot)
         console.log(this.ik)
 
-        this.start();
+        this.start(onTick);
     }
 
-    start() {
+    start(onTick) {
         let scope = this;
         this.started = true;
         this.itv = setInterval(function() {
             requestAnimationFrame(function(t) {
+                onTick && onTick();
                 scope.render(t);
             });
             //scope.stop();
@@ -435,7 +482,46 @@ class CreepyBot {
 
 
 setTimeout(function() {
-    let bot = new CreepyBot({});
-    bot.init();
+    let args = {
+        disabled: true,
+        areaDistance: 12,
+        areaRadius: 4.2,
+        streamline: 18,
+        steps: 10,
+        translationAngle: 0,
+        translationRadius: 0,
+        yaw: 0,
+        pitch: 0,
+        roll: 0,
+        z: 4
+    };
+
+    console.log("args", args)
+
+    // Random behavior
+    const variablesConfig = [
+        { name: 'z', valueMin: 1, valueMax: 5, durationMin: 30, durationMax: 60, probability: 30 },
+        { name: 'roll', valueMin: -5, valueMax: 5, durationMin: 30, durationMax: 60, probability: 30 },
+        { name: 'yaw', valueMin: -5, valueMax: 5, durationMin: 30, durationMax: 60, probability: 30 },
+        { name: 'pitch', valueMin: -5, valueMax: 5, durationMin: 30, durationMax: 60, probability: 30 },
+        { name: 'translationAngle', valueMin: -45, valueMax: 45, durationMin: 30, durationMax: 60, probability: 30 },
+        { name: 'translationRadius', valueMin: 0, valueMax: 100, durationMin: 30, durationMax: 60, probability: 30 },
+    ];
+    
+    const robot = new RobotVariables(variablesConfig);
+
+    let bot = new CreepyBot({}, args);
+    bot.init(function() {
+        const newVars = robot.tick();
+        for (let k in newVars) {
+            bot.setVar({
+                name: k,
+                value: newVars[k]
+            })
+        }
+    });
+
+
+
 }, 500)
 
