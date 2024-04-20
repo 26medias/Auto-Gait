@@ -450,6 +450,11 @@ setTimeout(async () => {
         }
     };
     bot.init();
+    // Reset to 90
+    for (i=0;i<500;i++) {
+        bot.writeAnglesPreset(args.angle);
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
     bot.gait.body.rest();
     bot.head.setNeckHorizontalAngle(args.neckX);
     bot.head.setNeckVerticalAngle(args.neckY);
