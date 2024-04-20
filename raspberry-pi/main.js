@@ -435,7 +435,7 @@ setTimeout(async () => {
         maxZ
         steps
     */
-    bot.onTick = function() {
+    /*bot.onTick = function() {
         const newVars = robot.tick();
         for (let k in newVars) {
             bot.setVar({
@@ -443,7 +443,7 @@ setTimeout(async () => {
                 value: newVars[k]
             })
         }
-    };
+    };*/
     bot.init();
     bot.gait.body.rest();
     bot.head.setNeckHorizontalAngle(90);
