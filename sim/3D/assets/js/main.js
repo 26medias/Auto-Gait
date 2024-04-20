@@ -336,12 +336,12 @@ class CreepyBot {
                 angles.push(a1);
                 angles.push(a2);
 
-                let shoulderPos = this.toScreenPosition(this.robot.robot.legs[i].parts.shoulder.mesh, this.camera, this.renderer);
+                /*let shoulderPos = this.toScreenPosition(this.robot.robot.legs[i].parts.shoulder.mesh, this.camera, this.renderer);
                 $(`#debug-shoulder-${i}`).show().css({left: shoulderPos.x, top: shoulderPos.y}).text(JSON.stringify({
                     angle: this.gait.body.legs[i].legAngle,
                     Real: Math.round(this.ik.legs[i].angles.shoulder),
                     fixed: a0
-                }, null, 4));
+                }, null, 4));*/
 
                 /*let upperPos = this.toScreenPosition(this.robot.robot.legs[i].parts.upper.mesh, this.camera, this.renderer);
                 $(`#debug-upper-${i}`).show().css({left: upperPos.x, top: upperPos.y}).text(JSON.stringify({

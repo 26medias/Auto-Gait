@@ -397,9 +397,9 @@ setTimeout(async () => {
     var args	= processArgs();
     args = _.extend({
         disabled: true,
-        areaDistance: 12,
+        areaDistance: 14,
         areaRadius: 4.2,
-        streamline: 18,
+        streamline: 0,
         steps: 10,
         translationAngle: 0,
         translationRadius: 0,
