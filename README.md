@@ -15,6 +15,7 @@ go to http://127.0.0.1:8080/3D/
     node main -op test -angle 90 -disabled false
     node main -op start -fps 20 -streamline 10 -distance 10 -radius 3.8
     node main -op start -disabled false -fps 20
+    node main -op start -disabled true -fps 20
 
 
 ## How it works

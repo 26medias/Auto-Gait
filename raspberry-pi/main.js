@@ -322,6 +322,8 @@ class CreepyBot {
             angles2.push(Math.round(this.ik.legs[i].angles.tip));
         }
 
+        console.log(JSON.stringify(angles));
+
         // Head
         angles.push(this.head.neckHorizontal.angle);
         angles.push(this.head.neckVertical.angle);
@@ -451,10 +453,9 @@ setTimeout(async () => {
     };
     bot.init();
     // Reset to 90
-    for (i=0;i<500;i++) {
-        bot.writeAnglesPreset(args.angle);
-        await new Promise(resolve => setTimeout(resolve, 500));
-    }
+    bot.writeAnglesPreset(90);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    console.log("Ok, starting")
     bot.gait.body.rest();
     bot.head.setNeckHorizontalAngle(args.neckX);
     bot.head.setNeckVerticalAngle(args.neckY);
