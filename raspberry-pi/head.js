@@ -28,7 +28,7 @@ class Servo {
 }
 
 class Head {
-    constructor(neckVertical, neckHorizontal, mouthVertical, eyelidsVertical) {
+    constructor(neckHorizontal, neckVertical, mouthVertical, eyelidsVertical) {
         this.neckVertical = new Servo(neckVertical.min, neckVertical.max);
         this.neckHorizontal = new Servo(neckHorizontal.min, neckHorizontal.max);
         this.mouthVertical = new Servo(mouthVertical.min, mouthVertical.max);

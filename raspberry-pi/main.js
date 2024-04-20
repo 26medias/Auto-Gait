@@ -241,8 +241,8 @@ class CreepyBot {
 
         // Head
         this.head = new Head({
-            min: 0,
-            max: 180
+            min: 60,
+            max: 120
         },{
             min: 0,
             max: 180
@@ -422,8 +422,8 @@ setTimeout(async () => {
         { name: 'pitch', valueMin: -15, valueMax: 15, durationMin: 10, durationMax: 60, probability: 10 },
         //{ name: 'translationAngle', valueMin: -45, valueMax: 45, durationMin: 30, durationMax: 60, probability: 1 },
         //{ name: 'translationRadius', valueMin: 0, valueMax: 100, durationMin: 30, durationMax: 60, probability: 10 },
-        { name: 'setNeckHorizontalAngle', valueMin: 0, valueMax: 180, durationMin: 10, durationMax: 60, probability: 60 },
-        { name: 'setNeckVerticalAngle', valueMin: 0, valueMax: 180, durationMin: 10, durationMax: 60, probability: 60 },
+        { name: 'setNeckHorizontalAngle', valueMin: 0, valueMax: 180, durationMin: 45, durationMax: 120, probability: 60, init: 90 },
+        { name: 'setNeckVerticalAngle', valueMin: 60, valueMax: 120, durationMin: 45, durationMax: 120, probability: 60, init: 90 },
     ];
     
     const robot = new RobotVariables(variablesConfig);
@@ -437,7 +437,7 @@ setTimeout(async () => {
         maxZ
         steps
     */
-    /*bot.onTick = function() {
+    bot.onTick = function() {
         const newVars = robot.tick();
         for (let k in newVars) {
             bot.setVar({
@@ -445,7 +445,7 @@ setTimeout(async () => {
                 value: newVars[k]
             })
         }
-    };*/
+    };
     bot.init();
     bot.gait.body.rest();
     bot.head.setNeckHorizontalAngle(args.neckX);
