@@ -226,13 +226,6 @@ class CreepyBot {
         }, function(gait) {
             // on tick
             if (gait.control.active) {
-                /*scope.gait.body.applyTranslationVector({
-                    angle: gait.control.vector.angle,
-                    distance: gait.control.vector.percent,
-                });
-                scope.gait.body.applyRotationVector({
-                    angle: gait.control.vector.rotationAngle,
-                });*/
                 scope.gait.body.applyTranslationVector({
                     angle: scope.params.translationAngle || 0,
                     distance: scope.params.translationRadius || 0,
@@ -274,7 +267,7 @@ class CreepyBot {
             min: 0,
             max: 180
         });
-        
+
 
         this.start(onTick);
     }
