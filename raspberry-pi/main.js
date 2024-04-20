@@ -174,6 +174,12 @@ class CreepyBot {
                     scope.gait.body.rest(); // Rest position when vector is 0
                 }
             break;
+            case "setNeckHorizontalAngle":
+                scope.head.setNeckHorizontalAngle(data.value);
+            break;
+            case "setNeckVerticalAngle":
+                scope.head.setNeckVerticalAngle(data.value);
+            break;
         }
 
         return {received: data}
@@ -414,6 +420,8 @@ setTimeout(async () => {
         { name: 'pitch', valueMin: -15, valueMax: 15, durationMin: 10, durationMax: 60, probability: 10 },
         //{ name: 'translationAngle', valueMin: -45, valueMax: 45, durationMin: 30, durationMax: 60, probability: 1 },
         //{ name: 'translationRadius', valueMin: 0, valueMax: 100, durationMin: 30, durationMax: 60, probability: 10 },
+        { name: 'setNeckHorizontalAngle', valueMin: 0, valueMax: 180, durationMin: 10, durationMax: 60, probability: 60 },
+        { name: 'setNeckVerticalAngle', valueMin: 0, valueMax: 180, durationMin: 10, durationMax: 60, probability: 60 },
     ];
     
     const robot = new RobotVariables(variablesConfig);
