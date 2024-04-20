@@ -406,7 +406,9 @@ setTimeout(async () => {
         yaw: 0,
         pitch: 0,
         roll: 0,
-        z: 4
+        z: 4,
+        neckX: 90,
+        neckY: 90
     }, args);
 
     console.log("args", args)
@@ -446,8 +448,8 @@ setTimeout(async () => {
     };*/
     bot.init();
     bot.gait.body.rest();
-    bot.head.setNeckHorizontalAngle(90);
-    bot.head.setNeckVerticalAngle(90);
+    bot.head.setNeckHorizontalAngle(args.neckX);
+    bot.head.setNeckVerticalAngle(args.neckY);
     
     switch (args.op) {
         case "start":
