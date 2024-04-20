@@ -60,7 +60,9 @@ class CreepyBot {
                     radius: params.radius || 4.2,      // Movement area radius
                     maxRadius: params.radius || 4.2,   // Max Movement area radius to be able to reach coordinates
                     maxZ: params.maxZ || 5,        // Max Y distance (Z in 2D coords, but Y in 3D)
-                    mirror: [false, true, false, true],
+                    gaitOffsetX: params.gaitOffsetX || 0, // tip center offset
+                    gaitOffsetY: params.gaitOffsetY || 0, // tip center offset
+                    mirror: [false, true, false, true], // Servo mirrors
                     upper: {
                         offset: [-ServoData.servo.w/2, ServoData.servo.ch+ServoData.servo.w/2, 0],
                         length: 5.5,
@@ -133,6 +135,8 @@ class CreepyBot {
     }
 
     setVar(data) {
+
+        //console.log("setVar", data)
         let scope = this;
 
         let i;
@@ -172,6 +176,10 @@ class CreepyBot {
             break;
             case "translationRadius":
                 scope.params.translationRadius = data.value;
+                if (!data.value || data.value == 0) {
+                    console.log("REST")
+                    scope.gait.body.rest(); // Rest position when vector is 0
+                }
             break;
         }
 
@@ -218,12 +226,19 @@ class CreepyBot {
         }, function(gait) {
             // on tick
             if (gait.control.active) {
-                scope.gait.body.applyTranslationVector({
+                /*scope.gait.body.applyTranslationVector({
                     angle: gait.control.vector.angle,
                     distance: gait.control.vector.percent,
                 });
                 scope.gait.body.applyRotationVector({
                     angle: gait.control.vector.rotationAngle,
+                });*/
+                scope.gait.body.applyTranslationVector({
+                    angle: scope.params.translationAngle || 0,
+                    distance: scope.params.translationRadius || 0,
+                });
+                scope.gait.body.applyRotationVector({
+                    angle: 0,
                 });
             }
         });
@@ -243,6 +258,23 @@ class CreepyBot {
 
         console.log(this.robot)
         console.log(this.ik)
+
+
+        // Head
+        this.head = new Head({
+            min: 0,
+            max: 180
+        },{
+            min: 0,
+            max: 180
+        },{
+            min: 0,
+            max: 180
+        },{
+            min: 0,
+            max: 180
+        });
+        
 
         this.start(onTick);
     }
@@ -486,28 +518,30 @@ setTimeout(function() {
         disabled: true,
         areaDistance: 12,
         areaRadius: 4.2,
-        streamline: 18,
+        streamline: 0,
         steps: 10,
         translationAngle: 0,
         translationRadius: 0,
         yaw: 0,
         pitch: 0,
         roll: 0,
-        z: 4
+        z: 4,
+        gaitOffsetX: 1.5,
+        gaitOffsetY: 3,
     };
 
     console.log("args", args)
 
     // Random behavior
     const variablesConfig = [
-        { name: 'z', valueMin: 1, valueMax: 5, durationMin: 30, durationMax: 60, probability: 30 },
-        { name: 'roll', valueMin: -5, valueMax: 5, durationMin: 30, durationMax: 60, probability: 30 },
-        { name: 'yaw', valueMin: -5, valueMax: 5, durationMin: 30, durationMax: 60, probability: 30 },
-        { name: 'pitch', valueMin: -5, valueMax: 5, durationMin: 30, durationMax: 60, probability: 30 },
-        { name: 'translationAngle', valueMin: -45, valueMax: 45, durationMin: 30, durationMax: 60, probability: 30 },
-        { name: 'translationRadius', valueMin: 0, valueMax: 100, durationMin: 30, durationMax: 60, probability: 30 },
+        { name: 'z', valueMin: 2, valueMax: 6, durationMin: 30, durationMax: 60, probability: 5 },
+        { name: 'roll', valueMin: -10, valueMax: 10, durationMin: 30, durationMax: 120, probability: 30 },
+        { name: 'yaw', valueMin: -25, valueMax: 25, durationMin: 10, durationMax: 60, probability: 10 },
+        { name: 'pitch', valueMin: -15, valueMax: 15, durationMin: 10, durationMax: 60, probability: 10 },
+        { name: 'translationAngle', valueMin: -45, valueMax: 45, durationMin: 30, durationMax: 60, probability: 1 },
+        { name: 'translationRadius', valueMin: 0, valueMax: 100, durationMin: 30, durationMax: 60, probability: 1 },
     ];
-    
+
     const robot = new RobotVariables(variablesConfig);
 
     let bot = new CreepyBot({}, args);
@@ -520,6 +554,7 @@ setTimeout(function() {
             })
         }
     });
+    bot.gait.body.rest();
 
 
 

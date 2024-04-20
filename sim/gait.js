@@ -289,7 +289,7 @@ class Body {
         // Update the legs
         for (i=0;i<this.legs.length;i++) {
             // Apply the streamline offset
-            this.legs[i].offset = this.areaOffsets[i].polar;
+            //this.legs[i].offset = this.areaOffsets[i].polar;
 
             // apply the vector to the legs
             this.legs[i].applyBodyTranslationVector(this.vectors.translation, this.vectors.translation);

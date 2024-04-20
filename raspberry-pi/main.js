@@ -3,6 +3,7 @@ const IK = require('./IK.js');
 const Maths = require('./maths.js');
 const RobotControl = require('./webcontrol.js');
 const RobotVariables = require('./randomer.js');
+const Head = require('./head.js');
 
 const _ = require('underscore');
 
@@ -169,6 +170,9 @@ class CreepyBot {
             break;
             case "translationRadius":
                 scope.params.translationRadius = data.value;
+                if (!data.value) {
+                    scope.gait.body.rest(); // Rest position when vector is 0
+                }
             break;
         }
 
@@ -225,7 +229,24 @@ class CreepyBot {
             });
         });
 
+        // IK
         this.ik = new IK(this.gait);
+
+
+        // Head
+        this.head = new Head({
+            min: 0,
+            max: 180
+        },{
+            min: 0,
+            max: 180
+        },{
+            min: 0,
+            max: 180
+        },{
+            min: 0,
+            max: 180
+        });
 
     }
 
@@ -276,6 +297,8 @@ class CreepyBot {
         let angles = [];
         let angles2 = [];
         let i;
+
+        // Legs
         for (i=0;i<this.gait.body.legs.length;i++) {
             
             let a0 = this.convertAngle(i, 0, Math.round(this.ik.legs[i].angles.shoulder), true);
@@ -291,15 +314,15 @@ class CreepyBot {
             angles2.push(Math.round(this.ik.legs[i].angles.tip));
         }
 
+        // Head
+        angles.push(this.head.neckHorizontal.angle);
+        angles.push(this.head.neckVertical.angle);
+
         if (this.servo && !this.params.disabled) {
-            for (i=0;i<15;i++) {
+            for (i=0;i<angles.length;i++) {
                 this.servo.move(i, angles[i]); // PCA
             }
-            //this.servo2.moveServos(0x07, [angles[15], angles[16], angles[17], 0, 0, 0]);
         }
-        //console.log(JSON.stringify(angles2));
-        //console.log(JSON.stringify(angles));
-        //console.log('')
     }
 
     writeAnglesPreset(angle, fixed) {
@@ -414,6 +437,9 @@ setTimeout(async () => {
         }
     };
     bot.init();
+    bot.gait.body.rest();
+    bot.head.setNeckHorizontalAngle(90);
+    bot.head.setNeckVerticalAngle(90);
     
     switch (args.op) {
         case "start":

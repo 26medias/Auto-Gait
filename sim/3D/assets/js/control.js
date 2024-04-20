@@ -133,8 +133,9 @@ export default class ControlUI {
                 range: [0,99, root.gait.control.vector.percent],
                 liveChange: true,
                 onChange: function(value) {
-                    root.gait.control.vector.percent = value;
-                    root.gait.control.updateDisplay();
+                    //root.gait.control.vector.percent = value;
+                    //root.gait.control.updateDisplay();
+                    root.setVar({name: 'translationRadius', value});
                 }
             }]
         },
@@ -180,8 +181,9 @@ export default class ControlUI {
                 range: [1,60, root.gait.body.z, 0.1],
                 liveChange: true,
                 onChange: function(value) {
-                    root.options.robot.body.z = value;
-                    root.gait.body.z = value;
+                    //root.options.robot.body.z = value;
+                    //root.gait.body.z = value;
+                    root.setVar({name: 'z', value});
                 }
             }]
         }]

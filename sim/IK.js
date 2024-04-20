@@ -41,11 +41,6 @@ class IK {
         The shoulder is attached to the body at `leg.anchor.x|y`, which it at `this.gait.body.legs[n].legAngle`° from the body center
         The upper arm is attached to the shoulder.
         The tip is attached to the upper arm.
-        If the body has roll and/or pitch, the center of rotation is the body center located at [0, 0, this.gait.body.z] while the foo targets (where the tip need to touch) do not change position the floor.
-        This code mostly considers the floor/targets to be moving/angled (keep robot as reference frame) which worked fine until I needed to support pitch & roll on top of yaw.
-        With pitch=0 & yaw=0 this code works perfectly.
-        With pitch OR yaw set at some value, it works ok, but the shoulder angle is a bit off, the other angles seem to be adjusted fine.
-        With Pitch AND yaw set at some value, the shoulder angles are noticeably off.
     */
     updateLeg(n) {
         let leg = this.gait.body.legs[n];
@@ -98,60 +93,6 @@ class IK {
         let anchor3D = fixed;
         //console.log(this.legs[n].tip3D)
 
-        let groundAnchor = { // todo: Adapt this to body rotation
-            x: anchor3D.x,
-            y: leg.lift.z,
-            z: anchor3D.z
-        }
-        
-        // Adjust for ground height
-        let triangleAngles3D = this.triangleAngles3D(anchor3D, tip3D, groundAnchor);
-
-        // Distance from anchor to tip
-        let tipDistance = this.distance3D(anchor3D, tip3D)
-        let tipLength = this.gait.options.leg.tip.length+ this.gait.options.leg.tip.offset[0];
-        let upperLength = this.gait.options.leg.upper.length;
-        let triangleAngles = this.triangleAngles(tipLength, upperLength, tipDistance);
-
-        // Upper Angle
-        this.legs[n].angles.upper = -triangleAngles[0]+90 + (90-triangleAngles3D[1]);
-        this.legs[n].angles.tip = -triangleAngles[2]+180;
-
-    }
-
-
-    updateLeg_old(n) {
-        let leg = this.gait.body.legs[n];
-        let anchor = {
-            x: leg.anchor.x,
-            y: leg.anchor.y,
-        }
-        let tip = {
-            x: leg.foot.ax,
-            y: leg.foot.ay,
-        }
-        // Correct for body angle
-        tip = Maths.rotate(tip.x, tip.y, 0, 0, -this.gait.body.angle);
-
-        // Shoulder Angle
-        this.legs[n].angles.shoulder = Maths.cycle(this.angle2D(anchor, tip) - this.gait.body.legs[n].legAngle + 90, 0, 360);
-        
-        let fixed = this.pointBetween({
-            x: leg.anchor.x,
-            y: this.gait.body.z + this.gait.options.leg.upper.offset[1],
-            z: leg.anchor.y,
-        },{
-            x: tip.x,
-            y: this.gait.body.z + this.gait.options.leg.upper.offset[1],
-            z: tip.y,
-        }, -this.gait.options.leg.upper.offset[0]);
-
-        let anchor3D = fixed;
-        let tip3D = {
-            x: tip.x,
-            y: leg.lift.z,
-            z: tip.y,
-        }
         let groundAnchor = { // todo: Adapt this to body rotation
             x: anchor3D.x,
             y: leg.lift.z,
