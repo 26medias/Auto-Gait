@@ -6,14 +6,14 @@ if (typeof process !== 'undefined' && process.versions != null && process.versio
 }
 
 class EasingVariable {
-    constructor(name, valueMin, valueMax, durationMin, durationMax, probability) {
+    constructor(name, valueMin, valueMax, durationMin, durationMax, probability, initValue=0) {
         this.name = name;
         this.valueMin = valueMin;
         this.valueMax = valueMax;
         this.durationMin = durationMin;
         this.durationMax = durationMax;
         this.probability = probability;
-        this.currentValue = (valueMin + valueMax) / 2; // start at midpoint for simplicity
+        this.currentValue = initValue; // start at midpoint for simplicity
         this.targetValue = this.currentValue;
         this.duration = 0;
         this.elapsed = 0;
@@ -47,7 +47,7 @@ class EasingVariable {
 class RobotVariables {
     constructor(variablesConfig) {
         this.variables = variablesConfig.map(config => new EasingVariable(
-            config.name, config.valueMin, config.valueMax, config.durationMin, config.durationMax, config.probability
+            config.name, config.valueMin, config.valueMax, config.durationMin, config.durationMax, config.probability, config.init
         ));
     }
 
