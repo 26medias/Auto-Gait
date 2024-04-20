@@ -57,6 +57,15 @@ export default class ControlUI {
         {
             name: 'Gait',
             content: [{
+                id: 'gaitSteps',
+                label: 'Steps',
+                type:  'slider',
+                range: [0,30, root.options.robot.gait.steps],
+                onChange: function(value) {
+                    root.options.robot.gait.steps = value;
+                    root.init();
+                }
+            }, {
                 id: 'areaDistance',
                 label: 'Area Distance',
                 type:  'slider',
@@ -88,13 +97,22 @@ export default class ControlUI {
                     //root.init();
                 }
             },{
-                id: 'gaitSteps',
-                label: 'Steps',
+                id: 'gaitOffsetX',
+                label: 'gaitOffsetX',
                 type:  'slider',
-                range: [0,30, root.options.robot.gait.steps],
+                liveChange: true,
+                range: [-5,5, root.options.robot.leg.gaitOffsetX, 0.1],
                 onChange: function(value) {
-                    root.options.robot.gait.steps = value;
-                    root.init();
+                    root.options.robot.leg.gaitOffsetX = value;
+                }
+            },{
+                id: 'gaitOffsetY',
+                label: 'gaitOffsetY',
+                type:  'slider',
+                liveChange: true,
+                range: [-5,5, root.options.robot.leg.gaitOffsetY, 0.1],
+                onChange: function(value) {
+                    root.options.robot.leg.gaitOffsetY = value;
                 }
             }]
         },

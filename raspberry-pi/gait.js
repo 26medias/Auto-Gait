@@ -112,6 +112,7 @@ class AutoGait {
 
 class Body {
     constructor(options, canvas) {
+        const scope = this;
         this.canvas = canvas;
         this.options = options;
 
@@ -134,7 +135,11 @@ class Body {
         this.streamline = options.body.streamline;
 
         // overwrite
-        this.options.gait.maxSpeed = this.options.leg.radius / ((this.options.gait.steps * (this.options.leg.count-1)) / 2)
+        
+        this.updateLegRadius = function(value) {
+            scope.options.gait.maxSpeed = value / ((scope.options.gait.steps * (scope.options.leg.count-1)) / 2)
+        }
+        this.updateLegRadius(this.options.leg.radius);
 
         // Initial vectors
         this.resetVectors();
@@ -270,7 +275,7 @@ class Body {
         this.offsets = centerOffsets.offsets;
         let legCoords = centerOffsets.legCoords.map((item, n) => {
             item.distanceOffset = scope.offsets[n].distance;
-            item.offset = Maths.pointCoord(0, 0, item.distanceOffset*scope.streamline/100, this.vectors.translation.angle);
+            item.offset = {x: 0, y: 0}//Maths.pointCoord(0, 0, item.distanceOffset*scope.streamline/100, this.vectors.translation.angle);
             item.polarCoords = Maths.polarCoordinates(0, 0, -item.offset.x, -item.offset.y);
             return {
                 x: item.x - item.offset.x,
@@ -284,7 +289,34 @@ class Body {
         // Update the legs
         for (i=0;i<this.legs.length;i++) {
             // Apply the streamline offset
-            this.legs[i].offset = this.areaOffsets[i].polar;
+            //this.legs[i].offset = this.areaOffsets[i].polar;
+            /*this.legs[i].offset = {
+                radius: 6,
+                angle: this.legs[i].legAngle
+            }*/
+
+            let offsetX = this.options.leg.gaitOffsetX;
+            let offsetY = this.options.leg.gaitOffsetY;
+
+            if (Maths.cycle(this.legs[i].legAngle + 90, 0, 360) >= 180) {
+                offsetY *= -1;
+            }
+
+            if (this.legs[i].legAngle >= 180) {
+                offsetX *= -1;
+            }
+            this.legs[i].offset = Maths.polarCoordinates(0, 0, offsetY, offsetX);
+
+            //this.legs[i].offset = Maths.polarCoordinates(0, 0, this.options.leg.gaitOffsetY, this.options.leg.gaitOffsetX)
+
+
+
+            /*if (this.legs[i].legAngle, Maths.cycle(this.legs[i].offset.angle - this.legs[i].legAngle + 90, 0, 360) >= 180) {
+                this.legs[i].offset = Maths.polarCoordinates(0, 0, -this.options.leg.gaitOffsetY, this.options.leg.gaitOffsetX);
+                //this.legs[i].offset.angle + 180;
+            }*/
+            
+            //console.log(i, )
 
             // apply the vector to the legs
             this.legs[i].applyBodyTranslationVector(this.vectors.translation, this.vectors.translation);
@@ -340,7 +372,7 @@ class Body {
         for (i=0;i<this.legs.length;i++) {
             this.legs[i].lift.lifted = true;
             this.legs[i].lift.max = 0;
-            this.legs[i].foot.radius = 0;
+            this.legs[i].foot.radius = 50;
             this.legs[i].setPositionByVector();
         }
         this.tick();

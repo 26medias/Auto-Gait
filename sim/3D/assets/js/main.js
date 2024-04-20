@@ -32,13 +32,13 @@ class CreepyBot {
                     z: 4,           // Body height from ground
                     builder: function(body, Leg) {
                         let legConfigs = [{
-                            anchorAngle: 330
+                            anchorAngle: 300
                         },{
-                            anchorAngle: 30
+                            anchorAngle: 60
                         },{
-                            anchorAngle: 150
+                            anchorAngle: 120
                         },{
-                            anchorAngle: 210
+                            anchorAngle: 240
                         }]
                         for (let i=0;i<body.options.leg.count;i++) {
                             let legConfig = legConfigs[i];
@@ -56,9 +56,9 @@ class CreepyBot {
                 leg: {
                     count: 4,       // Number of legs
                     decayRate: 1,   // Smoothing decay rate [0;1]
-                    distance: params.distance || 12,   // Distance of the movement center
-                    radius: params.radius || 4.2,      // Movement area radius
-                    maxRadius: params.radius || 4.2,   // Max Movement area radius to be able to reach coordinates
+                    distance: params.areaDistance || 12,   // Distance of the movement center
+                    radius: params.areaRadius || 4.2,      // Movement area radius
+                    maxRadius: params.areaRadius || 4.2,   // Max Movement area radius to be able to reach coordinates
                     maxZ: params.maxZ || 5,        // Max Y distance (Z in 2D coords, but Y in 3D)
                     gaitOffsetX: params.gaitOffsetX || 0, // tip center offset
                     gaitOffsetY: params.gaitOffsetY || 0, // tip center offset
@@ -508,9 +508,10 @@ class CreepyBot {
 
 setTimeout(function() {
     let args = {
+        fps: 20,
         disabled: true,
         areaDistance: 12,
-        areaRadius: 4.2,
+        areaRadius: 6,
         streamline: 0,
         steps: 10,
         translationAngle: 0,
@@ -519,8 +520,8 @@ setTimeout(function() {
         pitch: 0,
         roll: 0,
         z: 4,
-        gaitOffsetX: 1.5,
-        gaitOffsetY: 3,
+        gaitOffsetX: -0.4,
+        gaitOffsetY: 1.2
     };
 
     console.log("args", args)
@@ -539,13 +540,13 @@ setTimeout(function() {
 
     let bot = new CreepyBot({}, args);
     bot.init(function() {
-        const newVars = robot.tick();
+        /*const newVars = robot.tick();
         for (let k in newVars) {
             bot.setVar({
                 name: k,
                 value: newVars[k]
             })
-        }
+        }*/
     });
     bot.gait.body.rest();
 

@@ -39,13 +39,13 @@ class CreepyBot {
                     z: 4,           // Body height from ground
                     builder: function(body, Leg) {
                         let legConfigs = [{
-                            anchorAngle: 330
+                            anchorAngle: 300
                         },{
-                            anchorAngle: 30
+                            anchorAngle: 60
                         },{
-                            anchorAngle: 150
+                            anchorAngle: 120
                         },{
-                            anchorAngle: 210
+                            anchorAngle: 240
                         }]
                         for (let i=0;i<body.options.leg.count;i++) {
                             let legConfig = legConfigs[i];
@@ -67,6 +67,8 @@ class CreepyBot {
                     radius: params.radius || 4.2,      // Movement area radius
                     maxRadius: params.radius || 4.2,   // Max Movement area radius to be able to reach coordinates
                     maxZ: params.maxZ || 5,        // Max Y distance (Z in 2D coords, but Y in 3D)
+                    gaitOffsetX: params.gaitOffsetX || 0, // tip center offset
+                    gaitOffsetY: params.gaitOffsetY || 0, // tip center offset
                     mirror: [false, true, false, true],
                     upper: {
                         offset: [-ServoData.servo.w/2, ServoData.servo.ch+ServoData.servo.w/2, 0],
@@ -396,9 +398,10 @@ var processArgs = function() {
 setTimeout(async () => {
     var args	= processArgs();
     args = _.extend({
-        disabled: true,
-        areaDistance: 14,
-        areaRadius: 4.2,
+        fps: 20,
+        disabled: false,
+        areaDistance: 12,
+        areaRadius: 6,
         streamline: 0,
         steps: 10,
         translationAngle: 0,
@@ -407,8 +410,8 @@ setTimeout(async () => {
         pitch: 0,
         roll: 0,
         z: 4,
-        neckX: 90,
-        neckY: 90
+        gaitOffsetX: -0.4,
+        gaitOffsetY: 1.2
     }, args);
 
     console.log("args", args)
@@ -420,8 +423,8 @@ setTimeout(async () => {
         { name: 'roll', valueMin: -10, valueMax: 10, durationMin: 30, durationMax: 120, probability: 30 },
         { name: 'yaw', valueMin: -25, valueMax: 25, durationMin: 10, durationMax: 60, probability: 10 },
         { name: 'pitch', valueMin: -15, valueMax: 15, durationMin: 10, durationMax: 60, probability: 10 },
-        { name: 'translationAngle', valueMin: -45, valueMax: 45, durationMin: 30, durationMax: 60, probability: 1 },
-        { name: 'translationRadius', valueMin: 0, valueMax: 100, durationMin: 30, durationMax: 60, probability: 10 },
+        //{ name: 'translationAngle', valueMin: -45, valueMax: 45, durationMin: 30, durationMax: 60, probability: 1 },
+        //{ name: 'translationRadius', valueMin: 0, valueMax: 100, durationMin: 30, durationMax: 60, probability: 10 },
         { name: 'setNeckHorizontalAngle', valueMin: 0, valueMax: 180, durationMin: 45, durationMax: 120, probability: 60, init: 90 },
         { name: 'setNeckVerticalAngle', valueMin: 60, valueMax: 120, durationMin: 45, durationMax: 120, probability: 60, init: 90 },
     ];
