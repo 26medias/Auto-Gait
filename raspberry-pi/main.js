@@ -421,14 +421,14 @@ setTimeout(async () => {
 
     // Random behavior
     const variablesConfig = [
-        //{ name: 'z', valueMin: 2, valueMax: 6, durationMin: 30, durationMax: 60, probability: 5 },
-        { name: 'roll', valueMin: -10, valueMax: 10, durationMin: 30, durationMax: 120, probability: 30 },
-        { name: 'yaw', valueMin: -10, valueMax: 10, durationMin: 10, durationMax: 60, probability: 10 },
-        { name: 'pitch', valueMin: -10, valueMax: 10, durationMin: 10, durationMax: 60, probability: 10 },
-        { name: 'translationAngle', valueMin: -45, valueMax: 45, durationMin: 30, durationMax: 60, probability: 1 },
-        { name: 'translationRadius', valueMin: 0, valueMax: 100, durationMin: 30, durationMax: 60, probability: 10 },
-        { name: 'setNeckHorizontalAngle', valueMin: 0, valueMax: 180, durationMin: 45, durationMax: 120, probability: 60, init: 90 },
-        { name: 'setNeckVerticalAngle', valueMin: 60, valueMax: 120, durationMin: 45, durationMax: 120, probability: 60, init: 90 },
+        { name: 'z', valueMin: 2, valueMax: 6, durationMin: 30, durationMax: 600, probability: 5 },
+        { name: 'roll', valueMin: -10, valueMax: 10, durationMin: 60, durationMax: 600, probability: 30 },
+        { name: 'yaw', valueMin: -10, valueMax: 10, durationMin: 60, durationMax: 600, probability: 10 },
+        { name: 'pitch', valueMin: -10, valueMax: 10, durationMin: 60, durationMax: 600, probability: 10 },
+        { name: 'translationAngle', valueMin: -20, valueMax: 60, durationMin: 30, durationMax: 600, probability: 1 },
+        { name: 'translationRadius', valueMin: 30, valueMax: 100, durationMin: 30, durationMax: 600, probability: 10 },
+        { name: 'setNeckHorizontalAngle', valueMin: 0, valueMax: 180, durationMin: 45, durationMax: 600, probability: 60, init: 90 },
+        { name: 'setNeckVerticalAngle', valueMin: 60, valueMax: 120, durationMin: 45, durationMax: 600, probability: 60, init: 90 },
     ];
     
     const robot = new RobotVariables(variablesConfig);
