@@ -81,6 +81,7 @@ class CreepyBot {
                     maxTurnAngle: 0.2,
                     maxSpeed: 1, 
                     logic: function(body, legs) {
+                        console.log("logic")
                         let minLegs = legs.length-1;
                         let liftedCount = _.filter(legs, function(item) {
                             return item.lift.lifted;
@@ -181,6 +182,36 @@ class CreepyBot {
                     scope.gait.body.rest(); // Rest position when vector is 0
                 }
             break;
+            case "tips":
+                for (let i=0;i<2;i++) {
+                    this.gait.body.legs[i].foot.angle = 45;
+                    this.gait.body.legs[i].foot.radius = 100;
+                    this.gait.body.legs[i].lift.lifted = true;
+                    this.gait.body.legs[i].lift.z = data.value;
+                    this.gait.body.legs[i].setPositionByVector();
+                }
+            break;
+            case "tipZ":
+                for (let i=0;i<2;i++) {
+                    this.gait.body.legs[i].lift.lifted = true;
+                    this.gait.body.legs[i].lift.z = data.value;
+                    this.gait.body.legs[i].setPositionByVector();
+                }
+            break;
+            case "tipAngle":
+                for (let i=0;i<2;i++) {
+                    this.gait.body.legs[i].lift.lifted = true;
+                    this.gait.body.legs[i].foot.angle = data.value;
+                    this.gait.body.legs[i].setPositionByVector();
+                }
+            break;
+            case "tipRadius":
+                for (let i=0;i<2;i++) {
+                    this.gait.body.legs[i].lift.lifted = true;
+                    this.gait.body.legs[i].foot.radius = data.value;
+                    this.gait.body.legs[i].setPositionByVector();
+                }
+            break;
         }
 
         return {received: data}
@@ -211,7 +242,7 @@ class CreepyBot {
         });
     }
 
-    async init(onTick) {
+    async init(onTick, callback) {
         let scope = this;
 
         this.reset();
@@ -270,6 +301,8 @@ class CreepyBot {
 
 
         this.start(onTick);
+
+        callback && callback();
     }
 
     start(onTick) {
@@ -391,7 +424,8 @@ class CreepyBot {
     }
     
     render(time) {
-        this.gait.tick();
+        //this.gait.tick();
+        this.gait.body.tickLegs(true);
         this.ik.update();
         let a = 125;
         //this.testBot(a, a, a, true);
@@ -503,19 +537,41 @@ class CreepyBot {
         }
         return needResize;
     }
+
+
+
+    testFootControl() {
+        for (let i=0;i<this.robot.robot.legs.length;i++) {
+            this.gait.body.legs[i].foot.angle = 45;
+            this.gait.body.legs[i].foot.radius = 100;
+            this.gait.body.legs[i].lift.lifted = true;
+            this.gait.body.legs[i].lift.z = 4;
+            this.gait.body.legs[i].setPositionByVector();
+        }
+    }
+    
+    animate() {
+        for (let i=0;i<this.robot.robot.legs.length;i++) {
+            this.gait.body.legs[i].foot.angle = 0;
+            this.gait.body.legs[i].foot.radius = -1;
+            this.gait.body.legs[i].lift.lifted = true;
+            this.gait.body.legs[i].lift.z = 4;
+            this.gait.body.legs[i].setPositionByVector();
+        }
+    }
 }
 
 
 setTimeout(function() {
     let args = {
-        fps: 20,
+        fps: 30,
         disabled: true,
         areaDistance: 12,
         areaRadius: 6,
         streamline: 0,
         steps: 10,
         translationAngle: 0,
-        translationRadius: 0,
+        translationRadius: 10,
         yaw: 0,
         pitch: 0,
         roll: 0,
@@ -528,12 +584,15 @@ setTimeout(function() {
 
     // Random behavior
     const variablesConfig = [
-        { name: 'z', valueMin: 3, valueMax: 6, durationMin: 60, durationMax: 600, probability: 5 },
+        /*{ name: 'z', valueMin: 3, valueMax: 6, durationMin: 60, durationMax: 600, probability: 5 },
         { name: 'roll', valueMin: -10, valueMax: 10, durationMin: 30, durationMax: 600, probability: 30 },
         { name: 'yaw', valueMin: -10, valueMax: 10, durationMin: 10, durationMax: 600, probability: 10 },
         { name: 'pitch', valueMin: -10, valueMax: 10, durationMin: 10, durationMax: 600, probability: 10 },
         { name: 'translationAngle', valueMin: -45, valueMax: 45, durationMin: 30, durationMax: 600, probability: 1 },
-        { name: 'translationRadius', valueMin: 10, valueMax: 100, durationMin: 30, durationMax: 600, probability: 1 },
+        { name: 'translationRadius', valueMin: 10, valueMax: 100, durationMin: 30, durationMax: 600, probability: 1 },*/
+        /*{ name: 'tipZ', valueMin: -5, valueMax: 5, durationMin: 30, durationMax: 600, probability: 100 },
+        /*{ name: 'tipAngle', valueMin: 0, valueMax: 360, durationMin: 30, durationMax: 600, probability: 100 },
+        { name: 'tipRadius', valueMin: -1, valueMax: 1, durationMin: 30, durationMax: 600, probability: 100 },*/
     ];
 
     const robot = new RobotVariables(variablesConfig);
@@ -547,10 +606,18 @@ setTimeout(function() {
                 value: newVars[k]
             })
         }
+    }, function() {
+        console.log("animate()")
+        //bot.animate();
+        setTimeout(function() {
+            bot.animate();
+        }, 1000)
     });
-    bot.gait.body.rest();
-
-
+    //bot.gait.body.tick();
+    //bot.gait.body.rest();
+    //bot.gait.body.unrest();
+    bot.gait.body.updateCenters();
+    //bot.gait.body.tickLegs();
 
 }, 500)
 

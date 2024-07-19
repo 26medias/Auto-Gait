@@ -87,6 +87,7 @@ class AutoGait {
         this.body.tick();
         // 2D Render
         this.render();
+        console.log("tick")
     }
 
     start() {
@@ -427,11 +428,16 @@ class Body {
         this.applyVectorForces();
 
         // Tick the legs
+        this.tickLegs();
+
+        this.autocorrect();
+    }
+
+    tickLegs() {
+        let i;
         for (i=0;i<this.legs.length;i++) {
             this.legs[i].tick();
         }
-
-        this.autocorrect();
     }
 
     autocorrect() {
@@ -674,9 +680,10 @@ class Leg {
     //
     // Tick
     //
-    tick() {
+    tick(skipForces) {
+        //console.log("tick")
         // Apply the force vectors
-        this.applyVectorForces();
+        !skipForces && this.applyVectorForces();
 
         this.foot.prev_x = this.foot.ax*1;
         this.foot.prev_y = this.foot.ay*1;
@@ -684,9 +691,10 @@ class Leg {
         //this.foot.ay = (this.foot.y * this.options.decayRate) + (this.foot.prev_y * (1-this.options.decayRate));
         this.foot.ax = this.foot.x*1;
         this.foot.ay = this.foot.y*1;
-        if (!this.lift.lifted && (this.foot.ax != this.foot.x || this.foot.ay != this.foot.y)) {
+
+        /*if (!this.lift.lifted && (this.foot.ax != this.foot.x || this.foot.ay != this.foot.y)) {
             this.lift.lifted = true;
-        }
+        }*/
     }
 
     liftLeg() {
