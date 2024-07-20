@@ -396,13 +396,13 @@ var processArgs = function() {
 setTimeout(async () => {
     var args	= processArgs();
     args = _.extend({
-        disabled: true,
+        disabled: false,
         areaDistance: 14,
         areaRadius: 4.2,
         streamline: 0,
         steps: 10,
         translationAngle: 0,
-        translationRadius: 0,
+        translationRadius: 25,
         yaw: 0,
         pitch: 0,
         roll: 0,
