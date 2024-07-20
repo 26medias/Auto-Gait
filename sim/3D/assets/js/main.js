@@ -342,7 +342,7 @@ class CreepyBot {
                     angle: this.gait.body.legs[i].legAngle,
                     Real: Math.round(this.ik.legs[i].angles.shoulder),
                     fixed: a0
-                }, null, 4));*/
+                }, null, 4));
 
                 let upperPos = this.toScreenPosition(this.robot.robot.legs[i].parts.upper.mesh, this.camera, this.renderer);
                 $(`#debug-upper-${i}`).show().css({left: upperPos.x, top: upperPos.y}).text(JSON.stringify({
@@ -354,7 +354,7 @@ class CreepyBot {
                 $(`#debug-tip-${i}`).show().css({left: tipPos.x, top: tipPos.y}).text(JSON.stringify({
                     Real: Math.round(this.ik.legs[i].angles.tip),
                     fixed: a2
-                }, null, 4));
+                }, null, 4));*/
             }
         }
     }
@@ -510,10 +510,10 @@ class CreepyBot {
 setTimeout(function() {
     let args = {
         fps: 20,
-        pitchRollAssistAngle: 0,
+        pitchRollAssistAngle: 10,
         disabled: true,
         areaDistance: 10,
-        areaRadius: 4,
+        areaRadius: 6,
         streamline: 0,
         steps: 10,
         translationAngle: 0,
@@ -523,7 +523,7 @@ setTimeout(function() {
         roll: 0,
         z: 6,
         gaitOffsetX: -0.4,
-        gaitOffsetY: 1.2
+        gaitOffsetY: 5
     };
 
     console.log("args", args)

@@ -292,7 +292,7 @@ class CreepyBot {
             }
         }
         if (n==2) {
-            if (this.gait.options.leg.mirror[l]) {
+            if (!this.gait.options.leg.mirror[l]) {
                 angle = 180 - angle;
             }
         }
@@ -401,10 +401,10 @@ setTimeout(async () => {
     var args	= processArgs();
     args = _.extend({
         fps: 20,
-        pitchRollAssistAngle: 0,
+        pitchRollAssistAngle: 10,
         disabled: false,
         areaDistance: 10,
-        areaRadius: 4,
+        areaRadius: 6,
         streamline: 0,
         steps: 10,
         translationAngle: 0,
@@ -414,8 +414,10 @@ setTimeout(async () => {
         roll: 0,
         z: 6,
         gaitOffsetX: -0.4,
-        gaitOffsetY: 1.2
+        gaitOffsetY: 5
     }, args);
+
+    // node main -op start 
 
     console.log("args", args)
 
@@ -474,7 +476,5 @@ setTimeout(async () => {
     }
     
     //bot.testServos();
-
-    //
 }, 500)
 
