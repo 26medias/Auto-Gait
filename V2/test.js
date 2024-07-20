@@ -20,14 +20,16 @@ class LegTester {
     }
 
     async init() {
-        return await this.Servo.init();
+        await this.Servo.init();
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return;
     }
 
     move(options) {
 
         const angles = this.Leg.getAngles(options.x||13, options.y||-8, options.z||-5);
 
-        this.Servo.move(0, 180-angles[0]);
+        this.Servo.move(0, 180);
         this.Servo.move(1, angles[1]);
         this.Servo.move(2, angles[2]);
 
