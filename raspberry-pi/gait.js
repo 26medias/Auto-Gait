@@ -381,6 +381,8 @@ class Body {
         }
     }
 
+    
+
     tick() {
         let i;
 
@@ -394,12 +396,54 @@ class Body {
         // Apply the vector forces on the body
         this.applyVectorForces();
 
+        // Apply the pitch/roll
+        this.applyPitchRollGaitAssist();
+
         // Tick the legs
         for (i=0;i<this.legs.length;i++) {
             this.legs[i].tick();
         }
 
         this.autocorrect();
+    }
+
+    calculatePitchRoll(x, y) {
+        const maxAngle = 25;
+        // Calculate distance from the center
+        const distance = Math.sqrt(x * x + y * y);
+        
+        // Calculate the proportion of the distance to the radius
+        const proportion = distance / this.options.body.radius;
+        
+        // Ensure the proportion is between 0 and 1
+        const clampedProportion = Math.min(Math.max(proportion, 0), 1);
+        
+        // Calculate the angle (in radians) from the center to the point
+        const angle = Math.atan2(y, x) + Maths.toRad(90);
+        
+        // Calculate pitch and roll angles
+        const pitch = clampedProportion * maxAngle * Math.sin(angle);
+        const roll = clampedProportion * maxAngle * Math.cos(angle);
+        
+        return {
+            pitch: pitch,
+            roll: roll
+        };
+    }
+
+    applyPitchRollGaitAssist() {
+        // Find the lifted leg
+        let liftedLeg = _.find(this.legs, function(item) {
+            return item.lift.lifted;
+        });
+        if (liftedLeg) {
+            const angle = this.calculatePitchRoll(this.centers.down.x, this.centers.down.y);
+            this.pitch = angle.pitch;
+            this.roll = angle.roll;
+        } else {
+            this.pitch = 0;
+            this.roll = 0;
+        }
     }
 
     autocorrect() {

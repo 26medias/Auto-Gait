@@ -7,6 +7,14 @@ if (typeof process !== 'undefined' && process.versions != null && process.versio
 
 class Maths {
     
+    static toDeg(radians) {
+        return radians * (180 / Math.PI);
+    }
+    
+    static toRad(degrees) {
+        return degrees * (Math.PI / 180);
+    }
+
     // Polar to cartesian
     static pointCoord(centerX, centerY, radius, angle) {
         var angleInRadians = angle * Math.PI / 180;

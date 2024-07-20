@@ -277,15 +277,25 @@ class CreepyBot {
         this.started = true;
         this.itv = setInterval(function() {
             requestAnimationFrame(function(t) {
+                scope.gait.tick();
+                scope.ik.update();
                 onTick && onTick();
-                scope.render(t);
+                //scope.render(t);
             });
             //scope.stop();
         }, 1000/this.options.fps)
+        this.itvRender = setInterval(function() {
+            requestAnimationFrame(function(t) {
+                //onTick && onTick();
+                scope.render(t);
+            });
+            //scope.stop();
+        }, 1000/60)
     }
     stop() {
         this.started = false;
         clearInterval(this.itv);
+        clearInterval(this.itvRender);
     }
 
 
@@ -391,8 +401,6 @@ class CreepyBot {
     }
     
     render(time) {
-        this.gait.tick();
-        this.ik.update();
         let a = 125;
         //this.testBot(a, a, a, true);
         this.updateBotRender();
@@ -508,13 +516,14 @@ class CreepyBot {
 
 setTimeout(function() {
     let args = {
+        fps: 1,
         disabled: true,
         areaDistance: 12,
         areaRadius: 4.2,
         streamline: 0,
         steps: 10,
         translationAngle: 0,
-        translationRadius: 0,
+        translationRadius: 50,
         yaw: 0,
         pitch: 0,
         roll: 0,
@@ -527,12 +536,12 @@ setTimeout(function() {
 
     // Random behavior
     const variablesConfig = [
-        { name: 'z', valueMin: 2, valueMax: 6, durationMin: 30, durationMax: 60, probability: 5 },
-        { name: 'roll', valueMin: -10, valueMax: 10, durationMin: 30, durationMax: 120, probability: 30 },
-        { name: 'yaw', valueMin: -25, valueMax: 25, durationMin: 10, durationMax: 60, probability: 10 },
-        { name: 'pitch', valueMin: -15, valueMax: 15, durationMin: 10, durationMax: 60, probability: 10 },
-        { name: 'translationAngle', valueMin: -45, valueMax: 45, durationMin: 30, durationMax: 60, probability: 1 },
-        { name: 'translationRadius', valueMin: 0, valueMax: 100, durationMin: 30, durationMax: 60, probability: 1 },
+        //{ name: 'z', valueMin: 2, valueMax: 6, durationMin: 30, durationMax: 60, probability: 5 },
+        //{ name: 'roll', valueMin: -10, valueMax: 10, durationMin: 30, durationMax: 120, probability: 30 },
+        //{ name: 'yaw', valueMin: -25, valueMax: 25, durationMin: 10, durationMax: 60, probability: 10 },
+        //{ name: 'pitch', valueMin: -15, valueMax: 15, durationMin: 10, durationMax: 60, probability: 10 },
+        //{ name: 'translationAngle', valueMin: -45, valueMax: 45, durationMin: 30, durationMax: 60, probability: 1 },
+        //{ name: 'translationRadius', valueMin: 10, valueMax: 100, durationMin: 30, durationMax: 60, probability: 1 },
     ];
 
     const robot = new RobotVariables(variablesConfig);
