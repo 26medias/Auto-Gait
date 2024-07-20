@@ -322,7 +322,7 @@ class CreepyBot {
             angles2.push(Math.round(this.ik.legs[i].angles.tip));
         }
 
-        console.log(JSON.stringify(angles));
+        //console.log(JSON.stringify(angles));
 
         // Head
         angles.push(this.head.neckHorizontal.angle);
