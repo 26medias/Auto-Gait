@@ -23,11 +23,11 @@ class LegTester {
         await this.Servo.init();
 
         var args	= this.processArgs();
-        const angles = Leg.getAngles(args.x||13, args.y||-8, args.z||-5);
+        const angles = this.Leg.getAngles(args.x||13, args.y||-8, args.z||-5);
 
-        Servo.move(0, angles[0]);
-        Servo.move(1, angles[1]);
-        Servo.move(2, angles[2]);
+        this.Servo.move(0, angles[0]);
+        this.Servo.move(1, angles[1]);
+        this.Servo.move(2, angles[2]);
 
         console.log(angles);
 
