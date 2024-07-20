@@ -286,11 +286,8 @@ class CreepyBot {
         if (!fixed) {
             return angle;
         }
-        if (n==0) {
-            angle = 180 - angle;
-        }
         if (n==1) {
-            if (!this.gait.options.leg.mirror[l]) {
+            if (this.gait.options.leg.mirror[l]) {
                 angle = 180 - angle;
             }
         }
