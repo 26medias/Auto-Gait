@@ -78,6 +78,7 @@ class CreepyBot {
                 },
                 gait: {
                     steps: params.steps || 10,
+                    pitchRollAssistAngle: params.pitchRollAssistAngle || 0,
                     maxTurnAngle: 0.2,
                     maxSpeed: 1, 
                     logic: function(body, legs) {
@@ -509,13 +510,14 @@ class CreepyBot {
 setTimeout(function() {
     let args = {
         fps: 20,
+        pitchRollAssistAngle: 0,
         disabled: true,
         areaDistance: 12,
         areaRadius: 6,
         streamline: 0,
         steps: 10,
         translationAngle: 0,
-        translationRadius: 0,
+        translationRadius: 30,
         yaw: 0,
         pitch: 0,
         roll: 0,
@@ -528,12 +530,12 @@ setTimeout(function() {
 
     // Random behavior
     const variablesConfig = [
-        { name: 'z', valueMin: 3, valueMax: 6, durationMin: 60, durationMax: 600, probability: 5 },
-        { name: 'roll', valueMin: -10, valueMax: 10, durationMin: 30, durationMax: 600, probability: 30 },
-        { name: 'yaw', valueMin: -10, valueMax: 10, durationMin: 10, durationMax: 600, probability: 10 },
-        { name: 'pitch', valueMin: -10, valueMax: 10, durationMin: 10, durationMax: 600, probability: 10 },
-        { name: 'translationAngle', valueMin: -45, valueMax: 45, durationMin: 30, durationMax: 600, probability: 1 },
-        { name: 'translationRadius', valueMin: 10, valueMax: 100, durationMin: 30, durationMax: 600, probability: 1 },
+        //{ name: 'z', valueMin: 3, valueMax: 6, durationMin: 60, durationMax: 600, probability: 5 },
+        //{ name: 'roll', valueMin: -10, valueMax: 10, durationMin: 30, durationMax: 600, probability: 30 },
+        //{ name: 'yaw', valueMin: -10, valueMax: 10, durationMin: 10, durationMax: 600, probability: 10 },
+        //{ name: 'pitch', valueMin: -10, valueMax: 10, durationMin: 10, durationMax: 600, probability: 10 },
+        //{ name: 'translationAngle', valueMin: -45, valueMax: 45, durationMin: 30, durationMax: 600, probability: 1 },
+        //{ name: 'translationRadius', valueMin: 10, valueMax: 100, durationMin: 30, durationMax: 600, probability: 1 },
     ];
 
     const robot = new RobotVariables(variablesConfig);
