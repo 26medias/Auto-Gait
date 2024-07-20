@@ -344,7 +344,7 @@ class CreepyBot {
                     fixed: a0
                 }, null, 4));*/
 
-                /*let upperPos = this.toScreenPosition(this.robot.robot.legs[i].parts.upper.mesh, this.camera, this.renderer);
+                let upperPos = this.toScreenPosition(this.robot.robot.legs[i].parts.upper.mesh, this.camera, this.renderer);
                 $(`#debug-upper-${i}`).show().css({left: upperPos.x, top: upperPos.y}).text(JSON.stringify({
                     Real: Math.round(this.ik.legs[i].angles.upper),
                     fixed: a1
@@ -354,7 +354,7 @@ class CreepyBot {
                 $(`#debug-tip-${i}`).show().css({left: tipPos.x, top: tipPos.y}).text(JSON.stringify({
                     Real: Math.round(this.ik.legs[i].angles.tip),
                     fixed: a2
-                }, null, 4));*/
+                }, null, 4));
             }
         }
     }
@@ -512,16 +512,16 @@ setTimeout(function() {
         fps: 20,
         pitchRollAssistAngle: 0,
         disabled: true,
-        areaDistance: 12,
-        areaRadius: 6,
+        areaDistance: 10,
+        areaRadius: 4,
         streamline: 0,
         steps: 10,
         translationAngle: 0,
-        translationRadius: 30,
+        translationRadius: 100,
         yaw: 0,
         pitch: 0,
         roll: 0,
-        z: 4,
+        z: 6,
         gaitOffsetX: -0.4,
         gaitOffsetY: 1.2
     };
