@@ -36,7 +36,7 @@ class CreepyBot {
                     height: 0.5,    // Body tickness
                     angle: 0,       // Body Y rotation
                     streamline: params.streamline || 18, // oval deformation in the vector direction
-                    z: 4,           // Body height from ground
+                    z: params.z || 4,           // Body height from ground
                     builder: function(body, Leg) {
                         let legConfigs = [{
                             anchorAngle: 300
@@ -413,6 +413,7 @@ setTimeout(async () => {
         pitch: 0,
         roll: 0,
         z: 6,
+        maxZ: 10,
         gaitOffsetX: -0.4,
         gaitOffsetY: 5
     }, args);
