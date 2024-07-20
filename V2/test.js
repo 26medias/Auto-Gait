@@ -28,7 +28,7 @@ class LegTester {
         Servo.move(0, angles[0]);
         Servo.move(1, angles[1]);
         Servo.move(2, angles[2]);
-        
+
         console.log(angles);
 
         return angles;
@@ -58,5 +58,5 @@ class LegTester {
     }
 }
 
-const Leg = LegTester();
+const Leg = new LegTester();
 Leg.start();
