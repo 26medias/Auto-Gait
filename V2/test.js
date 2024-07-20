@@ -19,11 +19,13 @@ class LegTester {
         this.Servo = new ServoController();
     }
 
-    async start() {
-        await this.Servo.init();
+    async init() {
+        return await this.Servo.init();
+    }
 
-        var args	= this.processArgs();
-        const angles = this.Leg.getAngles(args.x||13, args.y||-8, args.z||-5);
+    move(options) {
+
+        const angles = this.Leg.getAngles(options.x||13, options.y||-8, options.z||-5);
 
         this.Servo.move(0, angles[0]);
         this.Servo.move(1, angles[1]);
@@ -58,5 +60,13 @@ class LegTester {
     }
 }
 
-const Leg = new LegTester();
-Leg.start();
+(async() => {
+    const Leg = new LegTester();
+    var args	= Leg.processArgs();
+    console.log(args)
+    await Leg.init();
+    setInterval(() => {
+        Leg.move(args);
+    }, 500)
+    
+})()
