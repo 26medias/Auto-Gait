@@ -1,0 +1,6 @@
+
+class Robot {
+    constructor(options) {
+        
+    }
+}

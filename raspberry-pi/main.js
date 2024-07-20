@@ -400,8 +400,8 @@ var processArgs = function() {
 setTimeout(async () => {
     var args	= processArgs();
     args = _.extend({
-        fps: 20,
-        pitchRollAssistAngle: 10,
+        fps: 60,
+        pitchRollAssistAngle: 0,
         disabled: false,
         areaDistance: 10,
         areaRadius: 6,
@@ -412,10 +412,10 @@ setTimeout(async () => {
         yaw: 0,
         pitch: 0,
         roll: 0,
-        z: 6,
-        maxZ: 10,
+        z: 4,
+        maxZ: 8,
         gaitOffsetX: -0.4,
-        gaitOffsetY: 5
+        gaitOffsetY: 3
     }, args);
 
     // node main -op start 
