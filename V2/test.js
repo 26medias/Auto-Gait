@@ -25,13 +25,19 @@ class LegTester {
         return;
     }
 
+    fixAngle(angle) {
+        angle = Math.round(angle);
+        angle = Math.min(180, Math.max(angle, 0));
+        return angle;
+    }
+
     move(options) {
 
         const angles = this.Leg.getAngles(options.x||13, options.y||-8, options.z||-5);
 
-        this.Servo.move(0, 180);
-        this.Servo.move(1, angles[1]);
-        this.Servo.move(2, angles[2]);
+        this.Servo.move(0, fixAngle(angles.shoulder));
+        this.Servo.move(1, fixAngle(angles.upper));
+        this.Servo.move(2, fixAngle(angles.tip));
 
         console.log(angles);
 
