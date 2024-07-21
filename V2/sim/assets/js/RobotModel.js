@@ -632,9 +632,13 @@ class Render3D {
             robot.info.parts[i].footPosition.position.z = this.robot.legs[i].tip.y;
             robot.info.parts[i].footPosition.position.y = this.robot.legs[i].tip.z;
 
-            //robot.info.parts[i].footPosition3D.position.x = gait.body.legs[i].tip3D.x;
-            //robot.info.parts[i].footPosition3D.position.y = gait.body.legs[i].tip3D.y;
-            //robot.info.parts[i].footPosition3D.position.z = gait.body.legs[i].tip3D.z;
+            robot.info.parts[i].footPosition3D.position.x = this.robot.legs[i].tip3D.x;
+            robot.info.parts[i].footPosition3D.position.y = this.robot.legs[i].tip3D.y;
+            robot.info.parts[i].footPosition3D.position.z = this.robot.legs[i].tip3D.z;
+
+            //robot.info.parts[i].footPosition3D.rotation.y = -this.deg(0);
+            //robot.info.parts[i].footPosition3D.rotation.x = this.deg(-this.robot.options.roll);
+            //robot.info.parts[i].footPosition3D.rotation.z = this.deg(-this.robot.options.pitch);
             
             /*let legCenter = gait.body.legs[i].getCenter();
             robot.info.parts[i].area.position.x = legCenter.x;
@@ -715,7 +719,7 @@ class Render3D {
             }, 0.5, 0.2, textures.hudRed)
 
             // 3D Desired Foot Position
-            //let footPosition3D = this.create3DCircle(gait.body.legs[i].tip3D, 0.5, 0.2, textures.hudGreen)
+            let footPosition3D = this.create3DCircle(this.robot.legs[i].tip3D, 0.5, 0.2, textures.hudGreen)
 
             let label = this.createText({
                 x: legAreaCenter.x,
@@ -727,7 +731,7 @@ class Render3D {
             robotInfo.add(areaCenter);
             robotInfo.add(areaVector);
             robotInfo.add(footPosition);
-            //robotInfo.add(footPosition3D);
+            robotInfo.add(footPosition3D);
             robotInfo.add(label);
 
             output.info.parts.push({
@@ -735,7 +739,7 @@ class Render3D {
                 areaCenter,
                 areaVector,
                 footPosition,
-                //footPosition3D
+                footPosition3D
             });
         }
 
@@ -745,9 +749,9 @@ class Render3D {
         };
         output.robot.body.update = function() {
             robotBody.position.y = scope.robot.options.z + ServoData.servo.h + ServoData.servo.ch + ServoData.servo.ph;
-            robotBody.rotation.y = 0; //-scope.deg(gait.body.angle);
-            robotBody.rotation.x = 0; //scope.deg(-gait.body.roll);
-            robotBody.rotation.z = 0; //scope.deg(-gait.body.pitch);
+            robotBody.rotation.y = -scope.deg(0);
+            robotBody.rotation.x = scope.deg(-scope.robot.options.roll);
+            robotBody.rotation.z = scope.deg(-scope.robot.options.pitch);
         }
         output.robot.body.update();
 

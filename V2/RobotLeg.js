@@ -30,6 +30,17 @@ export default class RobotLeg {
             y: robotLeg.tip.z,
             z: robotLeg.tip.y,
         }
+
+
+        let tip3D_updated_raw = Maths.rotate3DPoint([tip3D.x, tip3D.y, tip3D.z], [0, this.robot.options.z, 0], [this.robot.options.roll, 0, this.robot.options.pitch]);
+        //console.log(n, tip3D_updated)
+
+        tip3D = {
+            x: tip3D_updated_raw[0],
+            y: tip3D_updated_raw[1],
+            z: tip3D_updated_raw[2]
+        }
+        //robotLeg.tip3D = tip3D;
         
         let fixed = this.pointBetween({
             x: robotLeg.anchor.x,
@@ -59,7 +70,10 @@ export default class RobotLeg {
         let triangleAngles = this.triangleAngles(tipLength, upperLength, tipDistance);
 
         // Shoulder
-        angles.shoulder = Maths.angle2D(robotLeg.anchor, robotLeg.tip) - robotLeg.angle + 90;
+        angles.shoulder = Maths.angle2D(robotLeg.anchor, {
+            x: tip3D.x,
+            y: tip3D.z
+        }) - robotLeg.angle + 90;
         // Upper
         angles.upper = -triangleAngles[0]+90 + (90-triangleAngles3D[1]);
         if (!robotLeg.mirror) {

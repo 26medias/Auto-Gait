@@ -1,7 +1,10 @@
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+
 const i2cBus = require("i2c-bus");
 const { Pca9685Driver } = require("pca9685");
 
-class ServoController {
+export default class ServoController {
     constructor(address = 0x40, frequency = 50) {
         try  {
             this.options = {
@@ -45,5 +48,3 @@ class ServoController {
         this.pwm.setPulseLength(servo, 1500+Math.ceil((angle-90)/180*1499));
     }
 }
-
-module.exports = ServoController;
