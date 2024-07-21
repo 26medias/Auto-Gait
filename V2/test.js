@@ -35,9 +35,9 @@ class LegTester {
 
         const angles = this.Leg.getAngles(options.x||13, options.y||-8, options.z||-5);
 
-        this.Servo.move(0, fixAngle(angles.shoulder));
-        this.Servo.move(1, fixAngle(angles.upper));
-        this.Servo.move(2, fixAngle(angles.tip));
+        this.Servo.move(0, this.fixAngle(angles.shoulder));
+        this.Servo.move(1, this.fixAngle(angles.upper));
+        this.Servo.move(2, this.fixAngle(angles.tip));
 
         return angles;
     }
