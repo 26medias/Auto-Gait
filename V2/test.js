@@ -39,8 +39,6 @@ class LegTester {
         this.Servo.move(1, fixAngle(angles.upper));
         this.Servo.move(2, fixAngle(angles.tip));
 
-        console.log(angles);
-
         return angles;
     }
 
