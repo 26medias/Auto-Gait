@@ -1,4 +1,5 @@
 import Maths from "./Maths.js";
+import RobotLeg from "./RobotLeg.js";
 
 export default class Robot {
     constructor(options) {
@@ -10,12 +11,12 @@ export default class Robot {
         const scope = this;
         this.legs = [];
         this.options.angles.forEach((angle, n) => {
-            this.legs.push(scope.createLeg(n, angle));
+            scope.createLeg(n, angle);
         });
     }
 
     createLeg(index, angle) {
-        return {
+        const legData = {
             index,
             angle,
             mirror: this.options.mirrors[index],
@@ -33,6 +34,9 @@ export default class Robot {
             },
             sizes: this.options.sizes // identical legs
         }
+        legData.ik = new RobotLeg(this, index);
+        this.legs.push(legData);
+        legData.ik.init();
     }
 
     getAngles(index) {

@@ -1,14 +1,23 @@
+import Maths from "./Maths.js";
+
 export default class RobotLeg {
-    constructor(options) {
-        this.options = options;
-        this.tip = {
-            x: 0,
-            y: 0,
-            z: 0
-        }
+    constructor(robot, index) {
+        this.robot = robot;
+        this.index = index;
     }
 
-    getAngles(x, y, z) { // x,y from top, y=up-down
+    // Init the default positions & angles
+    init() {
+        const robotLeg = this.robot.legs[this.index];
+        robotLeg.tip = this.globalFromRelative({
+            x: 0, y: 0, z: 0
+        })
+        this.robot.setAngles(this.index, this.getAngles());
+    }
+
+    getAngles() { // x,y from top, y=up-down
+
+        const robotLeg = this.robot.legs[this.index];
 
         let angles = {
             shoulder: 90,
@@ -17,26 +26,20 @@ export default class RobotLeg {
         }
 
         let tip3D = {
-            x: this.tip.x,
-            y: this.tip.z,
-            z: this.tip.y,
+            x: robotLeg.tip.x,
+            y: robotLeg.tip.z,
+            z: robotLeg.tip.y,
         }
-
-        let _tip =  {
-            x: tip3D.x,
-            y: tip3D.z
-        }
-        angles.shoulder = Maths.angle2D(this.options.anchor, this.tip) - this.options.angle + 90;
         
         let fixed = this.pointBetween({
-            x: this.options.anchor.x,
-            y: this.options.upper.offset[1],
-            z: this.options.anchor.y,
+            x: robotLeg.anchor.x,
+            y: this.robot.options.z + robotLeg.sizes.upper.offset[1],
+            z: robotLeg.anchor.y,
         },{
-            x: this.tip.x,
-            y: this.options.upper.offset[1],
-            z: this.tip.y,
-        }, -this.options.upper.offset[0]);
+            x: robotLeg.tip.x,
+            y: this.robot.options.z + robotLeg.sizes.upper.offset[1],
+            z: robotLeg.tip.y,
+        }, -robotLeg.sizes.upper.offset[0]);
 
         let anchor3D = fixed;
 
@@ -51,15 +54,47 @@ export default class RobotLeg {
 
         // Distance from anchor to tip
         let tipDistance = this.distance3D(anchor3D, tip3D)
-        let tipLength = this.options.tip.length + this.options.tip.offset[0];
-        let upperLength = this.options.upper.length;
+        let tipLength = robotLeg.sizes.tip.length + robotLeg.sizes.tip.offset[0];
+        let upperLength = robotLeg.sizes.upper.length;
         let triangleAngles = this.triangleAngles(tipLength, upperLength, tipDistance);
 
-        // Upper Angle
+        // Shoulder
+        angles.shoulder = Maths.angle2D(robotLeg.anchor, robotLeg.tip) - robotLeg.angle + 90;
+        // Upper
         angles.upper = -triangleAngles[0]+90 + (90-triangleAngles3D[1]);
+        if (!robotLeg.mirror) {
+            angles.upper = 180 - angles.upper;
+        }
+        // Tip
         angles.tip = -triangleAngles[2]+180;
+        if (robotLeg.mirror) {
+            angles.tip = 180 - angles.tip;
+        }
+        angles.shoulder = this.limit180(this.cycle(angles.shoulder, 0, 360));
+        angles.upper = this.limit180(this.cycle(angles.upper, 0, 360));
+        angles.tip = this.limit180(this.cycle(angles.tip, 0, 360));
 
         return angles;
+    }
+
+    cycle(value, min, max) {
+        const range = max - min;
+        return ((value - min) % range + range) % range + min;
+    }
+
+    limit180(angle) {
+        if (angle > 300) angle = 0; // Probably want a value in that direction
+        if (angle > 180) angle = 180;
+        return angle;
+    }
+
+    globalFromRelative(point) {
+        const robotLeg = this.robot.legs[this.index];
+        return {
+            x: point.x + robotLeg.center.x,
+            y: point.y + robotLeg.center.y,
+            z: point.z,
+        }
     }
 
     distance3D(pointA, pointB) {

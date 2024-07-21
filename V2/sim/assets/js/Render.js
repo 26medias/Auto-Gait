@@ -91,6 +91,7 @@ export default class Render {
     
     // Real world angle to Sim Angle
     convertAngle(l, n, angle, fixed) {
+        return angle;
         if (!fixed) {
             return angle;
         }
@@ -139,38 +140,6 @@ export default class Render {
                 let tipPos = this.toScreenPosition(this.robotModel.robot.legs[i].parts.tip.mesh, this.camera, this.renderer);
                 $(`#debug-tip-${i}`).show().css({left: tipPos.x, top: tipPos.y}).text(JSON.stringify(this.robot.legs[i].anchor, null, 4));
             }
-        }
-    }
-
-
-    testBot(angle0=90, angle1=90, angle2=90, fixed) {
-        if (this.robotModel) {
-            let angles = [];
-
-            for (let i=0;i<this.robotModel.robot.legs.length;i++) {
-                let a0 = this.convertAngle(i, 0, angle0, fixed);
-                let a1 = this.convertAngle(i, 1, angle1, fixed);
-                let a2 = this.convertAngle(i, 2, angle2, fixed);
-
-
-                this.robotModel.robot.legs[i].parts.shoulder.rotate(a0);
-                this.robotModel.robot.legs[i].parts.upper.rotate(a1);
-                this.robotModel.robot.legs[i].parts.tip.rotate(a2);
-                
-                angles.push(a0);
-                angles.push(a1);
-                angles.push(a2);
-
-                let pos = this.toScreenPosition(this.robotModel.robot.legs[i].parts.upper.mesh, this.camera, this.renderer);
-                let _debug = {
-                    Real: angle1,
-                    IK: a1
-                };
-
-                $(`#debug-${i}`).show().css({left: pos.x, top: pos.y}).text(JSON.stringify(_debug, null, 4));
-            }
-
-            //this.ws.send(angles);
         }
     }
     
@@ -282,24 +251,6 @@ export default class Render {
         return needResize;
     }
 }
-
-/*
-setTimeout(function() {
-    let args = {
-        fps: 30
-    };
-
-    console.log("args", args)
-
-    let render = new Render({}, args);
-    render.init(function() {
-        // on tick
-    });
-
-
-
-}, 500)
-*/
 
 if (isNode) {
     module.exports = Render;

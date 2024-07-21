@@ -4,8 +4,12 @@ import Robot from '../../../Robot.js'
 const main = async () => {
     const legAngles = [300, 60, 120, 240];
 
+    // Create the robot representation
 	const robot = new Robot({
         z: 5,
+        pitch: 0,
+        roll: 0,
+        yaw: 0,
         anchorRadius: 6,
         centerRadius: 12,
         angles: legAngles,
@@ -29,20 +33,25 @@ const main = async () => {
             height: 1
         },
         onUpdate: function(legIndex, angles) {
-            console.log("onUpdate", {legIndex, angles})
+            // Whenever an angle changes
+            console.log("onUpdate", {legIndex, ...angles})
         }
     });
 
-    const renderer = new Render(robot, {});
+    // Link the 3D Renderer
+    const renderer = new Render(robot, {fps: 60});
     renderer.init(function() {
-        // on tick
+        // on fps tick
     });
 
-	robot.setAngles(0, {
-		shoulder: 125,
-		upper: 75,
-		tip: 0
-	})
+    // Move the tip
+    robot.legs[1].tip = robot.legs[1].ik.globalFromRelative({
+        x: 0, y: -7, z: 0
+    })
+    // Apply the changes
+	robot.setAngles(1, robot.legs[1].ik.getAngles());
+
+    window.robot = robot;
 };
 
 main();
