@@ -1,11 +1,4 @@
-var isNode = false;
-if (typeof process !== 'undefined' && process.versions != null && process.versions.node != null) {
-    // Node.js environment detected
-    isNode = true;
-    var Maths = require('./Maths');
-}
-
-class QuadrupedeLeg {
+export default class RobotLeg {
     constructor(options) {
         this.options = options;
         this.tip = {
@@ -33,7 +26,7 @@ class QuadrupedeLeg {
             x: tip3D.x,
             y: tip3D.z
         }
-        angles.shoulder = Maths.angle2D(this.options.anchor, _tip) - this.options.angle + 90;
+        angles.shoulder = Maths.angle2D(this.options.anchor, this.tip) - this.options.angle + 90;
         
         let fixed = this.pointBetween({
             x: this.options.anchor.x,
@@ -149,8 +142,4 @@ class QuadrupedeLeg {
             z: pointA.z + scaledVector.z
         };
     }
-}
-
-if (isNode) {
-    module.exports = QuadrupedeLeg;
 }

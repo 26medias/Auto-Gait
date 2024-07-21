@@ -1,5 +1,4 @@
 const QuadrupedeLeg = require('./RobotLeg');
-const ServoController = require('./ServoController');
 const Robot = require('./Robot');
 
 class LegTester {
@@ -17,12 +16,9 @@ class LegTester {
             }
         }
         this.Leg = new QuadrupedeLeg(LegMetas);
-        this.Servo = new ServoController();
     }
 
     async init() {
-        await this.Servo.init();
-        await new Promise(resolve => setTimeout(resolve, 1000));
         return;
     }
 
@@ -35,11 +31,7 @@ class LegTester {
     move(options) {
 
         const angles = this.Leg.getAngles(options.x||13, options.y||-8, options.z||-5);
-
-        this.Servo.move(0, this.fixAngle(angles.shoulder));
-        this.Servo.move(1, this.fixAngle(angles.upper));
-        this.Servo.move(2, this.fixAngle(angles.tip));
-
+        console.log(angles)
         return angles;
     }
 

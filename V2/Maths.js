@@ -1,11 +1,4 @@
-var isNode = false;
-
-if (typeof process !== 'undefined' && process.versions != null && process.versions.node != null) {
-    // Node.js environment detected
-    isNode = true;
-}
-
-class Maths {
+export default class Maths {
     
     static toDeg(radians) {
         return radians * (180 / Math.PI);
@@ -347,7 +340,4 @@ class Maths {
     
         return { x: longitudinalMovement, y: verticalMovement };
     }
-}
-if (isNode) {
-    module.exports = Maths;
 }

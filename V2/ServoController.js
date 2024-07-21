@@ -42,7 +42,6 @@ class ServoController {
         if (angle>180) {
             angle = 180;
         }
-        console.log(servo, angle)
         this.pwm.setPulseLength(servo, 1500+Math.ceil((angle-90)/180*1499));
     }
 }
