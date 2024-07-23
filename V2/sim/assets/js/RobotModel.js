@@ -1,4 +1,5 @@
 import * as THREE from "https://unpkg.com/three@0.126.1/build/three.module.js";
+import Maths from '../../../Maths.js'
 
 
 const textures = {
@@ -157,8 +158,10 @@ export const ServoData = {
 };
 
 class Render3D {
-    constructor(robot) {
+    constructor(robot, gait) {
+        console.log("Render3D", {robot, gait})
         this.robot = robot;
+        this.gait = gait;
         this.init();
     }
 
@@ -333,6 +336,17 @@ class Render3D {
         torusMesh.rotation.x = this.deg(90);
         torusMesh.position.set(position.x, position.y, position.z);
 
+        torusMesh.updateRadius = function (newRadius) {
+            // Create new geometry with the updated radius
+            const newGeometry = new THREE.TorusGeometry(newRadius, lineRadius, 64, 100);
+            
+            // Dispose of the old geometry
+            this.geometry.dispose();
+            
+            // Set the new geometry
+            this.geometry = newGeometry;
+        };
+
         // Return the created mesh
         return torusMesh;
     }
@@ -466,17 +480,35 @@ class Render3D {
             z: 0
         }, 0.1, 0.1, textures.hudBlue)
 
+
+        // Turn helpers
+        let turnA = this.create3DCircle({
+            x: 0,
+            y: -this.robot.options.z*2,
+            z: 0
+        }, 10, 0.1, textures.hudBlue)
+
+        let turnB = this.create3DCircle({
+            x: 0,
+            y: -this.robot.options.z*2,
+            z: 0
+        }, 10, 0.1, textures.hudBlue)
+
         const group = new THREE.Group();
         group.add(body);
         group.add(bodyCenter);
         group.add(robotCenter);
         group.add(robotDownCenter);
+        group.add(turnA);
+        group.add(turnB);
 
         return {
             mesh: group,
             info: {
                 center: robotCenter,
-                downCenter: robotDownCenter
+                downCenter: robotDownCenter,
+                turnA: turnA,
+                turnB: turnB
             },
             anchors: {
                 start: [0,0,0],
@@ -490,7 +522,6 @@ class Render3D {
             },
         }
     }
-
     // Create the tip
     createTip(n, options) {
         let scope = this;
@@ -625,8 +656,19 @@ class Render3D {
     }
 
 
-
+    // Update the debug / info
     updateInfo(robot) {
+        
+        if (this.gait.turnData) {
+            robot.robot.body.body.info.turnA.position.x = this.gait.turnData.center.x;
+            robot.robot.body.body.info.turnA.position.z = this.gait.turnData.center.y;
+            robot.robot.body.body.info.turnB.position.x = this.gait.turnData.center.x;
+            robot.robot.body.body.info.turnB.position.z = this.gait.turnData.center.y;
+            robot.robot.body.body.info.turnA.updateRadius(this.gait.turnData.radiusA);
+            robot.robot.body.body.info.turnB.updateRadius(this.gait.turnData.radiusB);
+        }
+        
+
         for (let i=0;i<this.robot.legs.length;i++) {
             robot.info.parts[i].footPosition.position.x = this.robot.legs[i].tip.x;
             robot.info.parts[i].footPosition.position.z = this.robot.legs[i].tip.y;
@@ -635,6 +677,10 @@ class Render3D {
             robot.info.parts[i].footPosition3D.position.x = this.robot.legs[i].tip3D.x;
             robot.info.parts[i].footPosition3D.position.y = this.robot.legs[i].tip3D.y;
             robot.info.parts[i].footPosition3D.position.z = this.robot.legs[i].tip3D.z;
+
+            robot.info.parts[i].area.position.x = this.robot.legs[i].center.x;
+            robot.info.parts[i].area.position.z = this.robot.legs[i].center.y;
+            robot.info.parts[i].area.updateRadius(this.robot.legs[i].stepSize || this.gait.options.stepSize)
 
             //robot.info.parts[i].footPosition3D.rotation.y = -this.deg(0);
             //robot.info.parts[i].footPosition3D.rotation.x = this.deg(-this.robot.options.roll);
@@ -692,13 +738,12 @@ class Render3D {
 
             // Create the visual info
             let legAreaCenter = this.robot.legs[i].center;
-
-            /*// Movement area
+            // Movement area
             let area = this.create3DCircle({
                 x: legAreaCenter.x,
                 y: 0,
                 z: legAreaCenter.y
-            }, this.robot.legs[i].options.radius, 0.1)*/
+            }, this.gait.options.stepSize, 0.1)
             // Movement area center
             let areaCenter = this.create3DCircle({
                 x: legAreaCenter.x,
@@ -727,7 +772,7 @@ class Render3D {
                 z: legAreaCenter.y
             }, `#${i}`, 1)
 
-            //robotInfo.add(area);
+            robotInfo.add(area);
             robotInfo.add(areaCenter);
             robotInfo.add(areaVector);
             robotInfo.add(footPosition);
@@ -735,7 +780,7 @@ class Render3D {
             robotInfo.add(label);
 
             output.info.parts.push({
-                //area,
+                area,
                 areaCenter,
                 areaVector,
                 footPosition,

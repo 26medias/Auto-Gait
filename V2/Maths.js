@@ -47,6 +47,53 @@ export default class Maths {
         const range = max - min;
         return ((value - min) % range + range) % range + min;
     }
+
+
+    static findCircleCenters(P1, P2, radius) {
+        const dx = P2.x - P1.x;
+        const dy = P2.y - P1.y;
+        
+        // Calculate the distance between P1 and P2
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance > 2 * radius) {
+            throw new Error("The points are too far apart to form a circle with the given radius.");
+        }
+        
+        // Calculate the midpoint between P1 and P2
+        const midX = (P1.x + P2.x) / 2;
+        const midY = (P1.y + P2.y) / 2;
+        
+        // Calculate the distance from the midpoint to the circle centers
+        const h = Math.sqrt(radius * radius - (distance / 2) * (distance / 2));
+        
+        // Calculate the direction vector perpendicular to the line segment
+        const perpDx = -dy * (h / distance);
+        const perpDy = dx * (h / distance);
+        
+        // Calculate the two possible centers
+        const center1 = {
+            x: midX + perpDx,
+            y: midY + perpDy
+        };
+        
+        const center2 = {
+            x: midX - perpDx,
+            y: midY - perpDy
+        };
+        
+        return [center1, center2];
+    }
+    static minRadius(P1, P2) { // Min radius for a circle passing thru the 2 points
+        const dx = P2.x - P1.x;
+        const dy = P2.y - P1.y;
+        
+        // Calculate the distance between P1 and P2
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        // The minimum radius is half of the distance between the two points
+        return distance / 2;
+    }
     
 
     // Bind the coordinates in an infinite world
@@ -238,6 +285,75 @@ export default class Maths {
         const distanceToCenter = Math.sqrt(dx * dx + dy * dy);
     
         return distanceToCenter - radius;
+    }
+
+    static getArcIntersectionAt(value, c_center, c_radius, t_center, t_radius, clockwise = true) {
+        if (clockwise) {
+            value = value * -1;
+        }
+        // Helper function to calculate the distance between two points
+        function distance(p1, p2) {
+            const dx = p2.x - p1.x;
+            const dy = p2.y - p1.y;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+    
+        // Helper function to calculate the intersection points of two circles
+        function getCircleIntersections(c1, r1, c2, r2) {
+            const d = distance(c1, c2);
+            if (d > r1 + r2 || d < Math.abs(r1 - r2)) {
+                throw new Error("Circles do not intersect");
+            }
+            const a = (r1 * r1 - r2 * r2 + d * d) / (2 * d);
+            const h = Math.sqrt(r1 * r1 - a * a);
+            const p2 = {
+                x: c1.x + a * (c2.x - c1.x) / d,
+                y: c1.y + a * (c2.y - c1.y) / d,
+            };
+            return [
+                {
+                    x: p2.x + h * (c2.y - c1.y) / d,
+                    y: p2.y - h * (c2.x - c1.x) / d,
+                },
+                {
+                    x: p2.x - h * (c2.y - c1.y) / d,
+                    y: p2.y + h * (c2.x - c1.x) / d,
+                },
+            ];
+        }
+    
+        // Helper function to calculate the angle between two points relative to a center
+        function angle(center, point) {
+            return Math.atan2(point.y - center.y, point.x - center.x);
+        }
+    
+        // Helper function to interpolate between two angles
+        function interpolateAngle(start, end, factor) {
+            if (end < start) end += 2 * Math.PI;
+            return start + factor * (end - start);
+        }
+    
+        // Find the intersection points
+        const intersections = getCircleIntersections(c_center, c_radius, t_center, t_radius);
+        const [intersection1, intersection2] = intersections;
+    
+        // Calculate the angles of the intersection points relative to the target center
+        const angle1 = angle(t_center, intersection1);
+        const angle2 = angle(t_center, intersection2);
+    
+        // Determine the interpolated angle
+        const factor = (value + 1) / 2; // Convert value from [-1, 1] to [0, 1]
+        const startAngle = angle2;
+        const endAngle = angle1;
+        const interpolatedAngle = interpolateAngle(startAngle, endAngle, factor);
+    
+        // Calculate the coordinates of the interpolated point on the target circle
+        const interpolatedPoint = {
+            x: t_center.x + t_radius * Math.cos(interpolatedAngle),
+            y: t_center.y + t_radius * Math.sin(interpolatedAngle),
+        };
+    
+        return interpolatedPoint;
     }
 
     // Center of the polygon

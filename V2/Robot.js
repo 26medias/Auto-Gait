@@ -37,6 +37,11 @@ export default class Robot {
                 y: 0,
                 z: 0
             },
+            offsets: {
+                x: 0,
+                y: 0,
+                z: 0
+            },
             sizes: this.options.sizes // identical legs
         }
         legData.ik = new RobotLeg(this, index);

@@ -9,8 +9,10 @@ import { OrbitControls } from "https://unpkg.com/three@0.126.1/examples/jsm/cont
 import Render3D, { ServoData } from './RobotModel.js';
 
 export default class Render {
-    constructor(robot, options) {
+    constructor(robot, gait, options) {
+        console.log("Render", {robot, gait, options})
         this.robot = robot;
+        this.gait = gait;
         this.options = _.extend({
             fps: 10
         }, options);
@@ -25,9 +27,6 @@ export default class Render {
             this.scene.remove(this.robotModel.floor);
         }
         this.stop();
-        delete this.gait;
-        delete this.control;
-        delete this.ik;
         delete this.robotModel;
     }
 
@@ -63,7 +62,7 @@ export default class Render {
         this.setupKeyboard();
 
         // Robot
-        let render3D = new Render3D(this.robot);
+        let render3D = new Render3D(this.robot, this.gait);
         await render3D.init();
         this.robotModel = render3D.createRobot();
 

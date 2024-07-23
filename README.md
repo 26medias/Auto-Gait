@@ -3,6 +3,8 @@
 
 ~/code/Auto-Gait/raspberry-pi
 
+cd ~/code/Auto-Gait/V2
+
 ## 3D sim
 
     cd sim && http-server -c-1
