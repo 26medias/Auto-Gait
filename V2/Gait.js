@@ -20,7 +20,7 @@ export default class Gait {
         }
     }
     getLegFrame(legIndex, i) {
-        const n = Maths.cycle(i + (legIndex*this.options.steps), 0, this.frameLength);
+        const n = Maths.cycle(i + (3-legIndex)*this.options.steps, 0, this.frameLength);
 
         return {
             x: this.frames.x[n],
@@ -42,7 +42,7 @@ export default class Gait {
         const minRadius = Maths.minRadius(this.robot.legs[1].center, this.robot.legs[2].center);
         const maxTurn = 50;
 
-        const radiusB = Maths.map(Math.min(maxTurn-1, turnValue), maxTurn, 0, minRadius, 50);
+        const radiusB = Maths.map(Math.min(40, turnValue), maxTurn, 0, minRadius, maxTurn);
 
         /*console.log({
             turnDirection,

@@ -8,7 +8,7 @@ const main = async () => {
 
     // Create the robot representation
 	const robot = new Robot({
-        z: 3,
+        z: 7,
         pitch: 0,
         roll: 0,
         yaw: 0,
@@ -42,9 +42,9 @@ const main = async () => {
 
     const gait = new Gait(robot, {
         steps: 20,
-        stepSize: 3,
+        stepSize: 4,
         stepHeight: 5,
-        turn: 40 // experimental
+        turn: 0 // experimental
     });
 
     // Link the 3D Renderer

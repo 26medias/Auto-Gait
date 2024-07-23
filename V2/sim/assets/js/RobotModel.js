@@ -659,13 +659,20 @@ class Render3D {
     // Update the debug / info
     updateInfo(robot) {
         
-        if (this.gait.turnData) {
+        if (this.gait.turnData && this.gait.options.turn) {
             robot.robot.body.body.info.turnA.position.x = this.gait.turnData.center.x;
             robot.robot.body.body.info.turnA.position.z = this.gait.turnData.center.y;
             robot.robot.body.body.info.turnB.position.x = this.gait.turnData.center.x;
             robot.robot.body.body.info.turnB.position.z = this.gait.turnData.center.y;
             robot.robot.body.body.info.turnA.updateRadius(this.gait.turnData.radiusA);
             robot.robot.body.body.info.turnB.updateRadius(this.gait.turnData.radiusB);
+        } else {
+            robot.robot.body.body.info.turnA.position.x = 0;
+            robot.robot.body.body.info.turnA.position.z = 0;
+            robot.robot.body.body.info.turnB.position.x = 0;
+            robot.robot.body.body.info.turnB.position.z = 0;
+            robot.robot.body.body.info.turnA.updateRadius(1);
+            robot.robot.body.body.info.turnB.updateRadius(1);
         }
         
 
