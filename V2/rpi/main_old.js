@@ -36,7 +36,7 @@ const main = async () => {
 
     // Create the robot representation
 	const robot = new Robot({
-        z: 5,
+        z: 3,
         pitch: 0,
         roll: 0,
         yaw: 0,
@@ -61,6 +61,11 @@ const main = async () => {
         body: {
             radius: 6,
             height: 0.1
+        },
+        offsets: {
+            x: -2.7,
+            y: 1,
+            angle: 0
         },
         onUpdate: function(legIndex, angles) {
             // Whenever an angle changes
