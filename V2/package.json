@@ -12,6 +12,8 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "i2c-bus": "^5.2.3",
+    "pca9685": "^5.0.0",
     "underscore": "^1.13.6"
   }
 }
