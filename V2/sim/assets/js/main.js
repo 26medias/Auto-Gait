@@ -45,11 +45,11 @@ const main = async () => {
             [0, 0, 0],
             [0, 0, 0]
         ],
-        fixAngle: function(angles) {
+        fixAngles: function(angles) {
             return {
                 shoulder: angles.shoulder,
-                upper: 180-angles.upper,
-                tip: 180-angles.tip
+                upper: angles.upper,
+                tip: angles.tip
             }
         },
         onUpdate: function(legIndex, angles) {

@@ -79,6 +79,9 @@ export default class Robot {
     }
 
     setAngles(index, angles) {
+        if (this.options.fixAngles) {
+            angles = this.options.fixAngles(angles);
+         } 
         if (this.options.angleTweaks && this.options.angleTweaks[index]) {
             angles = {
                 shoulder: angles.shoulder + this.options.angleTweaks[index][0],
@@ -86,9 +89,6 @@ export default class Robot {
                 tip: angles.tip + this.options.angleTweaks[index][2]
             }
         }
-        if (this.options.fixAngles) {
-           angles = this.options.fixAngles(angles);
-        } 
         this.legs[index].angles = angles;
         this.options.onUpdate && this.options.onUpdate(index, angles)
     }
