@@ -47,6 +47,12 @@ const main = async () => {
             y: 1,
             angle: 0
         },
+        angleTweaks: [
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0]
+        ],
         onUpdate: function(legIndex, angles) {
             // Whenever an angle changes
             //console.log("onUpdate", {legIndex, ...angles})

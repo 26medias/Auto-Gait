@@ -39,6 +39,12 @@ const main = async () => {
             y: 1,
             angle: 0
         },
+        angleTweaks: [
+            [0, 0, 0],
+            null,
+            null,
+            null
+        ],
         onUpdate: function(legIndex, angles) {
             // Whenever an angle changes
             //console.log("onUpdate", {legIndex, ...angles})
@@ -62,7 +68,7 @@ const main = async () => {
 
     const gaitFPS = 30;
     const tick = setInterval(() => {
-        gait.tick();
+        //gait.tick();
     }, 1000/gaitFPS);
 
     $(document).keydown(function(event) {
@@ -74,11 +80,19 @@ const main = async () => {
                 
                 break;
             case 38: // up
+            console.log("FIX ANGLE")
+                robot.legs.forEach(leg => {
+                    robot.setAngles(leg.index, {
+                        shoulder: 90,
+                        upper: 90,
+                        tip: 90
+                    });
+                })
                 break;
             case 40: // down
                 break;
             case 32: // space
-                scope.started ? scope.stop() : scope.start();
+                //scope.started ? scope.stop() : scope.start();
                 break;
             default: 
                 // Do nothing for other keys
@@ -86,8 +100,8 @@ const main = async () => {
         }
     });
 
-    // Move the tip
-    /*robot.legs[1].tip = robot.legs[1].ik.globalFromRelative({
+    /*// Move the tip
+    robot.legs[1].tip = robot.legs[1].ik.globalFromRelative({
         x: 5, y: 0, z: 0
     })
     // Apply the changes

@@ -26,7 +26,7 @@ export default class Robot {
             true_center: Maths.pointCoord(0, 0, this.options.centerRadius, angle),
             angles: {
                 shoulder: 90,
-                upper: 90,
+                upper: 100,
                 tip: 90
             },
             tip: {
@@ -79,6 +79,13 @@ export default class Robot {
     }
 
     setAngles(index, angles) {
+        if (this.options.angleTweaks && this.options.angleTweaks[index]) {
+            angles = {
+                shoulder: angles.shoulder + this.options.angleTweaks[index][0],
+                upper: angles.upper + this.options.angleTweaks[index][1],
+                tip: angles.tip + this.options.angleTweaks[index][2]
+            }
+        }
         this.legs[index].angles = angles;
         this.options.onUpdate && this.options.onUpdate(index, angles)
     }
