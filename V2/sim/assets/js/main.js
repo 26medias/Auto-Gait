@@ -45,6 +45,13 @@ const main = async () => {
             [0, 0, 0],
             [0, 0, 0]
         ],
+        fixAngle: function(angles) {
+            return {
+                shoulder: angles.shoulder,
+                upper: 180-angles.upper,
+                tip: 180-angles.tip
+            }
+        },
         onUpdate: function(legIndex, angles) {
             // Whenever an angle changes
             //console.log("onUpdate", {legIndex, ...angles})

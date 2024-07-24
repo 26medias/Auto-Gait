@@ -86,6 +86,9 @@ export default class Robot {
                 tip: angles.tip + this.options.angleTweaks[index][2]
             }
         }
+        if (this.options.fixAngles) {
+           angles = this.options.fixAngles(angles);
+        } 
         this.legs[index].angles = angles;
         this.options.onUpdate && this.options.onUpdate(index, angles)
     }

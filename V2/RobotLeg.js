@@ -76,9 +76,9 @@ export default class RobotLeg {
         }) - robotLeg.angle + 90;
         // Upper
         angles.upper = -triangleAngles[0]+90 + (90-triangleAngles3D[1]);
-        //if (!robotLeg.mirror) {
-        //    angles.upper = 180 - angles.upper;
-        //}
+        if (!robotLeg.mirror) {
+            angles.upper = 180 - angles.upper;
+        }
         // Tip
         angles.tip = -triangleAngles[2]+180;
         if (robotLeg.mirror) {
