@@ -48,9 +48,9 @@ const main = async () => {
             angle: 0
         },
         angleTweaks: [
-            [-15, 30, 0],
+            [-15, -30, 0],
             [25, 30, 0],
-            [-25, 30, 0],
+            [-25, -30, 0],
             [10, 30, 0]
         ],
         fixAngles: function(angles) {
@@ -71,7 +71,7 @@ const main = async () => {
 
     const gait = new Gait(robot, {
         angle: 90,
-        steps: 30,
+        steps: 10,
         stepSize: 3.5,
         stepHeight: 5,
         stepDamping: 0,
