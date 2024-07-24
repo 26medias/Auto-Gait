@@ -16,7 +16,7 @@ const main = async () => {
     
     // Create the robot representation
 	const robot = new Robot({
-        z: 5,
+        z: 7,
         pitch: 0,
         roll: 0,
         yaw: 0,

@@ -90,7 +90,7 @@ export default class Gait {
             // Set the desired tip coordinates
             if (this.options.turn > -1 && this.options.turn < 1) {
                 scope.robot.legs[n].tip = scope.robot.legs[n].ik.globalFromRelative({
-                    x: leg.offsets.x + pos.x*scope.robot.legs[n].stepSize, y: leg.offsets.y + 0, z: leg.offsets.z + pos.y*scope.options.stepHeight
+                    y: leg.offsets.x + pos.x*scope.robot.legs[n].stepSize, x: leg.offsets.y + 0, z: leg.offsets.z + pos.y*scope.options.stepHeight
                 })
             } else {
                 let coords;
@@ -108,7 +108,7 @@ export default class Gait {
                     coords = Maths.getArcIntersectionAt(pos.x, scope.robot.legs[n].center, scope.robot.legs[n].stepSize, this.turnData.center, this.turnData.radiusA, false);
                 }
                 scope.robot.legs[n].tip = {
-                    x: coords.x, y: coords.y, z: leg.offsets.z + pos.y*scope.options.stepHeight
+                    y: coords.x, x: coords.y, z: leg.offsets.z + pos.y*scope.options.stepHeight
                 }
             }
             
