@@ -65,7 +65,7 @@ const main = async () => {
         turn: 0 // experimental
     });
 
-    const gaitFPS = 10;
+    const gaitFPS = 30;
     const tick = setInterval(() => {
         gait.tick();
     }, 1000/gaitFPS);
