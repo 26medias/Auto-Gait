@@ -88,12 +88,15 @@ export default class Gait {
             const ratio = this.turnData.radiusA/this.turnData.radiusB;
 
             // Set the desired tip coordinates
+            let coords;
             if (this.options.turn > -1 && this.options.turn < 1) {
-                scope.robot.legs[n].tip = scope.robot.legs[n].ik.globalFromRelative({
-                    y: leg.offsets.x + pos.x*scope.robot.legs[n].stepSize, x: leg.offsets.y + 0, z: leg.offsets.z + pos.y*scope.options.stepHeight
+                coords = scope.robot.legs[n].ik.globalFromRelative({
+                    x: leg.offsets.x + pos.x*scope.robot.legs[n].stepSize, y: leg.offsets.y + 0, z: leg.offsets.z + pos.y*scope.options.stepHeight
                 })
+                /*scope.robot.legs[n].tip = scope.robot.legs[n].ik.globalFromRelative({
+                    y: leg.offsets.x + pos.x*scope.robot.legs[n].stepSize, x: leg.offsets.y + 0, z: leg.offsets.z + pos.y*scope.options.stepHeight
+                })*/
             } else {
-                let coords;
                 if ((this.options.turn > 0 && (n==1 || n==2)) || (this.options.turn < 0 && (n==0 || n==3))) {
                     coords = Maths.getArcIntersectionAt(pos.x, scope.robot.legs[n].center, scope.robot.legs[n].stepSize, this.turnData.center, this.turnData.radiusB, false);
                 } else {
@@ -106,15 +109,27 @@ export default class Gait {
                     robot.legs[n].center = newCenter;
                     // Translate to arc coordinates
                     coords = Maths.getArcIntersectionAt(pos.x, scope.robot.legs[n].center, scope.robot.legs[n].stepSize, this.turnData.center, this.turnData.radiusA, false);
-                }
-                scope.robot.legs[n].tip = {
-                    y: coords.x, x: coords.y, z: leg.offsets.z + pos.y*scope.options.stepHeight
+                    coords.z = leg.offsets.z + pos.y*scope.options.stepHeight
                 }
             }
+            coords = {
+                z: coords.z,
+                ...Maths.rotate(coords.x, coords.y, scope.robot.legs[n].center.x, scope.robot.legs[n].center.y, scope.options.angle)
+            }
+            scope.robot.legs[n].tip = coords;
+        })
+        // Apply step damping
+        const liftedLeg = this.robot.legs.find((leg) => leg.tip.z > leg.offsets.z);
+        if (liftedLeg) {
+            const oppositeLegIndex = Maths.cycle(liftedLeg.index+2, 0, 4);
+            this.robot.legs[oppositeLegIndex].tip.z = this.robot.legs[oppositeLegIndex].offsets.z + (this.robot.legs[liftedLeg.index].tip.z-this.robot.legs[liftedLeg.index].offsets.z)*this.options.stepDamping;
+        }
             
+        this.robot.legs.forEach((leg, n) => {
             // Apply the changes
             scope.robot.setAngles(n, scope.robot.legs[n].ik.getAngles());
-        })
+        });
+        //console.log(liftedLeg)
         this.i++;
         if (this.i>=scope.frameLength) {
             this.i = 0;

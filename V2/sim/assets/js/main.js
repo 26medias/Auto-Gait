@@ -41,9 +41,11 @@ const main = async () => {
     });
 
     const gait = new Gait(robot, {
+        angle: 90,
         steps: 20,
         stepSize: 4,
         stepHeight: 5,
+        stepDamping: 0.5,
         turn: 0 // experimental
     });
 
