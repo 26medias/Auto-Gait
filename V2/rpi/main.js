@@ -58,14 +58,14 @@ const main = async () => {
 
     const gait = new Gait(robot, {
         angle: 90,
-        steps: 20,
+        steps: 8,
         stepSize: 4,
         stepHeight: 5,
         stepDamping: 0.5,
         turn: 0 // experimental
     });
 
-    const gaitFPS = 30;
+    const gaitFPS = 10;
     const tick = setInterval(() => {
         gait.tick();
     }, 1000/gaitFPS);
