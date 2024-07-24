@@ -777,7 +777,7 @@ class Render3D {
                 x: legAreaCenter.x,
                 y: 0,
                 z: legAreaCenter.y
-            }, `#${i}`, 1)
+            }, `#${i} (${this.robot.legs[i].true_center.x.toFixed(1)}, ${this.robot.legs[i].true_center.y.toFixed(1)})`, 1)
 
             robotInfo.add(area);
             robotInfo.add(areaCenter);

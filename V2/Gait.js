@@ -10,7 +10,7 @@ export default class Gait {
     init() {
         const scope = this;
         this.i = 0;
-        this.frames = Maths.buildGait(this.options.steps*4);
+        this.frames = Maths.buildGait(this.options.steps*5);
         this.frameLength = this.frames.x.length;
     }
     getFrame(i) {
@@ -77,7 +77,7 @@ export default class Gait {
 
     tick() {
         const scope = this;
-        this.PitchRollAssist();
+        //this.PitchRollAssist();
         this.calculateTurnData();
         this.robot.legs.forEach((leg, n) => {
             // Get the frame data
@@ -93,11 +93,8 @@ export default class Gait {
                 coords = scope.robot.legs[n].ik.globalFromRelative({
                     x: leg.offsets.x + pos.x*scope.robot.legs[n].stepSize, y: leg.offsets.y + 0, z: leg.offsets.z + pos.y*scope.options.stepHeight
                 })
-                /*scope.robot.legs[n].tip = scope.robot.legs[n].ik.globalFromRelative({
-                    y: leg.offsets.x + pos.x*scope.robot.legs[n].stepSize, x: leg.offsets.y + 0, z: leg.offsets.z + pos.y*scope.options.stepHeight
-                })*/
             } else {
-                if ((this.options.turn > 0 && (n==1 || n==2)) || (this.options.turn < 0 && (n==0 || n==3))) {
+                if ((this.options.turn > 0 && (leg.true_center.y>0 || leg.true_center.y>0)) || (this.options.turn < 0 && (leg.true_center.y<0 || leg.true_center.y<0))) {
                     coords = Maths.getArcIntersectionAt(pos.x, scope.robot.legs[n].center, scope.robot.legs[n].stepSize, this.turnData.center, this.turnData.radiusB, false);
                 } else {
                     // Update the size of the each step to match the turn ratio
@@ -114,7 +111,7 @@ export default class Gait {
             }
             coords = {
                 z: coords.z,
-                ...Maths.rotate(coords.x, coords.y, scope.robot.legs[n].center.x, scope.robot.legs[n].center.y, scope.options.angle)
+                ...Maths.rotate(coords.x, coords.y, scope.robot.legs[n].center.x, scope.robot.legs[n].center.y, scope.options.angle) // Rotation of the gait direction
             }
             scope.robot.legs[n].tip = coords;
         })

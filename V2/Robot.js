@@ -13,6 +13,7 @@ export default class Robot {
         this.options.angles.forEach((angle, n) => {
             scope.createLeg(n, angle);
         });
+        this.applyOffsets();
     }
 
     createLeg(index, angle) {
@@ -22,6 +23,7 @@ export default class Robot {
             mirror: this.options.mirrors[index],
             anchor: Maths.pointCoord(0, 0, this.options.anchorRadius, angle),
             center: Maths.pointCoord(0, 0, this.options.centerRadius, angle),
+            true_center: Maths.pointCoord(0, 0, this.options.centerRadius, angle),
             angles: {
                 shoulder: 90,
                 upper: 90,
@@ -47,6 +49,29 @@ export default class Robot {
         legData.ik = new RobotLeg(this, index);
         this.legs.push(legData);
         legData.ik.init();
+    }
+
+    applyOffsets() {
+        const scope = this;
+        const robotOffsets = this.options.offsets;
+        this.legs.forEach((leg, n) => {
+            let offset = {...robotOffsets};
+            if (leg.true_center.x < 0) {
+                // Back
+                offset.x = -robotOffsets.x;
+            }
+            if (leg.true_center.y < 0) {
+                // Left
+                offset.y = -robotOffsets.y;
+            }
+            //const correctedOffset = Maths.rotate(offset.x, offset.y, leg.true_center.x, leg.true_center.y, robotOffsets.angle);
+            //leg.center.x = leg.true_center.x + correctedOffset.x;
+            //leg.center.y = leg.true_center.y + correctedOffset.y;
+            leg.center.x = leg.true_center.x + offset.x;
+            leg.center.y = leg.true_center.y + offset.y;
+            //leg.offsets.x = offset.x;
+            //leg.offsets.y = offset.y;
+        });
     }
 
     getAngles(index) {

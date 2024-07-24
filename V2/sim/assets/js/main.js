@@ -8,7 +8,7 @@ const main = async () => {
 
     // Create the robot representation
 	const robot = new Robot({
-        z: 7,
+        z: 3,
         pitch: 0,
         roll: 0,
         yaw: 0,
@@ -34,6 +34,11 @@ const main = async () => {
             radius: 6,
             height: 0.1
         },
+        offsets: {
+            x: -2.7,
+            y: 1,
+            angle: 0
+        },
         onUpdate: function(legIndex, angles) {
             // Whenever an angle changes
             //console.log("onUpdate", {legIndex, ...angles})
@@ -43,10 +48,10 @@ const main = async () => {
     const gait = new Gait(robot, {
         angle: 90,
         steps: 20,
-        stepSize: 4,
+        stepSize: 3.5,
         stepHeight: 5,
-        stepDamping: 0.5,
-        turn: 0 // experimental
+        stepDamping: 0,
+        turn: 0, // experimental [0;40]
     });
 
     // Link the 3D Renderer
