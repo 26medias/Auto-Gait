@@ -10,6 +10,9 @@ const getServoNum = (leg, n) => {
 const main = async () => {
     const legAngles = [300, 60, 120, 240];
 
+    const servos = new ServoController();
+    await servos.init();
+    
     // Create the robot representation
 	const robot = new Robot({
         z: 5,
@@ -58,7 +61,7 @@ const main = async () => {
     const tick = setInterval(() => {
         gait.tick();
     }, 1000/gaitFPS);
-    
+
 };
 
 main();
