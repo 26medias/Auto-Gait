@@ -1,4 +1,5 @@
 import Robot from '../Robot.js'
+import Gait from '../Gait.js'
 import ServoController from './ServoController.js'
 
 
