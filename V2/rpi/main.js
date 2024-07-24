@@ -48,9 +48,9 @@ const main = async () => {
             angle: 0
         },
         angleTweaks: [
-            [10, 0, 0],
-            [-10, 0, 0],
             [0, 0, 0],
+            [25, 0, 0],
+            [-25, 0, 0],
             [0, 0, 0]
         ],
         onUpdate: function(legIndex, angles) {
