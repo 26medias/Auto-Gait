@@ -21,7 +21,7 @@ const main = async () => {
         roll: 0,
         yaw: 0,
         anchorRadius: 6,
-        centerRadius: 12,
+        centerRadius: 10,
         angles: legAngles,
         mirrors: [false, true, false, true],
         sizes: {
