@@ -68,7 +68,7 @@ const main = async () => {
 
     const gaitFPS = 30;
     const tick = setInterval(() => {
-        //gait.tick();
+        gait.tick();
     }, 1000/gaitFPS);
 
     $(document).keydown(function(event) {
