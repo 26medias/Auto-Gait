@@ -46,7 +46,7 @@ const main = async () => {
             // Whenever an angle changes
             //console.log("onUpdate", {legIndex, ...angles})
             servos.move(getServoNum(legIndex, 0), angles.shoulder);
-            servos.move(getServoNum(legIndex, 1), angles.upper);
+            servos.move(getServoNum(legIndex, 1), 180-angles.upper);
             servos.move(getServoNum(legIndex, 2), angles.tip);
         }
     });
