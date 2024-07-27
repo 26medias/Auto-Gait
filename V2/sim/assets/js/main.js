@@ -4,7 +4,21 @@ import Gait from '../../../Gait.js'
 import ControlUI from './ControlUI.js'
 
 const main = async () => {
-    const legAngles = [300, 60, 120, 240];
+
+    const legSize = {
+        upper: {
+            length: 5.5,
+            offset: [-0.6, 1.2, 0],
+            width: 0.5,
+            height: 0.5
+        },
+        tip: {
+            length: 7,
+            offset: [0.5, 0, 0],
+            width: 0.5,
+            height: 0.5
+        }
+    };
 
     // Create the robot representation
 	const robot = new Robot({
@@ -12,31 +26,51 @@ const main = async () => {
         pitch: 0,
         roll: 0,
         yaw: 0,
-        anchorRadius: 6,
-        centerRadius: 12,
-        angles: legAngles,
         mirrors: [false, true, false, true],
-        sizes: {
-            upper: {
-                length: 5.5,
-                offset: [-0.6, 1.2, 0],
-                width: 0.5,
-                height: 0.5
-            },
-            tip: {
-                length: 7,
-                offset: [0.5, 0, 0],
-                width: 0.5,
-                height: 0.5
-            }
-        },
+        legs: [{
+            angle: 300,
+            centerDistance: 8,
+            y: -4.5,
+            x: 3.7,
+            size: legSize
+        },{
+            angle: 0,
+            centerDistance: 6,
+            y: 0,
+            x: 3.7,
+            size: legSize
+        },{
+            angle: 60,
+            centerDistance: 8,
+            y: 4.5,
+            x: 3.7,
+            size: legSize
+        },{
+            angle: 120,
+            centerDistance: 8,
+            y: 4.5,
+            x: -3.7,
+            size: legSize
+        },{
+            angle: 180,
+            centerDistance: 6,
+            y: 0,
+            x: -3.7,
+            size: legSize
+        },{
+            angle: 240,
+            centerDistance: 8,
+            y: -4.5,
+            x: -3.7,
+            size: legSize
+        }],
         body: {
             radius: 6,
             height: 0.1
         },
         offsets: {
-            x: -2.7,
-            y: 1,
+            x: 0,
+            y: 0,
             angle: 0
         },
         angleTweaks: [
@@ -60,8 +94,8 @@ const main = async () => {
 
     const gait = new Gait(robot, {
         angle: 90,
-        steps: 8,
-        stepSize: 3.5,
+        steps: 20,
+        stepSize: 5,
         stepHeight: 5,
         stepDamping: 0,
         turn: 0, // experimental [0;40]
@@ -73,10 +107,21 @@ const main = async () => {
         // on fps tick
     });
 
-    const gaitFPS = 30;
-    const tick = setInterval(() => {
-        gait.tick();
-    }, 1000/gaitFPS);
+    const gaitFPS = 60;
+    let tick;
+    let gaitActive = false;
+    const toggleGait = (active) => {
+        gaitActive = false;
+        clearInterval(tick);
+        if (active) {
+            tick = setInterval(() => {
+                gait.tick();
+            }, 1000/gaitFPS);
+            gaitActive = true;
+        }
+    }
+    toggleGait(true);
+    
 
     $(document).keydown(function(event) {
         switch(event.which) {
@@ -100,6 +145,7 @@ const main = async () => {
                 break;
             case 32: // space
                 //scope.started ? scope.stop() : scope.start();
+                toggleGait(!gaitActive);
                 break;
             default: 
                 // Do nothing for other keys

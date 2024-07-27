@@ -456,4 +456,32 @@ export default class Maths {
     
         return { x: longitudinalMovement, y: verticalMovement };
     }
+
+    // Build the gait steps
+    static buildGait_v2(frames, legs = 4) {
+        const verticalWaveRatio = 1 / legs;
+        const ratioFix = (legs - 4) / 4;
+    
+        const frame = Array.from({ length: frames }, (_, i) => i);
+        const swingEnd = Math.PI / ((1 / verticalWaveRatio) / 2);
+        const twoPi = 2 * Math.PI;
+    
+        // Longitudinal Movement
+        const swing = frame.map(f => -Math.cos(2 * (f * twoPi / frames * (1 / verticalWaveRatio) / 4)));
+        const swingSlice = frame.map(f => f <= swingEnd / (twoPi / frames));
+        const swingLength = Math.round(frames / legs)+1;
+        const stanceValues = Array.from({ length: frames - swingLength }, (_, i) => i).map(f => Math.cos(f * Math.PI / (frames - swingLength)));
+        
+        const longitudinalMovement = swing.filter((_, i) => swingSlice[i]).concat(stanceValues);
+        // longitudinalMovement = Array(2).fill(longitudinalMovement).flat(); // Uncomment if you need to tile the movement
+    
+        // Vertical Movement
+        const verticalPeriod = Math.ceil(frames * verticalWaveRatio * 2);
+        const lift = Array.from({ length: verticalPeriod }, (_, i) => Math.sin(twoPi * i / verticalPeriod));
+        const positiveLift = lift.map(val => (val < 0 ? 0 : val));
+        const verticalMovement = positiveLift.concat(Array(frames - verticalPeriod).fill(0));
+        // verticalMovement = Array(2).fill(verticalMovement).flat(); // Uncomment if you need to tile the movement
+    
+        return { x: longitudinalMovement, y: verticalMovement };
+    }
 }

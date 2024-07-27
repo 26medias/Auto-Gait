@@ -10,11 +10,9 @@ export default class Gait {
     init() {
         const scope = this;
         this.i = 0;
-        this.frames = Maths.buildGait_v2(this.options.steps*this.robot.legs.length, this.robot.legs.length);
-        console.log(this.frames)
+        this.frames = Maths.buildGait(this.options.steps*this.robot.legs.length*2);
         this.frameLength = this.frames.x.length;
         this.frameSize = this.frames.x.length/this.robot.legs.length;
-        console.log(this.frames)
     }
     getFrame(i) {
         return {
@@ -22,33 +20,24 @@ export default class Gait {
             y: this.frames.y[i]
         }
     }
-    getGaitIndex(groupIndex, groupCount, n, data) {
+    getLegFrame_0(legIndex, n) {
         // Calculate the start index of the group
-        const startIndex = groupIndex * groupCount;
+        const startIndex = legIndex * this.frameSize;
         
         // Calculate the desired index within the group
         const gaitIndex = startIndex + n;
         
         // Check if the calculated index is within the bounds of the data array
-        if (gaitIndex >= data.length) {
+        if (gaitIndex >= this.frameLength.length) {
             throw new Error("Index out of bounds");
         }
-        
-        return gaitIndex;
-    }
-    /*getLegFrame(legIndex, n) {
-        const gaitIndex = this.getGaitIndex(legIndex, this.frameSize, n, this.frames);
 
         return {
             x: this.frames.x[gaitIndex],
             y: this.frames.y[gaitIndex]
         }
-    }*/
-    getLegFrame(legIndex, i) {
-        return this.getLegFrame_single(legIndex, i);
     }
-
-    getLegFrame_run(legIndex, i) {
+    getLegFrame(legIndex, i) {
         const n = Maths.cycle(i + Maths.cycle(legIndex, 0, this.robot.legs.length/2)*this.options.steps, 0, this.frameLength/2);
 
         return {

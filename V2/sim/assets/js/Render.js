@@ -46,7 +46,7 @@ export default class Render {
                 case 40: // down
                     break;
                 case 32: // space
-                    scope.started ? scope.stop() : scope.start();
+                    // scope.started ? scope.stop() : scope.start();
                     break;
                 default: 
                     // Do nothing for other keys

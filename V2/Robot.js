@@ -10,26 +10,28 @@ export default class Robot {
     init() {
         const scope = this;
         this.legs = [];
-        this.options.angles.forEach((angle, n) => {
-            scope.createLeg(n, angle);
+        this.options.legs.forEach((leg, n) => {
+            scope.createLeg(n, leg);
         });
         this.applyOffsets();
     }
 
-    createLeg(index, angle) {
+    createLeg(index, leg) {
+        const center = Maths.pointCoord(leg.x, leg.y, leg.centerDistance, leg.angle)
+        console.log({center})
         const legData = {
             index,
-            angle,
+            angle: leg.angle,
             mirror: this.options.mirrors[index],
-            anchor: Maths.pointCoord(0, 0, this.options.anchorRadius, angle),
-            center: Maths.pointCoord(0, 0, this.options.centerRadius, angle),
-            true_center: Maths.pointCoord(0, 0, this.options.centerRadius, angle),
-            angles: {
+            anchor: {x: leg.x, y: leg.y},
+            center: center,
+            true_center: center,
+            angles: { // default angles
                 shoulder: 90,
-                upper: 100,
+                upper: 90,
                 tip: 90
             },
-            tip: {
+            tip: { // Tip position
                 x: 0,
                 y: 0,
                 z: 0
@@ -39,13 +41,14 @@ export default class Robot {
                 y: 0,
                 z: 0
             },
-            offsets: {
+            offsets: { // idk anymore, maybe delete
                 x: 0,
                 y: 0,
                 z: 0
             },
-            sizes: this.options.sizes // identical legs
+            sizes: leg.size // identical legs
         }
+        console.log(index, {leg, legData})
         legData.ik = new RobotLeg(this, index);
         this.legs.push(legData);
         legData.ik.init();
