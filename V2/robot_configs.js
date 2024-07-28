@@ -76,6 +76,53 @@ export const robot_configs = {
         mirrors: [false, true, false, true],
         legs: [{
             angle: 300,
+            angleOffset: 30,
+            centerDistance: 8,
+            y: -4.5,
+            x: 3.7,
+            size: legSize
+        },{
+            angle: 60,
+            angleOffset: -30,
+            centerDistance: 8,
+            y: 4.5,
+            x: 3.7,
+            size: legSize
+        },{
+            angle: 120,
+            angleOffset: 30,
+            centerDistance: 8,
+            y: 4.5,
+            x: -3.7,
+            size: legSize
+        },{
+            angle: 240,
+            angleOffset: -30,
+            centerDistance: 8,
+            y: -4.5,
+            x: -3.7,
+            size: legSize
+        }],
+        body: {
+            radius: 6,
+            height: 0.1
+        },
+        offsets: {
+            x: 0,
+            y: 0,
+            angle: 0
+        },
+        angleTweaks: [
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0],
+        ],
+    },
+    quadrupede_2: {
+        mirrors: [false, true, false, true],
+        legs: [{
+            angle: 300,
             centerDistance: 8,
             y: -4.5,
             x: 3.7,

@@ -17,7 +17,10 @@ export default class Robot {
     }
 
     createLeg(index, leg) {
-        const center = Maths.pointCoord(leg.x, leg.y, leg.centerDistance, leg.angle)
+        if (!leg.angleOffset) {
+            leg.angleOffset = 0;
+        }
+        const center = Maths.pointCoord(leg.x, leg.y, leg.centerDistance, leg.angle + leg.angleOffset)
         const legData = {
             index,
             angle: leg.angle,
