@@ -10,7 +10,6 @@ const getServoNum = (leg, n) => {
 
 
 const main = async () => {
-    const legAngles = [300, 60, 120, 240];
 
     const servos = new ServoController();
     await servos.init();
@@ -22,11 +21,17 @@ const main = async () => {
         pitch: 0,
         roll: 0,
         yaw: 0,
-        angleTweaks: [
+        /*angleTweaks: [
             [-15, -30, 0],
             [25, 30, 0],
             [-25, -30, 0],
             [10, 30, 0]
+        ],*/
+        angleTweaks: [
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0],
         ],
         fixAngles: function(angles) {
             return {
