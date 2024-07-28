@@ -13,7 +13,6 @@ export default class Gait {
         this.frames = Maths.buildGait_v2(this.options.steps*this.robot.legs.length, this.robot.legs.length);
         this.frameLength = this.frames.x.length;
         this.frameSize = this.frames.x.length/this.robot.legs.length;
-        window.Maths = Maths;
     }
     getFrame(i) {
         return {
