@@ -1,6 +1,7 @@
 import Robot from '../Robot.js'
 import Gait from '../Gait.js'
 import ServoController from './ServoController.js'
+import { robot_configs } from '../robot_configs.js'
 
 
 const getServoNum = (leg, n) => {
@@ -16,37 +17,11 @@ const main = async () => {
     
     // Create the robot representation
 	const robot = new Robot({
+        ...robot_configs.quadrupede,
         z: 3,
         pitch: 0,
         roll: 0,
         yaw: 0,
-        anchorRadius: 6,
-        centerRadius: 12,
-        angles: legAngles,
-        mirrors: [false, true, false, true],
-        sizes: {
-            upper: {
-                length: 5.5,
-                offset: [-0.6, 1.2, 0],
-                width: 0.5,
-                height: 0.5
-            },
-            tip: {
-                length: 7,
-                offset: [0.5, 0, 0],
-                width: 0.5,
-                height: 0.5
-            }
-        },
-        body: {
-            radius: 6,
-            height: 0.1
-        },
-        offsets: {
-            x: -2.7,
-            y: 1,
-            angle: 0
-        },
         angleTweaks: [
             [-15, -30, 0],
             [25, 30, 0],
@@ -72,7 +47,7 @@ const main = async () => {
     const gait = new Gait(robot, {
         angle: 90,
         steps: 10,
-        stepSize: 3.5,
+        stepSize: 5,
         stepHeight: 5,
         stepDamping: 0,
         turn: 0 // experimental

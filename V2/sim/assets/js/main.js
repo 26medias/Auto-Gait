@@ -1,84 +1,17 @@
 import Render  from './Render.js'
 import Robot from '../../../Robot.js'
 import Gait from '../../../Gait.js'
-import ControlUI from './ControlUI.js'
+import { robot_configs } from '../../../robot_configs.js'
 
 const main = async () => {
 
-    const legSize = {
-        upper: {
-            length: 5.5,
-            offset: [-0.6, 1.2, 0],
-            width: 0.5,
-            height: 0.5
-        },
-        tip: {
-            length: 7,
-            offset: [0.5, 0, 0],
-            width: 0.5,
-            height: 0.5
-        }
-    };
-
     // Create the robot representation
 	const robot = new Robot({
+        ...robot_configs.hexapod,
         z: 3,
         pitch: 0,
         roll: 0,
         yaw: 0,
-        mirrors: [false, true, false, true],
-        legs: [{
-            angle: 300,
-            centerDistance: 8,
-            y: -4.5,
-            x: 3.7,
-            size: legSize
-        },{
-            angle: 0,
-            centerDistance: 6,
-            y: 0,
-            x: 3.7,
-            size: legSize
-        },{
-            angle: 60,
-            centerDistance: 8,
-            y: 4.5,
-            x: 3.7,
-            size: legSize
-        },{
-            angle: 120,
-            centerDistance: 8,
-            y: 4.5,
-            x: -3.7,
-            size: legSize
-        },{
-            angle: 180,
-            centerDistance: 6,
-            y: 0,
-            x: -3.7,
-            size: legSize
-        },{
-            angle: 240,
-            centerDistance: 8,
-            y: -4.5,
-            x: -3.7,
-            size: legSize
-        }],
-        body: {
-            radius: 6,
-            height: 0.1
-        },
-        offsets: {
-            x: 0,
-            y: 0,
-            angle: 0
-        },
-        angleTweaks: [
-            [0, 0, 0],
-            [0, 0, 0],
-            [0, 0, 0],
-            [0, 0, 0]
-        ],
         fixAngles: function(angles) {
             return {
                 shoulder: angles.shoulder,
@@ -94,7 +27,7 @@ const main = async () => {
 
     const gait = new Gait(robot, {
         angle: 90,
-        steps: 20,
+        steps: 10,
         stepSize: 5,
         stepHeight: 5,
         stepDamping: 0,
@@ -107,7 +40,7 @@ const main = async () => {
         // on fps tick
     });
 
-    const gaitFPS = 60;
+    const gaitFPS = 30;
     let tick;
     let gaitActive = false;
     const toggleGait = (active) => {

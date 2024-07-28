@@ -18,7 +18,6 @@ export default class Robot {
 
     createLeg(index, leg) {
         const center = Maths.pointCoord(leg.x, leg.y, leg.centerDistance, leg.angle)
-        console.log({center})
         const legData = {
             index,
             angle: leg.angle,
@@ -48,7 +47,6 @@ export default class Robot {
             },
             sizes: leg.size // identical legs
         }
-        console.log(index, {leg, legData})
         legData.ik = new RobotLeg(this, index);
         this.legs.push(legData);
         legData.ik.init();
