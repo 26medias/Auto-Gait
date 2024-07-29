@@ -31,7 +31,7 @@ export default class Robot {
             angles: { // default angles
                 shoulder: 90,
                 upper: 90,
-                tip: 90
+                tip: 0
             },
             tip: { // Tip position
                 x: 0,
