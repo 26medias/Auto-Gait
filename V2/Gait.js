@@ -35,7 +35,7 @@ export default class Gait {
         return gaitIndex;
     }
     getLegFrame(legIndex, i) {
-        return this.getLegFrame_double(legIndex, i);
+        return this.getLegFrame_single(legIndex, i);
     }
 
     getLegFrame_single(legIndex, i) {
