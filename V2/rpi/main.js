@@ -17,7 +17,7 @@ const main = async () => {
     // Create the robot representation
 	const robot = new Robot({
         ...robot_configs.quadrupede,
-        z: 3,
+        z: 1,
         pitch: 0,
         roll: 0,
         yaw: 0,
