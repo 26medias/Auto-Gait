@@ -27,11 +27,17 @@ const main = async () => {
             [-25, -30, 0],
             [10, 30, 0]
         ],*/
-        angleTweaks: [
+        /*angleTweaks: [
             [-15, -30, -10],
             [25, 30, 0],
             [-20, -30, 0],
             [20, 20, 5],
+        ],*/
+        angleTweaks: [
+            [0, -30, -10],
+            [0, 30, 0],
+            [0, -30, 0],
+            [0, 20, 5],
         ],
         fixAngles: function(angles) {
             return {
