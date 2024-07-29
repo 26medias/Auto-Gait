@@ -34,10 +34,10 @@ const main = async () => {
             [20, 20, 5],
         ],*/
         angleTweaks: [
-            [10, -5, 0],
+            [10, -5, 5],
             [8, 0, 0],
             [5, -5, 0],
-            [-13, -5, 5],
+            [-13, -5, -5],
         ],
         fixAngles: function(angles) {
             return {
