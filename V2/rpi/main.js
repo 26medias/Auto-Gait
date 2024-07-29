@@ -17,7 +17,7 @@ const main = async () => {
     // Create the robot representation
 	const robot = new Robot({
         ...robot_configs.quadrupede,
-        z: 1,
+        z: 5,
         pitch: 0,
         roll: 0,
         yaw: 0,
@@ -59,7 +59,7 @@ const main = async () => {
         angle: 90,
         steps: 10,
         stepSize: 5,
-        stepHeight: 7,
+        stepHeight: 8,
         stepDamping: 0,
         turn: 0 // experimental
     });
