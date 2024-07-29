@@ -76,28 +76,28 @@ export const robot_configs = {
         mirrors: [false, true, false, true],
         legs: [{
             angle: 300,
-            angleOffset: 0, //30,
+            angleOffset: 30,
             centerDistance: 8,
             y: -4.5,
             x: 3.7,
             size: legSize
         },{
             angle: 60,
-            angleOffset: 0, //-30,
+            angleOffset: -30,
             centerDistance: 8,
             y: 4.5,
             x: 3.7,
             size: legSize
         },{
             angle: 120,
-            angleOffset: 0, //30,
+            angleOffset: 30,
             centerDistance: 8,
             y: 4.5,
             x: -3.7,
             size: legSize
         },{
             angle: 240,
-            angleOffset: 0, //-30,
+            angleOffset: -30,
             centerDistance: 8,
             y: -4.5,
             x: -3.7,
