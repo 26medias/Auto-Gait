@@ -37,7 +37,7 @@ const main = async () => {
             [10, -30, -10],
             [8, 30, 0],
             [5, -30, 0],
-            [-10, 20, 5],
+            [-7, 20, 5],
         ],
         fixAngles: function(angles) {
             return {
