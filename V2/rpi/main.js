@@ -23,9 +23,9 @@ const getServoPort = (n) => {
 
 const main = async () => {
 
-    const servosA = new ServoController(address = 0x40);
+    const servosA = new ServoController(0x40);
     await servosA.init();
-    const servosB = new ServoController(address = 0x60);
+    const servosB = new ServoController(0x60);
     await servosB.init();
 
     const moveServo = (leg, n, angle) => {
