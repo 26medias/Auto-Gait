@@ -34,7 +34,7 @@ const main = async () => {
         if (servoPort <= 15) {
             servosA.move(servoPort, angle);
         } else {
-            servosB.move(servoPort, angle);
+            servosB.move(servoPort-16, angle);
         }
     }
     
