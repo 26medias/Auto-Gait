@@ -13,6 +13,21 @@ const legSize = {
     }
 };
 
+const legSizeLarge = {
+    upper: {
+        length: 5.5,
+        offset: [-0.6, 1.2, 0],
+        width: 0.5,
+        height: 0.5
+    },
+    tip: {
+        length: 7,
+        offset: [0.5, 0, 0],
+        width: 0.5,
+        height: 0.5
+    }
+};
+
 
 export const robot_configs = {
     hexapod_hybrid: {

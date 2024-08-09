@@ -8,11 +8,35 @@ const getServoNum = (leg, n) => {
     return (leg*3) + n;
 }
 
+const getServoPort = (n) => {
+    const mapping = [
+        1, 3, 2,
+        5, 7, 6,
+        9, 11, 10,
+        23, 21, 24,
+        27, 25, 28,
+        31, 29, 32
+    ]
+    return mapping[n]-1; // adjust to zero-index
+}
+
 
 const main = async () => {
 
-    const servos = new ServoController();
-    await servos.init();
+    const servosA = new ServoController(address = 0x40);
+    await servosA.init();
+    const servosB = new ServoController(address = 0x60);
+    await servosB.init();
+
+    const moveServo = (leg, n, angle) => {
+        const servoNum = getServoNum(leg, n);
+        const servoPort = getServoPort(servoNum);
+        if (servoPort <= 15) {
+            servosA.move(servoPort, angle);
+        } else {
+            servosB.move(servoPort, angle);
+        }
+    }
     
     // Create the robot representation
 	const robot = new Robot({
@@ -51,9 +75,9 @@ const main = async () => {
         onUpdate: function(legIndex, angles) {
             // Whenever an angle changes
             //console.log("onUpdate", {legIndex, ...angles})
-            servos.move(getServoNum(legIndex, 0), angles.shoulder);
-            servos.move(getServoNum(legIndex, 1), angles.upper);
-            servos.move(getServoNum(legIndex, 2), angles.tip);
+            moveServo(legIndex, 0, angles.shoulder);
+            moveServo(legIndex, 1, angles.upper);
+            moveServo(legIndex, 2, angles.tip);
         }
     });
 
