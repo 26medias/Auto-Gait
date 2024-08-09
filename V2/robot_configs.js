@@ -15,6 +15,63 @@ const legSize = {
 
 
 export const robot_configs = {
+    hexapod_hybrid: {
+        mirrors: [true, false, true, true, true, true],
+        legs: [{
+            angle: -30,
+            centerDistance: 7.8,
+            x: 6.75,
+            y: -3.9,
+            size: legSize
+        },{
+            angle: -90,
+            centerDistance: 7.8,
+            x: 0,
+            y: -7.8,
+            size: legSize
+        },{
+            angle: -150,
+            centerDistance: 7.8,
+            x: -6.75,
+            y: -3.9,
+            size: legSize
+        },{
+            angle: -210,
+            centerDistance: 7.8,
+            x: -6.75,
+            y: 3.9,
+            size: legSize
+        },{
+            angle: -270,
+            centerDistance: 7.8,
+            x: 0,
+            y: 7.8,
+            size: legSize
+        },{
+            angle: -330,
+            centerDistance: 7.8,
+            x: 6.75,
+            y: 3.9,
+            size: legSize
+        }],
+        body: {
+            radius: 8,
+            height: 0.1
+        },
+        offsets: {
+            x: 0,
+            y: 0,
+            angle: 0
+        },
+        angleTweaks: [
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0]
+        ],
+    },
     hexapod: {
         mirrors: [false, true, false, true, false, true],
         legs: [{

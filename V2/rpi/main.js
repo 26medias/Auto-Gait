@@ -16,7 +16,7 @@ const main = async () => {
     
     // Create the robot representation
 	const robot = new Robot({
-        ...robot_configs.quadrupede,
+        ...robot_configs.hexapod_hybrid,
         z: 5,
         pitch: 0,
         roll: 0,
@@ -38,6 +38,8 @@ const main = async () => {
             [8, 0, -10],
             [5, -5, 20],
             [-13, -5, -15],
+            [0, 0, 0],
+            [0, 0, 0]
         ],
         fixAngles: function(angles) {
             return {

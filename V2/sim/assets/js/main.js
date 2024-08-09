@@ -7,7 +7,7 @@ const main = async () => {
 
     // Create the robot representation
 	const robot = new Robot({
-        ...robot_configs.quadrupede,
+        ...robot_configs.hexapod_hybrid,
         z: 3,
         pitch: 0,
         roll: 0,
@@ -26,7 +26,7 @@ const main = async () => {
     });
 
     const gait = new Gait(robot, {
-        angle: 90,
+        angle: 0,
         steps: 10,
         stepSize: 5,
         stepHeight: 5,
