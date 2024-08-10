@@ -3,6 +3,7 @@ import Gait from '../Gait.js'
 import ServoController from './ServoController.js'
 import { robot_configs } from '../robot_configs.js'
 
+const readline = require('readline');
 
 const getServoNum = (leg, n) => {
     return (leg*3) + n;
@@ -92,9 +93,31 @@ const main = async () => {
         })
     }
 
-    setInterval(() => {
+    readline.emitKeypressEvents(process.stdin);
+    process.stdin.setRawMode(true);
+
+    process.stdin.on('keypress', (str, key) => {
+        if (key.name === 'up') {
+            console.log('Up key pressed');
+            // Handle up key
+        } else if (key.name === 'down') {
+            console.log('Down key pressed');
+            // Handle down key
+        } else if (key.name === 'left') {
+            console.log('Left key pressed');
+            // Handle left key
+        } else if (key.name === 'right') {
+            console.log('Right key pressed');
+            // Handle right key
+        } else if (key.ctrl && key.name === 'c') {
+            console.log('Exiting');
+            process.exit();
+        }
+    });
+
+    /*setInterval(() => {
         setAllAngles(90);
-    }, 500)
+    }, 500)*/
     
 
     /*const gait = new Gait(robot, {
