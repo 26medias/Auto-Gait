@@ -93,21 +93,45 @@ const main = async () => {
         })
     }
 
+    const movePort = (port, angle) => {
+        if (port <= 15) {
+            servosA.move(port, angle);
+        } else {
+            servosB.move(port-16, angle);
+        }
+    }
+
     readline.emitKeypressEvents(process.stdin);
     process.stdin.setRawMode(true);
 
+    let port = 0;
+    let angle = 0;
     process.stdin.on('keypress', (str, key) => {
         if (key.name === 'up') {
-            console.log('Up key pressed');
+            angle++;
+            angle = Math.min(angle, 180);
+            console.log(`Angle ${angle}`)
+            movePort(port, angle);
             // Handle up key
         } else if (key.name === 'down') {
-            console.log('Down key pressed');
+            angle--;
+            angle = Math.max(angle, 0);
+            console.log(`Angle ${angle}`)
+            movePort(port, angle);
             // Handle down key
         } else if (key.name === 'left') {
-            console.log('Left key pressed');
+            port--;
+            if (port<0) port = 31;
+            angle = 90;
+            console.log(`Port ${port}`)
+            movePort(port, angle);
             // Handle left key
         } else if (key.name === 'right') {
-            console.log('Right key pressed');
+            port++;
+            if (port>31) port = 0;
+            angle = 90;
+            console.log(`Port ${port}`)
+            movePort(port, angle);
             // Handle right key
         } else if (key.ctrl && key.name === 'c') {
             console.log('Exiting');
