@@ -92,7 +92,10 @@ const main = async () => {
         })
     }
 
-    setAllAngles(90);
+    setInterval(() => {
+        setAllAngles(90);
+    }, 500)
+    
 
     /*const gait = new Gait(robot, {
         angle: 0,
