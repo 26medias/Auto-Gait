@@ -15,13 +15,13 @@ const legSize = {
 
 const legSizeLarge = {
     upper: {
-        length: 5.5,
+        length: 8,
         offset: [-0.6, 1.2, 0],
         width: 0.5,
         height: 0.5
     },
     tip: {
-        length: 7,
+        length: 9,
         offset: [0.5, 0, 0],
         width: 0.5,
         height: 0.5
@@ -37,7 +37,7 @@ export const robot_configs = {
             centerDistance: 7.8,
             x: 6.75,
             y: -3.9,
-            size: legSize
+            size: legSizeLarge
         },{
             angle: -90,
             centerDistance: 7.8,
@@ -49,13 +49,13 @@ export const robot_configs = {
             centerDistance: 7.8,
             x: -6.75,
             y: -3.9,
-            size: legSize
+            size: legSizeLarge
         },{
             angle: -210,
             centerDistance: 7.8,
             x: -6.75,
             y: 3.9,
-            size: legSize
+            size: legSizeLarge
         },{
             angle: -270,
             centerDistance: 7.8,
@@ -67,7 +67,7 @@ export const robot_configs = {
             centerDistance: 7.8,
             x: 6.75,
             y: 3.9,
-            size: legSize
+            size: legSizeLarge
         }],
         body: {
             radius: 8,

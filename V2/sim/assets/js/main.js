@@ -3,6 +3,8 @@ import Robot from '../../../Robot.js'
 import Gait from '../../../Gait.js'
 import { robot_configs } from '../../../robot_configs.js'
 
+
+
 const main = async () => {
 
     // Create the robot representation
@@ -21,7 +23,7 @@ const main = async () => {
         },
         onUpdate: function(legIndex, angles) {
             // Whenever an angle changes
-            //console.log("onUpdate", {legIndex, ...angles})
+            console.log("onUpdate", {legIndex, ...angles})
         }
     });
 
@@ -54,8 +56,19 @@ const main = async () => {
         }
     }
     toggleGait(true);
-    
 
+
+    const setAllAngles = (angle) => {
+        robot.legs.forEach(leg => {
+            robot.setAngles(leg.index, {
+                shoulder: angle,
+                upper: angle,
+                tip: angle
+            });
+        })
+    }
+    
+    let angle = 90;
     $(document).keydown(function(event) {
         switch(event.which) {
             case 37: // left
@@ -65,16 +78,12 @@ const main = async () => {
                 
                 break;
             case 38: // up
-            console.log("FIX ANGLE")
-                robot.legs.forEach(leg => {
-                    robot.setAngles(leg.index, {
-                        shoulder: 90,
-                        upper: 90,
-                        tip: 90
-                    });
-                })
+                angle++;
+                setAllAngles(angle);
                 break;
             case 40: // down
+                angle--;
+                setAllAngles(angle);
                 break;
             case 32: // space
                 //scope.started ? scope.stop() : scope.start();

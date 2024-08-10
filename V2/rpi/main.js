@@ -81,8 +81,21 @@ const main = async () => {
         }
     });
 
-    const gait = new Gait(robot, {
-        angle: 90,
+
+    const setAllAngles = (angle) => {
+        robot.legs.forEach(leg => {
+            robot.setAngles(leg.index, {
+                shoulder: angle,
+                upper: angle,
+                tip: angle
+            });
+        })
+    }
+
+    setAllAngles(90);
+
+    /*const gait = new Gait(robot, {
+        angle: 0,
         steps: 7,
         stepSize: 5,
         stepHeight: 8,
@@ -92,8 +105,8 @@ const main = async () => {
 
     const gaitFPS = 30;
     const tick = setInterval(() => {
-        gait.tick();
-    }, 1000/gaitFPS);
+        //gait.tick();
+    }, 1000/gaitFPS);*/
 
 };
 
