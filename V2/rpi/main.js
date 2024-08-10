@@ -3,7 +3,7 @@ import Gait from '../Gait.js'
 import ServoController from './ServoController.js'
 import { robot_configs } from '../robot_configs.js'
 
-const readline = require('readline');
+import readline from 'readline';
 
 const getServoNum = (leg, n) => {
     return (leg*3) + n;
