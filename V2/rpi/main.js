@@ -3,8 +3,6 @@ import Gait from '../Gait.js'
 import ServoController from './ServoController.js'
 import { robot_configs } from '../robot_configs.js'
 
-import readline from 'readline';
-
 const getServoNum = (leg, n) => {
     return (leg*3) + n;
 }
@@ -70,31 +68,6 @@ const main = async () => {
         }
     });
 
-
-    const setAllAngles = (angle) => {
-        robot.legs.forEach(leg => {
-            robot.setAngles(leg.index, {
-                shoulder: angle,
-                upper: angle,
-                tip: angle
-            });
-        })
-    }
-
-    const movePort = (port, angle) => {
-        if (port <= 15) {
-            servosA.move(port, angle);
-        } else {
-            servosB.move(port-16, angle);
-        }
-    }
-
-
-    /*setInterval(() => {
-        setAllAngles(90);
-    }, 500)*/
-    
-
     const gait = new Gait(robot, {
         angle: 0,
         steps: 7,
@@ -104,7 +77,7 @@ const main = async () => {
         turn: 0 // experimental
     });
 
-    const gaitFPS = 2;
+    const gaitFPS = 10;
     const tick = setInterval(() => {
         gait.tick();
     }, 1000/gaitFPS);
