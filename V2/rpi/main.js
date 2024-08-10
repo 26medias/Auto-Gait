@@ -63,7 +63,7 @@ const main = async () => {
         },
         onUpdate: function(legIndex, angles) {
             // Whenever an angle changes
-            //console.log("onUpdate", {legIndex, ...angles})
+            console.log("onUpdate", {legIndex, ...angles})
             moveServo(legIndex, 0, angles.shoulder);
             moveServo(legIndex, 1, angles.upper);
             moveServo(legIndex, 2, angles.tip);
@@ -90,9 +90,9 @@ const main = async () => {
     }
 
 
-    setInterval(() => {
+    /*setInterval(() => {
         setAllAngles(90);
-    }, 500)
+    }, 500)*/
     
 
     const gait = new Gait(robot, {
