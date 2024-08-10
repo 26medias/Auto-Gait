@@ -11,14 +11,14 @@ const getServoNum = (leg, n) => {
 
 const getServoPort = (n) => {
     const mapping = [
-        1, 3, 2,
-        5, 7, 6,
-        9, 11, 10,
-        23, 21, 24,
-        27, 25, 28,
-        31, 29, 32
+        1, 3, 0,
+        5, 7, 4,
+        9, 11, 8,
+        21, 23, 22,
+        25, 27, 26,
+        29, 31, 30
     ]
-    return mapping[n]-1; // adjust to zero-index
+    return mapping[n]; // adjust to zero-index
 }
 
 
@@ -40,7 +40,7 @@ const main = async () => {
     }
     
     // Create the robot representation
-	/*const robot = new Robot({
+	const robot = new Robot({
         ...robot_configs.hexapod_hybrid,
         z: 5,
         pitch: 0,
@@ -79,7 +79,7 @@ const main = async () => {
                 tip: angle
             });
         })
-    }*/
+    }
 
     const movePort = (port, angle) => {
         if (port <= 15) {
@@ -89,47 +89,10 @@ const main = async () => {
         }
     }
 
-    readline.emitKeypressEvents(process.stdin);
-    process.stdin.setRawMode(true);
 
-    let port = 0;
-    let angle = 0;
-    process.stdin.on('keypress', (str, key) => {
-        if (key.name === 'up') {
-            angle++;
-            angle = Math.min(angle, 180);
-            console.log(`Angle ${angle}`)
-            movePort(port, angle);
-            // Handle up key
-        } else if (key.name === 'down') {
-            angle--;
-            angle = Math.max(angle, 0);
-            console.log(`Angle ${angle}`)
-            movePort(port, angle);
-            // Handle down key
-        } else if (key.name === 'left') {
-            port--;
-            if (port<0) port = 31;
-            angle = 90;
-            console.log(`Port ${port}`)
-            movePort(port, angle);
-            // Handle left key
-        } else if (key.name === 'right') {
-            port++;
-            if (port>31) port = 0;
-            angle = 90;
-            console.log(`Port ${port}`)
-            movePort(port, angle);
-            // Handle right key
-        } else if (key.ctrl && key.name === 'c') {
-            console.log('Exiting');
-            process.exit();
-        }
-    });
-
-    /*setInterval(() => {
+    setInterval(() => {
         setAllAngles(90);
-    }, 500)*/
+    }, 500)
     
 
     /*const gait = new Gait(robot, {
