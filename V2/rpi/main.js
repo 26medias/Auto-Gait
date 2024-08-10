@@ -40,24 +40,12 @@ const main = async () => {
     }
     
     // Create the robot representation
-	const robot = new Robot({
+	/*const robot = new Robot({
         ...robot_configs.hexapod_hybrid,
         z: 5,
         pitch: 0,
         roll: 0,
         yaw: 0,
-        /*angleTweaks: [
-            [-15, -30, 0],
-            [25, 30, 0],
-            [-25, -30, 0],
-            [10, 30, 0]
-        ],*/
-        /*angleTweaks: [
-            [-15, -30, -10],
-            [25, 30, 0],
-            [-20, -30, 0],
-            [20, 20, 5],
-        ],*/
         angleTweaks: [
             [10, -5, 5],
             [8, 0, -10],
@@ -91,7 +79,7 @@ const main = async () => {
                 tip: angle
             });
         })
-    }
+    }*/
 
     const movePort = (port, angle) => {
         if (port <= 15) {
