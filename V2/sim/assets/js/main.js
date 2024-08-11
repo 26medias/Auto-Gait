@@ -5,7 +5,7 @@ import { robot_configs } from '../../../robot_configs.js'
 
 
 
-const main = async () => {
+const main_original = async () => {
 
     // Create the robot representation
 	const robot = new Robot({
@@ -24,9 +24,12 @@ const main = async () => {
         onUpdate: function(legIndex, angles) {
             // Whenever an angle changes
             console.log("onUpdate", {legIndex, ...angles})
+            console.trace();
         }
     });
 
+
+    
     const gait = new Gait(robot, {
         angle: 0,
         steps: 10,
@@ -56,7 +59,7 @@ const main = async () => {
         }
     }
     toggleGait(true);
-
+    
 
     const setAllAngles = (angle) => {
         robot.legs.forEach(leg => {
@@ -103,6 +106,58 @@ const main = async () => {
 	robot.setAngles(1, robot.legs[1].ik.getAngles());*/
 
     window.robot = robot;
+};
+
+
+const main = async () => {
+
+    // Create the robot representation
+	const robot = new Robot({
+        ...robot_configs.hexapod_hybrid,
+        z: 3,
+        pitch: 0,
+        roll: 0,
+        yaw: 0,
+        fixAngles: function(angles) {
+            return {
+                shoulder: angles.shoulder,
+                upper: angles.upper,
+                tip: angles.tip
+            }
+        },
+        onUpdate: function(legIndex, angles) {
+            // Whenever an angle changes
+            //console.log("onUpdate", {legIndex, ...angles})
+            //console.trace();
+        }
+    });
+    window.robot = robot;
+    
+    const gait = new Gait(robot, {
+        angle: 0,
+        steps: 10,
+        stepSize: 5,
+        stepHeight: 5,
+        stepDamping: 0,
+        turn: 0, // experimental [0;40]
+    });
+    gait.tick(true);
+
+    // Link the 3D Renderer
+    const renderer = new Render(robot, gait, {fps: 60});
+    renderer.init(function() {
+        // on fps tick
+    });
+
+    await robot.initLegs(1000);
+
+    //gait.tick();
+
+    const gaitFPS = 2;
+    const tick = setInterval(() => {
+        gait.tick();
+    }, 1000/gaitFPS);
+    
 };
 
 main();

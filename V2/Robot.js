@@ -15,6 +15,19 @@ export default class Robot {
         });
         this.applyOffsets();
     }
+    async wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    };
+
+    async initLegs(interval=2000) {
+        const scope = this;
+        let i;
+        for (i=0;i<this.legs.length;i++) {
+            this.legs[i].ik.init();
+            await scope.wait(interval);
+        }
+        return true;
+    }
 
     createLeg(index, leg) {
         if (!leg.angleOffset) {
@@ -52,7 +65,7 @@ export default class Robot {
         }
         legData.ik = new RobotLeg(this, index);
         this.legs.push(legData);
-        legData.ik.init();
+        //legData.ik.init();
     }
 
     applyOffsets() {

@@ -35,7 +35,7 @@ export default class Gait {
         return gaitIndex;
     }
     getLegFrame(legIndex, i) {
-        return this.getLegFrame_double(legIndex, i);
+        return this.getLegFrame_single(legIndex, i);
     }
 
     getLegFrame_single(legIndex, i) {
@@ -64,7 +64,7 @@ export default class Gait {
     }
 
 
-    tick() {
+    tick(skipSetAngles) {
         const scope = this;
         this.robot.legs.forEach((leg, n) => {
             // Get the frame data
@@ -84,11 +84,13 @@ export default class Gait {
             }
             scope.robot.legs[n].tip = coords;
         })
-            
-        this.robot.legs.forEach((leg, n) => {
-            // Apply the changes
-            scope.robot.setAngles(n, scope.robot.legs[n].ik.getAngles());
-        });
+        
+        if (!skipSetAngles) {
+            this.robot.legs.forEach((leg, n) => {
+                // Apply the changes
+                scope.robot.setAngles(n, scope.robot.legs[n].ik.getAngles());
+            });
+        }
         //console.log(liftedLeg)
         this.i++;
         if (this.i>=scope.frameLength) {

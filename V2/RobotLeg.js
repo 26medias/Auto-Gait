@@ -9,9 +9,9 @@ export default class RobotLeg {
     // Init the default positions & angles
     init() {
         const robotLeg = this.robot.legs[this.index];
-        robotLeg.tip = this.globalFromRelative({
+        /*robotLeg.tip = this.globalFromRelative({
             x: 0, y: 0, z: 0
-        })
+        })*/
         this.robot.setAngles(this.index, this.getAngles());
     }
 

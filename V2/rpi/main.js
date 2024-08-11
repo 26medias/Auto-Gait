@@ -76,8 +76,11 @@ const main = async () => {
         stepDamping: 0,
         turn: 0 // experimental
     });
+    gait.tick(true);
 
-    const gaitFPS = 10;
+    await robot.initLegs(2000);
+
+    const gaitFPS = 2;
     const tick = setInterval(() => {
         gait.tick();
     }, 1000/gaitFPS);
